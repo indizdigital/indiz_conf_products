@@ -1,0 +1,10 @@
+plugin.tx_products {
+  view {
+    templateRootPaths.10 = EXT:products/Resources/Private/Templates/
+    partialRootPaths.10 = EXT:products/Resources/Private/Partials/
+    layoutRootPaths.10 = EXT:products/Resources/Private/Layouts/
+  }
+  persistence {
+    storagePid = 
+  }
+}

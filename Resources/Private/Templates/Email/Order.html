@@ -1,0 +1,60 @@
+<table>
+    <tr>
+        <td>Name:</td>
+        <td>{name}</td>
+    </tr>
+    <tr>
+        <td>Email:</td>
+        <td>{email}</td>
+    </tr>
+    <tr>
+        <td>Street:</td>
+        <td>{street}</td>
+    </tr>
+    <tr>
+        <td>Postal Code:</td>
+        <td>{postalcode}</td>
+    </tr>
+    <tr><td>City:</td>
+        <td>{city}</td>
+    </tr>
+    <tr>
+        <td>Country:</td>
+        <td>{country}</td>
+    </tr>
+    <tr>
+        <td>Company:</td>
+        <td>{company}</td>
+    </tr>
+    <tr>
+        <td>Product:</td>
+        <td>{product.name}</td>
+    </tr>
+    <tr>
+        <td valign="top">Package:</td>
+        <td>
+            <f:variable name="package_total" value="0"></f:variable>
+            <f:for each="{product.packages}" as="package">
+                <f:if condition="{package.uid} == {package_uid}">
+                    <f:then>
+                        {package.name}
+                        <f:for each="{package.packageelements}" as="packageelement">
+                            <ul>
+                                <li>
+                                    <f:variable name="post_packageelement" value="{packageelements.{packageelement.uid}}" />
+                                    {packageelement.name} {post_packageelement}x
+                                    <f:format.currency currencySign="CHF">{packageelement.productelement.price}</f:format.currency>
+                                    <f:variable name="package_total" value="{packageelement.productelement.price * post_packageelement}"></f:variable>
+                                </li>
+                            </ul>
+                        </f:for>
+                    </f:then>
+                </f:if>
+            </f:for>
+        </td>
+    </tr>
+    <tr>
+        <td>Total:</td>
+        <td><f:format.currency currencySign="CHF">{package.total + product.serviceFee + package_total}</f:format.currency></td>
+    </tr>
+</table>

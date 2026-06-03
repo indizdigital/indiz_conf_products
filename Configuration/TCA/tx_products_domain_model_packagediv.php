@@ -1,26 +1,24 @@
 <?php
 return [
     'ctrl' => [
-        'title' => 'Product Element',
+        'title' => 'Package div',
         'label' => 'name',
-        'altLabel' => 'unit',
-        'forceAltLabel' => true,
         'tstamp' => 'tstamp',
+        'sortby' => 'sorting',
         'crdate' => 'crdate',
         'delete' => 'deleted',
-        'default_sortby' => 'name',
         'enablecolumns' => [
             'disabled' => 'hidden',
             'starttime' => 'starttime',
             'endtime' => 'endtime',
         ],
-        'searchFields' => 'name,price,min,max',
+        'searchFields' => 'name',
         'security' => [
             'ignorePageTypeRestriction' => true
         ],
     ],
     'types' => [
-        '1' => ['showitem' => 'name,price,unit,min,max,  --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access, hidden, starttime, endtime'],
+        '1' => ['showitem' => 'name,packageelements'],
     ],
     'columns' => [
         'sys_language_uid' => [
@@ -75,38 +73,18 @@ return [
             ],
         ],
         'name' => [
-            'label' => 'Name',
+            'label' => 'Label',
             'config' => ['type' => 'input']
         ],
-        'price' => [
-            'label' => 'Price',
-            'config' => ['type' => 'input', 'eval' => 'double2']
-        ],
-        'unit' => [
-            'label' => 'Unit',
+	    'packageelements' => [
+	        'label' => 'Packageelement',
             'config' => [
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                'items' => [
-                    ['Grundgebühr','service_fee'],
-                    ['CPU','unit_cpu'],
-                    ['Gigabyte','unit_gb'],
-                    ['Server','unit_server'],
-                    ['IPv4 Adresse','unit_ipv4'],
-                    ['MTok','unit_mtok'],
-                    ['Node','unit_node'],
-                    ['LBaaS','unit_lbaas'],
-                    ['Server','unit_server'],
+                'type' => 'inline',
+		        'foreign_table' => 'tx_products_domain_model_packageelement',
+                'appearance' => [
+                    'useSortable' => true,
                 ],
-            ],
-        ],
-        'min' => [
-            'label' => 'Min',
-            'config' => ['type' => 'input', 'eval' => 'int']
-        ],
-        'max' => [
-            'label' => 'Max',
-            'config' => ['type' => 'input', 'eval' => 'int']
+            ]
         ],
     ],
 ];

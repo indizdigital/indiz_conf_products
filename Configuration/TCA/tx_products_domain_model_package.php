@@ -12,12 +12,19 @@ return [
             'endtime' => 'endtime',
         ],
         'searchFields' => 'description,image,images',
+        'languageField' => 'sys_language_uid',
+        'transOrigPointerField' => 'l10n_parent',
+        'transOrigDiffSourceField' => 'l10n_diffsource',
+        'translationSource' => 'l10n_source',
         'security' => [
             'ignorePageTypeRestriction' => true
         ],
     ],
     'types' => [
-        '1' => ['showitem' => 'name,packages,product,  --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access, hidden, starttime, endtime'],
+        '1' => ['showitem' => '--palette--;;language,name,packageelements'],
+    ],
+    'palettes' => [
+        'language' => ['showitem' => 'sys_language_uid, l10n_parent'],
     ],
     'columns' => [
         'sys_language_uid' => [
@@ -25,6 +32,30 @@ return [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
             'config' => [
                 'type' => 'language',
+            ],
+        ],
+        'l10n_parent' => [
+            'displayCond' => 'FIELD:sys_language_uid:>:0',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'items' => [
+                    ['label' => '', 'value' => 0],
+                ],
+                'foreign_table' => 'tx_products_domain_model_product',
+                'foreign_table_where' => 'AND {#tx_products_domain_model_product}.{#pid}=###CURRENT_PID### AND {#tx_products_domain_model_product}.{#sys_language_uid} IN (-1,0)',
+                'default' => 0,
+            ],
+        ],
+        'l10n_diffsource' => [
+            'config' => [
+                'type' => 'passthrough',
+            ],
+        ],
+        'l10n_source' => [
+            'config' => [
+                'type' => 'passthrough',
             ],
         ],
         'hidden' => [
@@ -72,21 +103,20 @@ return [
             ],
         ],
         'name' => [
-            'config' => ['type' => 'input']
-        ],
-        'product' => [
+            'label' => 'Name',
             'config' => [
-                'type' => 'select',
-                'foreign_table' => 'tx_ext_domain_model_product',
-                'maxitems' => 1,
+                'type' => 'input'
             ]
         ],
         'packageelements' => [
+            'label' => 'Elementgruppierung',
             'config' => [
                 'type' => 'inline',
-                'foreign_table' => 'tx_ext_domain_model_packageelement',
-                'foreign_field' => 'package',
-            ]
+                'foreign_table' => 'tx_products_domain_model_packageelement',
+                'appearance' => [
+                    'useSortable' => true,
+                ],
+	        ]
         ],
     ],
 ];

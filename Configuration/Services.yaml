@@ -1,0 +1,8 @@
+services:
+  Indiz\Products\:
+    resource: '../Classes/*'
+    autowire: true
+    autoconfigure: true
+
+  Indiz\Products\DataProcessing\CategoryShortlistProcessor:
+    public: true

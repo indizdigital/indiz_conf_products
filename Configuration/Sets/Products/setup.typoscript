@@ -1,4 +1,6 @@
-plugin.tx_products {
+config.contentObjectExceptionHandler = 0
+
+plugin.tx_products_index {
   view {
     templateRootPaths.10 = EXT:products/Resources/Private/Templates/
     partialRootPaths.10 = EXT:products/Resources/Private/Partials/
@@ -6,5 +8,8 @@ plugin.tx_products {
   }
   persistence {
     storagePid = 
+  }
+  settings {
+    orderpid = 28
   }
 }

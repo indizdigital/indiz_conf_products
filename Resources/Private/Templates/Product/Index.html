@@ -1,1 +1,288 @@
-Indix
+<f:if condition="{selectedCategories -> f:count()} == 1">
+	<f:then>
+		<f:for each="{categories}" as="category">
+			<f:if condition="{selectedCategories.{category.uid}} > -1">
+				
+				<section class="bg-lightblue text-blue flex items-center gap-5 px-5 py-10 md:px-10 xl:px-20 xl:gap-10">
+					<div class="w-1/4 max-w-45 flex-none">
+						<span class="relative h-0 pb-[100%] bg-white rounded-full flex items-center justify-center text-blue">
+							<f:if condition="{category.image}">
+								<img class="absolute inset-0 fill-current size-full p-[20%]" src="{f:uri.image(image: category.image, maxWidth: 100)}" alt="{category.name}" />
+							</f:if>
+						</span>
+					</div>
+					<div class="flex-1 max-w-160">
+						<h1 class="font-extrabold text-3.5xl xl:text-5.5xl mb-3 xl:mb-5">{category.name}</h1>
+						<div class="font-extrabold xl:text-2.5xl"><f:format.html>{category.description}</f:format.html></div>
+					</div>
+				</section>
+			</f:if>
+		</f:for>
+	</f:then>
+	<f:else>
+		<section class="ndz-header-default flex items-center gap-5 px-5 py-10 md:px-10 xl:px-20 xl:gap-10">
+			<div class="hidden lg:block lg:w-1/4 lg:max-w-45 lg:flex-none"></div>
+			<div class="flex-1 max-w-160">
+				<h1 class="font-bold text-3.5xl xl:text-5.5xl mb-1 xl:mb-5">Beispieltitel</h1>
+				<p class="font-bold xl:text-2.5xl">Beispieltext</p>
+			</div>
+		</section>
+	</f:else>
+</f:if>
+<section class="px-5 space-y-10 md:px-10 xl:px-20">
+	<f:form class="space-y-5" action="index" method="post">
+		<div class="flex items-center justify-between gap-5">
+			<div class="ndz-product-search relative flex-1">
+				<label class="sr-only" for="search">Suche</label>
+				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="fill-current absolute top-1/2 left-2 -translate-y-1/2">
+					<path d="M11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19C12.8487 19 14.551 18.3729 15.9056 17.3199L19.2929 20.7071C19.6834 21.0976 20.3166 21.0976 20.7071 20.7071C21.0976 20.3166 21.0976 19.6834 20.7071 19.2929L17.3199 15.9056C18.3729 14.551 19 12.8487 19 11C19 6.58172 15.4183 3 11 3ZM5 11C5 7.68629 7.68629 5 11 5C14.3137 5 17 7.68629 17 11C17 14.3137 14.3137 17 11 17C7.68629 17 5 14.3137 5 11Z"></path>
+				</svg>
+				<f:form.textfield id="search" placeholder="Suchbegriff eingeben" name="searchquery" value="{searchquery}" class="bg-grey/10 text-xs py-3 pl-10 pr-2 w-full max-w-120" />
+			</div>
+			<ul class="flex-none flex items-center gap-5 text-sm">
+				<li>A bis Z</li>
+				<li>Liste/Kachel</li>
+			</ul>
+		</div>
+		<div class="flex items-center flex-wrap gap-3">
+			<div class="ndz-multiselect" data-multiselect>
+				<button type="button" class="ndz-btn rounded-full js-multiselect-trigger ndz-multiselect-trigger" aria-expanded="false" aria-haspopup="listbox" aria-controls="multiselect-list">
+					<span class="js-multiselect-label">Produktthemen</span>
+				</button>
+				<div class="js-multiselect-dropdown ndz-multiselect-dropdown" id="multiselect-list" role="listbox" aria-multiselectable="true" hidden>
+					<div class="ndz-multiselect-dropdown-inner">
+						<f:for each="{categories}" as="category">
+							<label class="js-multiselect-option ndz-multiselect-option js-categories" role="option" aria-selected="false">
+								<f:if condition="{selectedCategories.{category.uid}} > -1">
+									<f:then>
+										<f:form.checkbox name="categories[]" value="{category.uid}" checked="checked"></f:form.checkbox>{category.name}
+									</f:then>
+									<f:else>
+										<f:form.checkbox name="categories[]" value="{category.uid}"></f:form.checkbox>{category.name}
+									</f:else>
+								</f:if>
+							</label>
+						</f:for>
+					</div>
+					<footer class="border-t border-lightgrey px-5 py-2">
+						<f:form.submit class="ndz-btn rounded-full w-full js-show-products" value="Produkte anzeigen"></f:form.submit>
+					</footer>
+				</div>
+			</div>
+			<div class="ndz-multiselect" data-multiselect>
+				<button type="button" class="ndz-btn rounded-full js-multiselect-trigger ndz-multiselect-trigger" aria-expanded="false" aria-haspopup="listbox" aria-controls="multiselect-list">
+					<span class="js-multiselect-label">Rubriken</span>
+				</button>
+				<div class="js-multiselect-dropdown ndz-multiselect-dropdown" id="multiselect-list" role="listbox" aria-multiselectable="true" hidden>
+					<div class="ndz-multiselect-dropdown-inner">
+						<f:for each="{tags}" as="tag">
+							<label class="js-multiselect-option ndz-multiselect-option js-tags" role="option" aria-selected="false">
+								<f:if condition="{selectedTags.{tag.uid}} > -1">
+									<f:then>
+										<f:form.checkbox name="tags[]" value="{tag.uid}" checked="checked"></f:form.checkbox>{tag.name}
+									</f:then>
+									<f:else>
+										<f:form.checkbox name="tags[]" value="{tag.uid}"></f:form.checkbox>{tag.name}
+									</f:else>
+								</f:if>
+							</label>
+						</f:for>
+					</div>
+					<footer class="border-t border-lightgrey px-5 py-2">
+						<f:form.submit class="ndz-btn rounded-full w-full js-show-products" value="Produkte anzeigen"></f:form.submit>
+					</footer>
+				</div>
+			</div>
+			<f:if condition="{selectedCategories}">
+				<f:for each="{categories}" as="category">
+					<f:if condition="{selectedCategories.{category.uid}} > -1">
+						<f:then>
+							<div class="ndz-btn ndz-btn-neutral ndz-btn-outline rounded-full pointer-events-none">
+								<span>{category.name}</span>
+								<button type="button" class="cursor-pointer pointer-events-auto js-multiselect-chip-remove" aria-label="Filter {category.name} entfernen" data-cat="{category.uid}">
+									<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" class="fill-current">
+										<path d="M11.7,10.24c.4.4.4,1.05,0,1.46-.2.2-.46.3-.73.3s-.53-.1-.73-.3l-4.24-4.24L1.76,11.7c-.2.2-.46.3-.73.3s-.53-.1-.73-.3c-.4-.4-.4-1.05,0-1.46l4.24-4.24L.3,1.76c-.4-.4-.4-1.05,0-1.46s1.05-.4,1.46,0l4.24,4.24L10.24.3c.4-.4,1.05-.4,1.46,0,.4.4.4,1.05,0,1.46l-4.24,4.24,4.24,4.24Z"></path>
+									</svg>
+								</button>
+							</div>
+						</f:then>
+					</f:if>
+				</f:for>
+			</f:if>
+			<f:if condition="{selectedTags}">
+				<f:for each="{tags}" as="tag">
+					<f:if condition="{selectedTags.{tag.uid}} > -1">
+						<f:then>
+							<div class="ndz-btn ndz-btn-neutral ndz-btn-outline rounded-full pointer-events-none">
+								<span>{tag.name}</span>
+								<button type="button" class="cursor-pointer pointer-events-auto js-multiselect-chip-remove" aria-label="Filter {tag.name} entfernen" data-tag="{tag.uid}">
+									<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" class="fill-current">
+										<path d="M11.7,10.24c.4.4.4,1.05,0,1.46-.2.2-.46.3-.73.3s-.53-.1-.73-.3l-4.24-4.24L1.76,11.7c-.2.2-.46.3-.73.3s-.53-.1-.73-.3c-.4-.4-.4-1.05,0-1.46l4.24-4.24L.3,1.76c-.4-.4-.4-1.05,0-1.46s1.05-.4,1.46,0l4.24,4.24L10.24.3c.4-.4,1.05-.4,1.46,0,.4.4.4,1.05,0,1.46l-4.24,4.24,4.24,4.24Z"></path>
+									</svg>
+								</button>
+							</div>
+						</f:then>
+					</f:if>
+				</f:for>
+			</f:if>
+			<f:link.page class="ndz-btn ndz-btn-link" pageUid="3">Filter zurücksetzen</f:link.page>
+		</div>
+	</f:form>
+	<h2 class="font-bold"><span class="text-darkgrey"><f:count>{products}</f:count></span> von {productscount} Produkte</h2>
+	<div aria-label="Suchresultate">
+		<f:if condition="{products}">
+			<f:then>
+				<div class="grid gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:gap-8">
+					<f:for each="{products}" as="product">
+						<f:link.action class="ndz-card" action="show" arguments="{product:product}">
+							<div class="w-[65%]">
+								<span class="relative h-0 pb-[100%] bg-white rounded-full flex items-center justify-center text-blue">
+									<f:if condition="{product.image}">
+										<img class="absolute inset-0 fill-current size-full p-[20%]" src="{f:uri.image(image: product.image, maxWidth: 100)}" alt="{product.name}" />
+									</f:if>
+								</span>
+							</div>
+							<h3 class="xl:text-1.5xl font-bold">{product.name}</h3>
+							<p>{product.description}</p>
+						</f:link.action>
+					</f:for>
+				</div>
+			</f:then>
+			<f:else>
+				<div>
+					<h3 class="font-bold text-blue text-4.5xl mb-5">Keine Produkte gefunden</h3>
+					<p>Leider hat deine Suchanfrage zu keinem Ergebnis geführt.<br>Bitte setze deine Suche fort und benutze einen anderen Filter</p>
+				</div>
+			</f:else>
+		</f:if>
+	</div>
+</section>
+
+<script>
+    document.querySelectorAll('[data-multiselect]').forEach(multiselect => {
+
+    const trigger = multiselect.querySelector('.js-multiselect-trigger');
+    const dropdown = multiselect.querySelector('.js-multiselect-dropdown');
+    const label = multiselect.querySelector('.js-multiselect-label');
+	const defaultLabel = label.textContent.trim();
+
+    const options = [
+        ...multiselect.querySelectorAll('.js-multiselect-option')
+    ];
+
+    const checkboxes = [
+        ...multiselect.querySelectorAll('input[type="checkbox"]')
+    ];
+
+    function open() {
+        dropdown.hidden = false;
+        trigger.setAttribute('aria-expanded', 'true');
+
+        const firstCheckbox = checkboxes[0];
+        firstCheckbox.focus();
+    }
+
+    function close() {
+        dropdown.hidden = true;
+        trigger.setAttribute('aria-expanded', 'false');
+    }
+
+    function toggle() {
+        dropdown.hidden ? open() : close();
+    }
+
+    function updateLabel() {
+
+		const selected = checkboxes.filter(
+			input => input.checked
+		);
+
+		label.textContent = selected.length
+			? `${defaultLabel} (${selected.length})`
+			: defaultLabel;
+
+			
+
+		options.forEach(option => {
+
+			const checkbox = option.querySelector('input');
+
+			option.setAttribute(
+				'aria-selected',
+				checkbox.checked
+			);
+
+		});
+
+		
+	}
+
+    trigger.addEventListener('click', toggle);
+
+    checkboxes.forEach((checkbox, index) => {
+
+        checkbox.addEventListener('change', updateLabel);
+
+        checkbox.addEventListener('keydown', event => {
+
+            switch(event.key){
+
+                case 'ArrowDown':
+                    event.preventDefault();
+
+                    if(checkboxes[index + 1]){
+                        checkboxes[index + 1].focus();
+                    }
+                    break;
+
+                case 'ArrowUp':
+                    event.preventDefault();
+
+                    if(checkboxes[index - 1]){
+                        checkboxes[index - 1].focus();
+                    }
+                    break;
+
+                case 'Escape':
+                    close();
+                    trigger.focus();
+                    break;
+            }
+
+        });
+
+    });
+
+    document.addEventListener('click', event => {
+
+        if(!multiselect.contains(event.target)){
+            close();
+        }
+
+    });
+
+	document.querySelectorAll('.js-multiselect-chip-remove').forEach(chip => {
+		chip.addEventListener('click', () => {
+			if(typeof chip.dataset.cat !== "undefined"){
+				const cat = chip.dataset.cat;
+				let checkbox = multiselect.querySelector(`.js-categories input[value="${cat}"]`);
+				if (checkbox && checkbox.checked) {
+					checkbox.checked = false;
+				}
+			}
+			if(typeof chip.dataset.tag !== "undefined"){
+				const tag = chip.dataset.tag;
+				let checkbox = multiselect.querySelector(`.js-tags input[value="${tag}"]`);
+				if (checkbox && checkbox.checked) {
+					checkbox.checked = false;
+				}
+			}
+			setTimeout(function(){
+				document.querySelector(".js-show-products").click()},100)
+		});
+	});
+
+    updateLabel();
+
+});
+</script>

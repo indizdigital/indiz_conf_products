@@ -1,0 +1,506 @@
+<html 
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:ndz="http://typo3.org/ns/IndizDigitalGmbh/SteppingStoneSitePackage/ViewHelpers"
+>
+<f:asset.script identifier="flickity-js" src="EXT:indiz-digital-gmbh/stepping-stone-site-package/Resources/Public/JavaScript/flickity.pkgd.min.js" />
+<f:asset.script identifier="accordion" src="EXT:indiz-digital-gmbh/stepping-stone-site-package/Resources/Public/JavaScript/ndz-accordion.js"/>
+<f:asset.script identifier="carousel" src="EXT:indiz-digital-gmbh/stepping-stone-site-package/Resources/Public/JavaScript/ndz-flickity.js"/>
+
+<f:form action="order" id="orderForm" method="post" enctype="application/x-www-form-urlencoded">
+    <section class="bg-lightblue text-blue flex items-center gap-5 px-5 py-10 md:px-10 xl:px-20 xl:gap-10">
+        <div class="w-1/4 max-w-45 flex-none">
+            <span class="relative h-0 pb-[100%] bg-white rounded-full flex items-center justify-center text-blue">
+                <f:if condition="{product.image}">
+                    <f:image image="{product.image}" alt="{product.name}" class="absolute inset-0 fill-current size-full p-[20%]" />
+                </f:if>
+            </span>
+        </div>
+        <div class="flex-1 max-w-160">
+            <h1 class="font-extrabold text-3.5xl xl:text-5.5xl mb-3 xl:mb-5">{product.name}<span class="block text-sm font-normal -mt-1 xl:text-2xl xl:-mt-2">{product.subname}</span></h1>
+            <div class="font-extrabold xl:text-2.5xl">
+                <f:format.raw>{product.description}</f:format.raw>
+            </div>
+        </div>
+    </section>
+    <f:if condition="{product.leftContent}">
+        <section class="my-10 md:my-10 lg:my-20">
+            <div class="px-5 md:grid md:grid-cols-3 md:gap-x-7 md:px-10 lg:px-20">
+                <div class="js-accordion <f:if condition='{product.feuser}'><f:then>col-span-2</f:then><f:else>col-span-3</f:else></f:if> border-y border-gray-200 divide-y divide-gray-200">
+                    <f:for each="{product.leftContent}" as="cont">
+                        <div class="ndz-accordion-item js-accordion-item">
+                            <h2 class="text-3.5xl text-blue font-extrabold">
+                                <button type="button" class="js-accordion-header py-2 w-full flex items-center justify-between text-left cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
+                                    {cont.header}
+                                    <svg class="ndz-accordion-icon js-accordion-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </button>
+                            </h2>
+                            <div id="panel-1" role="region" aria-labelledby="accordion-1" class="ndz-accordion-content js-accordion-content">
+                                <div class="ndz-accordion-content-inner">
+                                    <f:format.html>{cont.bodytext}</f:format.html>
+                                </div>
+                            </div>
+                        </div>
+                    </f:for>
+                </div>
+                <f:if condition="{product.feuser}">
+                    <div class="border-y border-gray-200 divide-y divide-gray-200">
+                        <div class="">
+                            <h2 class="text-3.5xl text-blue font-extrabold">
+                                {product.feuser.company}
+                            </h2>
+                            <f:image image="{product.feuser.image}" width="200" />
+                            <b>{product.feuser.firstName} {product.feuser.lastName}</b>
+                            <div>{product.feuser.title}</div>
+                            <div>{product.feuser.telephone}</div>
+                            <div>{product.feuser.email}</div>
+                        </div>
+                    </div>
+                </f:if>
+            </div>
+        </section>
+    </f:if>
+    <f:if condition="{product.factsheet}">
+        <div class="border-y border-gray-200 divide-y divide-gray-200">
+            <div class="">
+                <h2 class="text-3.5xl text-blue font-extrabold">
+                    <a href="{product.factsheet.originalResource.publicUrl}" target="_blank"><f:translate key="tx_products_domain_model_product.factsheet" /></a>
+                </h2>
+            </div>
+        </div>
+    </f:if>
+    <f:if condition="{product.linkedProducts}">
+        <section class="my-5 md:my-10 lg:my-20">
+            <div class="mx-5 md:mx-10 lg:mx-20">
+                <h2 class="text-base text-blue font-extrabold mt-5 mb-3 md:text-xl lg:text-2xl lg:mt-10 lg:mb-5 xl:mb-8 xl:text-4xl"><f:translate key="tx_products_domain_model_product.scope_of_services" /></h2>
+            </div>
+            <div class="js-carousel mb-20 px-5 md:px-10 lg:px-20">
+                <f:for each="{product.linkedProducts}" as="linkedProduct">
+                    <f:link.action action="show" arguments="{product:linkedProduct}" class="js-carousel-cell min-h-full w-[49%] mr-[2%] flex flex-col text-white p-5 bg-blue rounded-2xl space-y-10 md:w-[32%]">
+                        <div class="w-[20%]">
+                            <span class="relative h-0 pb-[100%] bg-white rounded-full flex items-center justify-center text-blue">
+                                <f:if condition="{product.image}">
+                                    <f:image image="{product.image}" alt="{product.name}" class="absolute inset-0 fill-current size-full p-[20%]" />
+                                </f:if>
+                            </span>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="font-extrabold text-3xl">{linkedProduct.name}</h3>
+                            <p>Untertitel</p>
+                        </div>
+                        <div>
+                            <p>Text</p>
+                        </div>
+                    </f:link.action>
+                </f:for>
+            </div>
+        </section>
+    </f:if>
+    <f:if condition="{product.referenceProducts}">
+        <section class="my-5 md:my-10 lg:my-20">
+            <div class="px-5 md:px-10 lg:px-20">
+                <h2 class="text-base text-blue font-extrabold mt-5 mb-3 md:text-xl lg:text-2xl lg:mt-10 lg:mb-5 xl:mb-8 xl:text-4xl"><f:translate key="tx_products_domain_model_product.discover_more_products_in_category" /></h2>
+            </div>
+            <div class="js-carousel mb-20 px-5 md:px-10 lg:px-20">
+                <f:for each="{product.referenceProducts}" as="referenceProduct">
+                    <f:link.action class="js-carousel-cell ndz-card min-h-full w-[49%] mr-[2%] md:w-[23.5%]" action="show" arguments="{product:referenceProduct}">
+                        <div class="w-[65%]">
+                            <span class="relative h-0 pb-[100%] bg-white rounded-full flex items-center justify-center text-blue">
+                                <f:if condition="{referenceProduct.image}">
+                                    <img class="absolute inset-0 fill-current size-full p-[20%]" src="{f:uri.image(image: referenceProduct.image, maxWidth: 100)}" alt="{referenceProduct.name}" />
+                                </f:if>
+                            </span>
+                        </div>
+                        <h3 class="xl:text-1.5xl font-bold">{referenceProduct.name}</h3>
+                        <p>{referenceProduct.description}</p>
+                    </f:link.action>
+                </f:for>
+            </div>
+        </section>
+    </f:if>
+    <f:if condition="{product.screenshots}">
+        <section class="my-5 md:my-10 lg:my-20">
+            <div class="px-5 md:px-10 lg:px-20">
+                <h2 class="text-base text-blue font-extrabold mt-5 mb-3 md:text-xl lg:text-2xl lg:mt-10 lg:mb-5 xl:mb-8 xl:text-4xl"><f:translate key="tx_products_domain_model_product.screenshots" /></h2>
+            </div>
+            <div class="js-carousel mb-20">
+                <f:for each="{product.screenshots}" as="screenshot">
+                    <div class="js-carousel-cell bg-lightgrey w-full rounded-[40px] p-[5%] md:w-[49%] md:mr-[2%]">
+                        <div class="relative h-0 pb-[65%]">
+                            <f:image image="{screenshot}" alt="{product.name}" class="absolute w-full h-full object-contain object-center" />
+                        </div>
+                    </div>
+                </f:for>
+            </div>
+        </section>
+    </f:if>
+    <section class="my-5 md:my-10 lg:my-20">
+        <div class="p-5 space-y-3 bg-lightblue md:p-10 lg:py-12 lg:px-20 lg:space-y-5 xl:space-y-12">
+            <f:if condition="{product.rendertype} == 'personalised'">
+                <f:then>
+                    <f:form.textfield type="hidden" name="product_uid" value="{product.uid}" />
+                    <div class="space-y-3 lg:space-y-5 xl:space-y-12">
+                        <div class="flex items-center justify-between gap-5">
+                            <h2 class="text-base text-blue font-extrabold md:text-xl lg:text-2xl xl:text-4xl">{product.packages.0.name}</h2>
+                            <div class="flex justify-center bg-slate-100">
+                                <div class="relative inline-grid grid-cols-2 rounded-full bg-white" data-toggle>
+                                    <!-- Slider -->
+                                    <div class="absolute left-2 top-2 bottom-2 w-[calc(50%-0.5rem)] rounded-full bg-blue transition-transform duration-500 ease-out-expo" data-toggle-slider></div>
+
+                                    <!-- Monat -->
+                                    <button type="button" class="relative z-10 px-8 py-5 font-extrabold transition-colors duration-500 text-white cursor-pointer" data-value="month">/Monat</button>
+
+                                    <!-- Stunde -->
+                                    <button type="button" class="relative z-10 px-8 py-5 font-extrabold transition-colors duration-500 text-blue cursor-pointer" data-value="hour">/Stunde</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="js-accordion col-span-2 space-y-5">
+                            <f:for each="{product.packages}" as="p_div">
+                                <div class="ndz-accordion-item js-accordion-item bg-white rounded-lg js-package-div">
+                                    <button type="button" class="js-accordion-header px-5 py-3 w-full flex items-center justify-between gap-5 text-blue text-left cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
+                                        <h3 class="flex-1 text-3.5xl font-extrabold">{p_div.name}</h3>
+                                        <span><span class="text-3.5xl font-extrabold js-subtotal-price">0.00</span> CHF<span class="js-calc-time">/Monat</span></span>
+                                        <svg class="ndz-accordion-icon js-accordion-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                        </svg>
+                                    </button>
+                                    <div id="panel-1" role="region" aria-labelledby="accordion-1" class="ndz-accordion-content px-5 js-accordion-content">
+                                        <div class="ndz-accordion-content-inner border-t border-lightgrey divide-y divide-lightgrey">
+                                            <f:if condition="{p_div.packageelements}">
+                                                <f:then>
+                                                    <f:for each="{p_div.packageelements}" as="packageelement">
+                                                        <f:variable name="packagediv_name" value="{p_div.name}" />
+                                                        <f:variable name="packagediv_name" value="{f:format.urlencode(value: packagediv_name)}" />
+                                                        <f:variable name="packageelement_name" value="{f:format.urlencode(value: packageelement.name)}" />
+                                                        <f:render partial="Product/AttributeLine" arguments="{name: 'packageelements[{packagediv_name}][{packageelement_name}]', unit: '{packageelement.productelement.unit}', label: '{packageelement.name}', min: packageelement.productelement.min, max: packageelement.productelement.max, price: packageelement.productelement.price, amount: packageelement.amount}" />
+                                                    </f:for>
+                                                </f:then>
+                                                <f:else>
+                                                    <f:if condition="{p_div.magicDivs}">
+                                                        <f:for each="{p_div.magicDivs.packages}" as="magic_div">
+                                                            <f:variable name="packagediv_name" value="{p_div.name}" />
+                                                            <f:variable name="packagediv_name" value="{f:format.urlencode(value: packagediv_name)}" />
+                                                            <f:variable name="packageelement_name" value="{f:format.urlencode(value: magic_div.packagedivs.0.name)}" />
+                                                            <f:variable name="packagediv_price" value="{magic_div.total + p_div.magicDivs.serviceFee}" />
+                                                            <f:render partial="Product/AttributeLine" arguments="{name: 'packageelements[{packagediv_name}][{packageelement_name}]', unit: 'pieces', label: '{magic_div.packagedivs.0.name}', min: 0, max: 128, price: packagediv_price, amount: packageelement.amount}" />
+                                                        </f:for>
+                                                    </f:if>
+                                                </f:else>
+                                            </f:if>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </f:for>
+                        </div>
+                        <div class="flex items-center justify-between gap-5">
+                            <div>
+                                <div class="font-extrabold text-blue">Alle Preise in CHF exkl. Mehrwertsteuer.</div>
+                                <div>
+                                    <a href="" class="ndz-btn ndz-btn-link ndz-btn-neutral">
+                                        Angebotsbedingungen
+                                        <svg  xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+                                            <path d="M5.68,7.14h1.05c.21,0,.38-.07.52-.21s.21-.31.21-.52v-1.05c0-.21-.07-.38-.21-.52-.14-.14-.31-.21-.52-.21h-1.41c-.1,0-.19.03-.26.1-.07.07-.11.16-.11.26v3.54c0,.11.04.2.11.26.07.07.16.1.26.1.1,0,.19-.04.26-.11.07-.07.1-.16.1-.26v-1.39ZM5.68,6.41v-1.05h1.05v1.05h-1.05ZM10.13,8.91c.21,0,.38-.07.52-.21.14-.14.21-.32.21-.52v-2.81c0-.21-.07-.38-.21-.52-.14-.14-.32-.21-.52-.21h-1.37c-.1,0-.19.03-.26.1s-.11.16-.11.26v3.53c0,.11.04.2.11.27.07.07.16.11.26.11h1.36ZM9.12,8.17v-2.81h1v2.81h-1ZM12.65,7.14h.78c.11,0,.19-.04.26-.11.07-.07.1-.16.1-.26s-.03-.19-.1-.26c-.07-.07-.15-.1-.26-.1h-.78v-1.05h.78c.11,0,.19-.04.26-.11s.1-.16.1-.26-.03-.19-.1-.26c-.07-.07-.15-.1-.26-.1h-1.14c-.1,0-.19.03-.26.1-.07.07-.11.16-.11.26v3.54c0,.11.04.2.11.26.07.07.16.1.26.1.1,0,.19-.04.26-.11.07-.07.1-.16.1-.26v-1.39ZM3.96,13.39c-.37,0-.69-.13-.96-.4-.27-.27-.4-.58-.4-.96V1.35c0-.37.13-.69.4-.96.27-.27.58-.4.96-.4h10.69c.37,0,.69.13.96.4.27.27.4.58.4.96v10.69c0,.37-.13.69-.4.96-.27.27-.58.4-.96.4H3.96ZM3.96,12.31h10.69c.07,0,.13-.03.18-.08.06-.06.08-.12.08-.18V1.35c0-.07-.03-.13-.08-.18-.06-.06-.12-.08-.18-.08H3.96c-.07,0-.13.03-.18.08-.06.06-.08.12-.08.18v10.69c0,.07.03.13.08.18s.12.08.18.08ZM1.35,16c-.37,0-.69-.13-.96-.4C.13,15.34,0,15.02,0,14.65V3.42c0-.15.05-.28.16-.39.1-.1.23-.16.39-.16s.28.05.39.16c.1.1.15.23.15.39v11.23c0,.07.03.13.08.18.06.06.12.08.18.08h11.23c.15,0,.28.05.39.16.1.1.16.23.16.39s-.05.28-.16.39c-.1.1-.23.15-.39.15H1.35ZM3.69,1.09v11.22V1.09Z"/>
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="text-blue mr-22">
+                                <span class="text-3.5xl font-extrabold js-total-price">190.00</span> CHF<span class="js-calc-time">/Monat</span>
+                            </div>
+                        </div>
+                        <div>
+                            <f:form.button class="js-order-btn ndz-btn" name="selectedPackage" data-product="{product.uid}" data-package="0" data-package="{product.packages.0.uid}" data-packagename="{product.name}">
+                                Produktanfrage
+                            </f:form.button>
+                        </div>
+                    </div>
+                </f:then>
+                <f:else if="{product.rendertype} == 'packages'">
+                    <div class="js-carousel mb-20 px-5 md:px-10 lg:px-20">
+                        <f:for each="{product.packages}" as="package">
+                            <div class="js-carousel-cell ndz-card bg-white min-h-full w-[49%] mr-[2%] md:w-[32%]">
+                                <h3 class="text-base text-blue font-extrabold md:text-xl lg:text-2xl xl:text-4xl">{package.name}</h3>
+                                <div><f:format.number decimals="2">{package.total + product.serviceFee}</f:format.number>CHF/Monat</div>
+                                <i>Servicegebühr: {product.serviceFee}</i><br>
+                                <f:for each="{package.packageelements}" as="packageelement">
+                                    <ul>
+                                        <li>
+                                            {packageelement.amount} {packageelement.name}
+                                            <i><f:format.currency currencySign="CHF">{packageelement.productelement.price}</f:format.currency></i>
+                                            <f:form.textfield type="hidden" name="packageelements[{packageelement.uid}]" value="{packageelement.amount}" />
+                                        </li>
+                                    </ul>
+                                </f:for>
+                                <f:form.button class="js-order-btn ndz-btn" name="selectedPackage" data-product="{product.uid}" data-package="{package.uid}" data-packagename="{product.name} {package.name}">
+                                    Bestellen
+                                </f:form.button>
+                            </div>
+                        </f:for>
+
+                        <f:if condition="{product.packages}">
+                            <f:variable name="package" value="{product.packages.0}"></f:variable>
+                            <div class="js-carousel-cell ndz-card bg-white min-h-full w-[49%] mr-[2%] md:w-[32%]">
+                                <h3 class="text-base text-blue font-extrabold md:text-xl lg:text-2xl xl:text-4xl"><f:translate key="tx_products_domain_model_product.personalise" /></h3>
+                                <div><f:format.number decimals="2">{package.total + product.serviceFee}</f:format.number>CHF/Monat</div>
+                                <i>Servicegebühr: {product.serviceFee}</i><br>
+                                <f:for each="{package.packageelements}" as="packageelement">
+                                    <ul>
+                                        <li>
+                                            {packageelement.amount} {packageelement.name}
+                                            <i><f:format.currency currencySign="CHF">{packageelement.productelement.price}</f:format.currency></i>
+                                            <f:form.textfield type="hidden" name="packageelements[{packageelement.uid}]" value="{packageelement.amount}" />
+                                        </li>
+                                    </ul>
+                                </f:for>
+                                <f:form.button class="js-order-btn ndz-btn" name="selectedPackage" data-product="{product.uid}" data-package="{package.uid}" data-packagename="{product.name} {package.name}">
+                                    <f:translate key="tx_products_domain_model_product.config" />
+                                </f:form.button>
+                            </div>
+                        </f:if>
+                    </div>
+
+                    <div id="panel-1" role="region" aria-labelledby="accordion-1" class="px-5 js-package-div">
+                        <div class="ndz-accordion-content-inner border-t border-lightgrey divide-y divide-lightgrey">
+                                <f:for each="{package.packageelements}" as="packageelement">
+                                    <f:variable name="packagediv_name" value="{package.name}" />
+                                    <f:variable name="packagediv_name" value="{f:format.urlencode(value: packagediv_name)}" />
+                                    <f:variable name="packageelement_name" value="{f:format.urlencode(value: packageelement.name)}" />
+                                <f:render partial="Product/AttributeLine" arguments="{name: 'packageelements[{packagediv_name}][{packageelement_name}]', unit: '{packageelement.productelement.unit}', label: '{packageelement.name}', min: packageelement.productelement.min, max: packageelement.productelement.max, price: packageelement.productelement.price, amount: 0}" />
+                            </f:for>
+                        </div>
+
+                        <div class="flex items-center justify-between gap-5">
+                            <div>
+                                <div class="font-extrabold text-blue">Alle Preise in CHF exkl. Mehrwertsteuer.</div>
+                                <div>
+                                    <a href="" class="ndz-btn ndz-btn-link ndz-btn-neutral">
+                                        Angebotsbedingungen
+                                        <svg  xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+                                            <path d="M5.68,7.14h1.05c.21,0,.38-.07.52-.21s.21-.31.21-.52v-1.05c0-.21-.07-.38-.21-.52-.14-.14-.31-.21-.52-.21h-1.41c-.1,0-.19.03-.26.1-.07.07-.11.16-.11.26v3.54c0,.11.04.2.11.26.07.07.16.1.26.1.1,0,.19-.04.26-.11.07-.07.1-.16.1-.26v-1.39ZM5.68,6.41v-1.05h1.05v1.05h-1.05ZM10.13,8.91c.21,0,.38-.07.52-.21.14-.14.21-.32.21-.52v-2.81c0-.21-.07-.38-.21-.52-.14-.14-.32-.21-.52-.21h-1.37c-.1,0-.19.03-.26.1s-.11.16-.11.26v3.53c0,.11.04.2.11.27.07.07.16.11.26.11h1.36ZM9.12,8.17v-2.81h1v2.81h-1ZM12.65,7.14h.78c.11,0,.19-.04.26-.11.07-.07.1-.16.1-.26s-.03-.19-.1-.26c-.07-.07-.15-.1-.26-.1h-.78v-1.05h.78c.11,0,.19-.04.26-.11s.1-.16.1-.26-.03-.19-.1-.26c-.07-.07-.15-.1-.26-.1h-1.14c-.1,0-.19.03-.26.1-.07.07-.11.16-.11.26v3.54c0,.11.04.2.11.26.07.07.16.1.26.1.1,0,.19-.04.26-.11.07-.07.1-.16.1-.26v-1.39ZM3.96,13.39c-.37,0-.69-.13-.96-.4-.27-.27-.4-.58-.4-.96V1.35c0-.37.13-.69.4-.96.27-.27.58-.4.96-.4h10.69c.37,0,.69.13.96.4.27.27.4.58.4.96v10.69c0,.37-.13.69-.4.96-.27.27-.58.4-.96.4H3.96ZM3.96,12.31h10.69c.07,0,.13-.03.18-.08.06-.06.08-.12.08-.18V1.35c0-.07-.03-.13-.08-.18-.06-.06-.12-.08-.18-.08H3.96c-.07,0-.13.03-.18.08-.06.06-.08.12-.08.18v10.69c0,.07.03.13.08.18s.12.08.18.08ZM1.35,16c-.37,0-.69-.13-.96-.4C.13,15.34,0,15.02,0,14.65V3.42c0-.15.05-.28.16-.39.1-.1.23-.16.39-.16s.28.05.39.16c.1.1.15.23.15.39v11.23c0,.07.03.13.08.18.06.06.12.08.18.08h11.23c.15,0,.28.05.39.16.1.1.16.23.16.39s-.05.28-.16.39c-.1.1-.23.15-.39.15H1.35ZM3.69,1.09v11.22V1.09Z"/>
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="text-blue mr-22">
+                                <span class="text-3.5xl font-extrabold js-subtotal-price">190.00</span> CHF<span class="js-calc-time">/Monat</span>
+                                <f:form.textfield class="js-subtotal-price" type="hidden" name="total" value="" />
+                            </div>
+                        </div>
+                    </div>
+                </f:else>
+                <f:else if="{product.rendertype} == 'ai'">
+                    <section class="my-10 md:my-10 lg:my-20">
+                        <div class="px-5 md:grid md:grid-cols-3 md:gap-x-7 md:px-10 lg:px-20">
+
+                            <h2 class="text-3.5xl text-blue font-extrabold"><f:translate key="tx_products_domain_model_product.price" /></h2>
+                            <div class="js-accordion <f:if condition='{product.feuser}'><f:then>col-span-2</f:then><f:else>col-span-3</f:else></f:if> border-y border-gray-200 divide-y divide-gray-200">
+                                <f:for each="{product.aiContent}" as="cont">
+                                    <div class="ndz-accordion-item js-accordion-item">
+                                        <h3 class="text-3.5xl text-blue font-extrabold">
+                                            <button type="button" class="js-accordion-header py-2 w-full flex items-center justify-between text-left cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
+                                                {cont.header}
+                                                <svg class="ndz-accordion-icon js-accordion-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                                </svg>
+                                            </button>
+                                        </h3>
+                                        <div id="panel-1" role="region" aria-labelledby="accordion-1" class="ndz-accordion-content js-accordion-content">
+                                            <div class="ndz-accordion-content-inner">
+                                                <f:format.html>{cont.bodytext}</f:format.html>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </f:for>
+                            </div>
+                            <div>
+                                <f:form.button class="js-order-btn ndz-btn" name="selectedPackage" data-product="{product.uid}" data-package="0" data-package="{product.packages.0.uid}" data-packagename="{product.name}">
+                                    Produktanfrage
+                                </f:form.button>
+                            </div>
+                        </div>
+                    </section>
+                </f:else>
+            </f:if>
+        </div>
+    </section>
+    <section class="hidden js-order-form">
+        <div class="hidden js-config-form"></div>
+        <f:render partial="Product/OrderForm" arguments="{product: product}" />
+    </section>
+    <f:if condition="{product.faq}">
+        <section class="my-10 md:my-10 lg:my-20">
+            <div class="px-5 md:grid md:grid-cols-4 md:gap-x-7 md:px-10 lg:px-20">
+                <h2 class="text-base text-blue font-extrabold md:text-xl lg:text-2xl xl:text-4xl">Häufig gestellte Fragen (FAQ)</h2>
+                <div class="js-accordion col-span-3 border-y border-gray-200 divide-y divide-gray-200">
+                    <f:for each="{product.faq}" as="q">
+                        <div class="ndz-accordion-item js-accordion-item">
+                            <h2 class="text-3.5xl text-blue font-extrabold">
+                                <button type="button" class="js-accordion-header py-2 w-full flex items-center justify-between text-left cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
+                                    {q.name}
+                                    <svg class="ndz-accordion-icon js-accordion-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </button>
+                            </h2>
+                            <div id="panel-1" role="region" aria-labelledby="accordion-1" class="ndz-accordion-content js-accordion-content">
+                                <div class="ndz-accordion-content-inner">
+                                    <f:format.raw>{q.description}</f:format.raw>
+                                </div>
+                            </div>
+                        </div>
+                    </f:for>
+                </div>
+                <div></div>
+            </div>
+        </section>
+</f:if>
+</f:form>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.js-order-btn').forEach(function (button) {
+        button.addEventListener('click', function (event) {
+                event.preventDefault(); // prevent the default form submission
+                
+                document.querySelector('.js-order-form').classList.remove('hidden');
+                document.querySelector('.js-order-package').value = event.currentTarget.dataset.package;
+                document.querySelector('.js-order-package-name').value = event.currentTarget.dataset.packagename;
+                document.querySelector('.js-order-product').value = event.currentTarget.dataset.product;
+            // optional: here you can handle custom behavior before submit
+            // document.getElementById('orderForm').submit();
+        });
+    });
+
+
+
+
+    //month hour switch
+    const calc_toggle = document.querySelector("[data-toggle]");
+    if(calc_toggle){
+
+        const calc_buttons = [...calc_toggle.querySelectorAll("button")];
+        const calc_slider = calc_toggle.querySelector("[data-toggle-slider]");
+
+        function setActiveTime(index) {
+        calc_slider.style.transform = 'translateX(' + (index * 100) + '%)';
+
+            calc_buttons.forEach((btn, i) => {
+                btn.classList.toggle("text-white", i === index);
+                btn.classList.toggle("text-blue-900", i !== index);
+            });
+
+            calc_toggle.dataset.selected = calc_buttons[index].dataset.value;
+            document.querySelectorAll('.js-calc-time').forEach(el => {
+                el.textContent = calc_buttons[index].textContent;
+                //el.textContent = calc_buttons[index].dataset.value;
+            });
+        }
+
+        calc_buttons.forEach((btn, index) => {
+            btn.addEventListener("click", () => setActiveTime(index));
+        });
+
+        // Default
+        setActiveTime(0);
+    }
+
+    //setprice functions
+
+
+    function setprice(priceDisplay, range) {
+        const price = parseFloat(priceDisplay.dataset.price) || 0;
+        const value = parseFloat(range.value) || 0;
+        const total = value * price;
+        priceDisplay.textContent = total.toFixed(2);
+        priceDisplay.dataset.total = total;
+        setsubtotal(priceDisplay);
+        settotal();
+        
+    }
+    function setsubtotal(priceDisplay) {
+        const div_container = priceDisplay.closest('.js-package-div');
+        if(div_container){
+            const totals = div_container.querySelectorAll('.js-range-price');
+            
+            let total = 0;
+            totals.forEach(el => {
+                const price = parseFloat(el.dataset.total) || 0;
+                total += price;
+            });
+
+            div_container.querySelectorAll('.js-subtotal-price').forEach(el => {
+                el.textContent = total.toFixed(2);
+                el.dataset.total = total;
+            })
+        }
+    }
+    function settotal() {
+        let total = 0;
+        document.querySelectorAll('.js-subtotal-price').forEach(el => {
+            const price = parseFloat(el.dataset.total) || 0;
+            total += price;
+        });
+        var totalprice = document.querySelector('.js-total-price');
+        if(totalprice){
+            totalprice.textContent = total.toFixed(2);
+        }
+    }
+    /* ---------------------------
+     GENERIC RANGE SYNC
+    --------------------------- */
+    const clamp = (value, min, max) =>
+        Math.max(min, Math.min(max, value));
+        document.querySelectorAll('.js-range-wrapper').forEach(wrapper => {
+        const range = wrapper.querySelector('.js-range');
+        const input = wrapper.querySelector('.js-range-value');
+        const priceDisplay = wrapper.querySelector('.js-range-price');
+
+        if (!range || !input) return;
+
+        function sync() {
+            let value = parseFloat(input.value);
+
+            const min = parseFloat(range.min);
+            const max = parseFloat(range.max);
+
+            if (isNaN(value)) value = min;
+            value = clamp(value, min, max);
+
+            input.value = value;
+            range.value = value;
+
+            const percent = (value - min) / (max - min) * 100;
+            range.style.setProperty('--value', percent + '%');
+            setprice(priceDisplay,range);
+        }
+
+        function fromRange() {
+            input.value = range.value;
+            sync();
+        }
+
+        function fromInput() {
+            sync();
+        }
+
+        sync();
+
+        range.addEventListener('input', fromRange);
+        input.addEventListener('input', fromInput);
+    });
+
+    document.querySelectorAll('.js-fixed-range').forEach(priceDisplay => {
+        //const div_container = priceDisplay.closest('.js-package-div');
+        setsubtotal(priceDisplay);
+        settotal();
+    });
+
+});
+
+
+</script>
+
+</html>

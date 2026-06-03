@@ -1,0 +1,30 @@
+<f:if condition="{amount}">
+    <f:then>
+        <div class="py-3 flex items-center justfify-between gap-10 js-fixed-range">
+            <div>
+                <label class="block font-extrabold text-blue" for="">{label}</label>
+                <f:form.textfield type="hidden" name="{name}" value="{amount}" class="js-range js-range-value" />
+            </div>
+            <div class="flex-1 ">
+            </div>
+            <div class="text-blue mr-17">
+                <span class="text-3.5xl font-extrabold js-range-price" data-price="{price}" data-total="{price}"><f:format.number decimals="2">{price}</f:format.number></span> CHF<span class="js-calc-time">/Monat</span>
+            </div>
+        </div>   
+    </f:then>
+    <f:else>
+        <div class="js-range-wrapper py-3 flex items-center justfify-between gap-10">
+            <div>
+                <label class="block font-extrabold text-blue" for="">{label}</label>
+                <f:form.textfield type="number" name="{name}" value="0" min="{min}" max="{max}" class="ndz-input-number w-24 py-1 px-3 font-extrabold text-blue rounded-md outline outline-grey -outline-offset-1 focus:outline focus:outline-blue js-range-value" />
+            </div>
+            <div class="flex-1">
+                <label class="block" for=""><strong>{min} – <f:format.number decimals="0" thousandsSeparator="'">{max}</f:format.number> <f:translate key="tx_products_domain_model_product.{unit}" /></strong> (<f:format.number decimals="2">{price}</f:format.number> <f:translate key="tx_products_domain_model_product.chf" />/<f:translate key="tx_products_domain_model_product.{unit}" />)</label>
+                <input type="range" min="{min}" max="{max}" value="0" class="ndz-range js-range" />
+            </div>
+            <div class="text-blue mr-17">
+                <span class="text-3.5xl font-extrabold js-range-price" data-price="{price}" data-total="0">0.00</span> CHF<span class="js-calc-time">/Monat</span>
+            </div>
+        </div>   
+    </f:else>
+</f:if>   

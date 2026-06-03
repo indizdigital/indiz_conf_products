@@ -1,26 +1,30 @@
 <?php
 return [
     'ctrl' => [
-        'title' => 'Product Element',
+        'title' => 'Produktkategorie',
         'label' => 'name',
-        'altLabel' => 'unit',
-        'forceAltLabel' => true,
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
         'delete' => 'deleted',
-        'default_sortby' => 'name',
         'enablecolumns' => [
             'disabled' => 'hidden',
             'starttime' => 'starttime',
             'endtime' => 'endtime',
         ],
-        'searchFields' => 'name,price,min,max',
+        'searchFields' => 'name,description,image',
+        'languageField' => 'sys_language_uid',
+        'transOrigPointerField' => 'l10n_parent',
+        'transOrigDiffSourceField' => 'l10n_diffsource',
+        'translationSource' => 'l10n_source',
         'security' => [
             'ignorePageTypeRestriction' => true
         ],
     ],
     'types' => [
-        '1' => ['showitem' => 'name,price,unit,min,max,  --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access, hidden, starttime, endtime'],
+        '1' => ['showitem' => '--palette--;;language,name,description,image,show_in_menu'],
+    ],
+    'palettes' => [
+        'language' => ['showitem' => 'sys_language_uid,l10n_parent'],
     ],
     'columns' => [
         'sys_language_uid' => [
@@ -28,6 +32,30 @@ return [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
             'config' => [
                 'type' => 'language',
+            ],
+        ],
+        'l10n_parent' => [
+            'displayCond' => 'FIELD:sys_language_uid:>:0',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'items' => [
+                    ['label' => '', 'value' => 0],
+                ],
+                'foreign_table' => 'tx_products_domain_model_category',
+                'foreign_table_where' => 'AND {#tx_products_domain_model_category}.{#pid}=###CURRENT_PID### AND {#tx_products_domain_model_category}.{#sys_language_uid} IN (-1,0)',
+                'default' => 0,
+            ],
+        ],
+        'l10n_diffsource' => [
+            'config' => [
+                'type' => 'passthrough',
+            ],
+        ],
+        'l10n_source' => [
+            'config' => [
+                'type' => 'passthrough',
             ],
         ],
         'hidden' => [
@@ -73,40 +101,27 @@ return [
                     'allowLanguageSynchronization' => true
                 ]
             ],
+	],
+    'show_in_menu' => [
+        'label' => 'Show in Menu',
+        'config' => [
+            'type' => 'check',
+        ]
+    ],
+	'name' => [
+		'label' => 'name',
+		'config' => ['type' => 'input']
+	],
+	'description' => [
+		'label' => 'Beschreibung',
+            'config' => ['type' => 'text']
         ],
-        'name' => [
-            'label' => 'Name',
-            'config' => ['type' => 'input']
-        ],
-        'price' => [
-            'label' => 'Price',
-            'config' => ['type' => 'input', 'eval' => 'double2']
-        ],
-        'unit' => [
-            'label' => 'Unit',
+	'image' => [
+		'label' => 'Bild',
             'config' => [
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                'items' => [
-                    ['Grundgebühr','service_fee'],
-                    ['CPU','unit_cpu'],
-                    ['Gigabyte','unit_gb'],
-                    ['Server','unit_server'],
-                    ['IPv4 Adresse','unit_ipv4'],
-                    ['MTok','unit_mtok'],
-                    ['Node','unit_node'],
-                    ['LBaaS','unit_lbaas'],
-                    ['Server','unit_server'],
-                ],
-            ],
-        ],
-        'min' => [
-            'label' => 'Min',
-            'config' => ['type' => 'input', 'eval' => 'int']
-        ],
-        'max' => [
-            'label' => 'Max',
-            'config' => ['type' => 'input', 'eval' => 'int']
+                'type' => 'file',
+                'maxitems' => 1
+            ]
         ],
     ],
 ];

@@ -1,26 +1,23 @@
 <?php
 return [
     'ctrl' => [
-        'title' => 'Product Element',
+        'title' => 'Tag',
         'label' => 'name',
-        'altLabel' => 'unit',
-        'forceAltLabel' => true,
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
         'delete' => 'deleted',
-        'default_sortby' => 'name',
         'enablecolumns' => [
             'disabled' => 'hidden',
             'starttime' => 'starttime',
             'endtime' => 'endtime',
         ],
-        'searchFields' => 'name,price,min,max',
+        'searchFields' => 'name',
         'security' => [
             'ignorePageTypeRestriction' => true
         ],
     ],
     'types' => [
-        '1' => ['showitem' => 'name,price,unit,min,max,  --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access, hidden, starttime, endtime'],
+        '1' => ['showitem' => 'name,  --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access, hidden, starttime, endtime'],
     ],
     'columns' => [
         'sys_language_uid' => [
@@ -77,36 +74,6 @@ return [
         'name' => [
             'label' => 'Name',
             'config' => ['type' => 'input']
-        ],
-        'price' => [
-            'label' => 'Price',
-            'config' => ['type' => 'input', 'eval' => 'double2']
-        ],
-        'unit' => [
-            'label' => 'Unit',
-            'config' => [
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                'items' => [
-                    ['Grundgebühr','service_fee'],
-                    ['CPU','unit_cpu'],
-                    ['Gigabyte','unit_gb'],
-                    ['Server','unit_server'],
-                    ['IPv4 Adresse','unit_ipv4'],
-                    ['MTok','unit_mtok'],
-                    ['Node','unit_node'],
-                    ['LBaaS','unit_lbaas'],
-                    ['Server','unit_server'],
-                ],
-            ],
-        ],
-        'min' => [
-            'label' => 'Min',
-            'config' => ['type' => 'input', 'eval' => 'int']
-        ],
-        'max' => [
-            'label' => 'Max',
-            'config' => ['type' => 'input', 'eval' => 'int']
         ],
     ],
 ];

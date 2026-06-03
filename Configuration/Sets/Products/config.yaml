@@ -1,0 +1,4 @@
+name: products/site-package
+label: Products Site Package
+dependencies:
+  - typo3/fluid-styled-content

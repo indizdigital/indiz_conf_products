@@ -1,4 +1,5 @@
 <?php
+
 namespace Indiz\Products\Domain\Model;
 
 use TYPO3\CMS\Core\Database\Connection;
@@ -7,17 +8,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
-class Package extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+class Packagediv extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {
     protected string $name = '';
-
+    protected int $amount = 0;
     protected string $packageelements = "";
 
-    public function __construct()
-    {
-        $this->packageelements = new ObjectStorage();
-    }
-
+   
     // Getter / Setter
 	public function getName(): string
     {
@@ -28,6 +25,7 @@ class Package extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     {
         $this->name = $name;
     }
+
     public function getMagicdivs(){
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getQueryBuilderForTable('tx_products_domain_model_product');
@@ -94,15 +92,19 @@ class Package extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     {
         $this->packageelements = $packageelements;
     }
-
-    public function getTotal(): float
+public function getAmount(): int
     {
-        $total = 0.0;
-        foreach ($this->getPackageelements() as $packageelement) {
-            $price = $packageelement->getProductelement()->getPrice();
-            $amount = $packageelement->getAmount();
-            $total += $amount * $price;
-        }
-        return $total;
+        return $this->amount;
     }
+
+    public function setAmount($amount): void
+    {
+        $this->amount = $amount;
+    }
+
+    public function getPrice()
+    {
+        return 10;
+    }
+
 }

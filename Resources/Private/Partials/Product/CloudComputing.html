@@ -1,0 +1,3 @@
+<f:for each="{product.packages.0.packageelements}" as="packageelement">
+    <f:render partial="Product/AttributeLine" arguments="{name: 'packageelements[{packageelement.uid}]', unit: '{packageelement.productelement.unit}', label: '{packageelement.name}', min: packageelement.productelement.min, max: packageelement.productelement.max, price: packageelement.productelement.price}" />
+</f:for>

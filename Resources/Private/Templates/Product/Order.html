@@ -1,0 +1,23 @@
+<f:form action="order" id="orderForm">
+    <h2>Bestellung für {product.name}</h2>
+    <h3>{message}</h3>
+    <f:for each="{product.packages}" as="package">
+        <div>{package.name}
+            <f:for each="{package.packageelements}" as="packageelement">
+                <f:if condition="{packageelement.isBase}">
+                    <f:then></f:then>
+                    <f:else>
+                        {packageelement.name} {packageelement.amount}
+                        <f:format.currency currencySign="CHF">{packageelement.productelement.price}</f:format.currency>
+                    </f:else>
+                </f:if>
+            </f:for>
+        </div>
+        <f:form.button class="js-order-btn" name="selectedPackage" data-product="{product.uid}" data-package="{package.uid}" data-packagename="{product.name} {package.name}">
+            Bestellen
+        </f:form.button>
+    </f:for>
+    <div class="hidden js-order-form">
+        <f:render partial="Product/OrderForm" arguments="{products: products}" />
+    </div>
+</f:form>

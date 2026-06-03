@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="EXT:machines/Resources/Private/Language/locallang.xlf" date="2022-06-28T15:35:15Z" product-name="machines">
+		<header/>
+		<body>
+			<trans-unit id="tx_products_domain_model_product.pieces">
+				<source>Stück</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.chf">
+				<source>CHF</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.gb">
+				<source>GB</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.screenshots">
+				<source>Screenshots und Beispiele</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.scope_of_services">
+				<source>Leistungsumfang</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.discover_more_products_in_category">
+				<source>Entdecken sie weitere Produkte in dieser Kategorie</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.unit_cpu">
+				<source>CPU</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.unit_gb">
+				<source>Gigabyte</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.unit_server">
+				<source>Server</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.unit_ipv4">
+				<source>IPv4 Adresse</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.unit_mtok">
+				<source>MTok</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.unit_node">
+				<source>Node</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.unit_lbaas">
+				<source>LBaaS</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.unit_server">
+				<source>Server</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.personalise">
+				<source>Personalisieren</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.config">
+				<source>Konfigurieren</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.factsheet">
+				<source>Factsheet</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.price">
+				<source>Preis</source>
+			</trans-unit>
+        </body>
+    </file>
+</xliff>

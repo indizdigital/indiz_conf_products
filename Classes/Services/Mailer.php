@@ -6,7 +6,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class Mailer{
 
-    public function send(string $receiver,string $cc,string $subject,array $variables = []): void
+    public function send(string $receiver,string $cc,string $subject,string $template,array $variables = []): void
     {
         $email = GeneralUtility::makeInstance(FluidEmail::class);
         $fromAdress = $GLOBALS['TYPO3_CONF_VARS']['MAIL']["defaultMailFromAddress"];
@@ -16,7 +16,7 @@ class Mailer{
             ->cc($cc)
             ->subject($subject)
             ->format('html') // or 'both'
-            ->setTemplate($subject) // Resources/Private/Templates/Email/MyTemplate.html
+            ->setTemplate($template) // Resources/Private/Templates/Email/MyTemplate.html
             
             ->assignMultiple($variables);
 

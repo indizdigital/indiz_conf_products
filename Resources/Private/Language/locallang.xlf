@@ -12,20 +12,26 @@
 			<trans-unit id="tx_products_domain_model_product.gb">
 				<source>GB</source>
 			</trans-unit>
-			<trans-unit id="tx_products_domain_model_product.screenshots">
-				<source>Screenshots und Beispiele</source>
-			</trans-unit>
-			<trans-unit id="tx_products_domain_model_product.scope_of_services">
-				<source>Leistungsumfang</source>
-			</trans-unit>
-			<trans-unit id="tx_products_domain_model_product.discover_more_products_in_category">
-				<source>Entdecken sie weitere Produkte in dieser Kategorie</source>
+			<trans-unit id="tx_products_domain_model_product.service_fee">
+				<source>Service Fee</source>
 			</trans-unit>
 			<trans-unit id="tx_products_domain_model_product.unit_cpu">
-				<source>CPU</source>
+				<source>vCPUs</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.unit_gpu">
+				<source>GPUs</source>
 			</trans-unit>
 			<trans-unit id="tx_products_domain_model_product.unit_gb">
 				<source>Gigabyte</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.unit_gib">
+				<source>Gibibyte</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.unit_tb">
+				<source>Terabyte</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.unit_tib">
+				<source>Tebibyte</source>
 			</trans-unit>
 			<trans-unit id="tx_products_domain_model_product.unit_server">
 				<source>Server</source>
@@ -45,17 +51,56 @@
 			<trans-unit id="tx_products_domain_model_product.unit_server">
 				<source>Server</source>
 			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.discover_more_products_in_category">
+				<source>Entdecken sie weitere Produkte in dieser Kategorie</source>
+			</trans-unit>
 			<trans-unit id="tx_products_domain_model_product.personalise">
 				<source>Personalisieren</source>
 			</trans-unit>
 			<trans-unit id="tx_products_domain_model_product.config">
 				<source>Konfigurieren</source>
 			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.discuss_config">
+				<source>Konfiguration besprechen</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.month">
+				<source>Monat</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.hour">
+				<source>Stunde</source>
+			</trans-unit>
 			<trans-unit id="tx_products_domain_model_product.factsheet">
 				<source>Factsheet</source>
 			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.offer_terms_and_conditions">
+				<source>Angebotsbedingungen</source>
+			</trans-unit>
 			<trans-unit id="tx_products_domain_model_product.price">
 				<source>Preis</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.pricelist">
+				<source>Preisübersicht</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.all_prices_excluding_vat">
+				<source>Alle Preise in CHF exkl. Mehrwertsteuer.</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.all_prices_mtok_excluding_vat">
+				<source>Alle Preise in CHF/MTok exkl. Mehrwertsteuer.</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.discuss_models">
+				<source>Modelle besprechen</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.order">
+				<source>Bestellen</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.request">
+				<source>Produktanfrage</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.request_for">
+				<source>Produktanfrage für</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.faq">
+				<source>Häufig gestellte Fragen (FAQ)</source>
 			</trans-unit>
         </body>
     </file>

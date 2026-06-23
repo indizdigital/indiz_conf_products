@@ -1,7 +1,7 @@
 <?php
 return [
     'ctrl' => [
-        'title' => 'Product Element',
+        'title' => 'Price',
         'label' => 'name',
         'altLabel' => 'unit',
         'forceAltLabel' => true,
@@ -20,7 +20,7 @@ return [
         ],
     ],
     'types' => [
-        '1' => ['showitem' => 'name,price,unit,min,max,  --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access, hidden, starttime, endtime'],
+        '1' => ['showitem' => 'name,price,elementtype,unit,uniqid,min,max,  --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access, hidden, starttime, endtime'],
     ],
     'columns' => [
         'sys_language_uid' => [
@@ -82,21 +82,45 @@ return [
             'label' => 'Price',
             'config' => ['type' => 'input', 'eval' => 'double2']
         ],
+        'uniqid' => [
+            'label' => 'Human readable Id',
+            'config' => [
+                'type' => 'slug', 
+                'eval' => 'uniqueInSite',
+                'generatorOptions' => [
+                    'fields' => ['name'],
+                ]
+            ]
+        ],
+        'elementtype' => [
+            'label' => 'Typ',
+            'config' => [
+                'type' => 'select',
+                'renderType'=>'selectSingle',
+                'items'=>[
+                    ['Range',0],
+                    ['Input',1]
+                ]
+            ]
+        ],
         'unit' => [
             'label' => 'Unit',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    ['Grundgebühr','service_fee'],
-                    ['CPU','unit_cpu'],
-                    ['Gigabyte','unit_gb'],
-                    ['Server','unit_server'],
-                    ['IPv4 Adresse','unit_ipv4'],
-                    ['MTok','unit_mtok'],
-                    ['Node','unit_node'],
-                    ['LBaaS','unit_lbaas'],
-                    ['Server','unit_server'],
+                    ['LLL:EXT:products/Resources/Private/Language/locallang.xlf:tx_products_domain_model_product.service_fee','service_fee'],
+                    ['LLL:EXT:products/Resources/Private/Language/locallang.xlf:tx_products_domain_model_product.unit_cpu','unit_cpu'],
+                    ['LLL:EXT:products/Resources/Private/Language/locallang.xlf:tx_products_domain_model_product.unit_gpu','unit_gpu'],
+                    ['LLL:EXT:products/Resources/Private/Language/locallang.xlf:tx_products_domain_model_product.unit_gb','unit_gb'],
+                    ['LLL:EXT:products/Resources/Private/Language/locallang.xlf:tx_products_domain_model_product.unit_gib','unit_gib'],
+                    ['LLL:EXT:products/Resources/Private/Language/locallang.xlf:tx_products_domain_model_product.unit_tb','unit_tb'],
+                    ['LLL:EXT:products/Resources/Private/Language/locallang.xlf:tx_products_domain_model_product.unit_tib','unit_tib'],
+                    ['LLL:EXT:products/Resources/Private/Language/locallang.xlf:tx_products_domain_model_product.unit_server','unit_server'],
+                    ['LLL:EXT:products/Resources/Private/Language/locallang.xlf:tx_products_domain_model_product.unit_ipv4','unit_ipv4'],
+                    ['LLL:EXT:products/Resources/Private/Language/locallang.xlf:tx_products_domain_model_product.unit_mtok','unit_mtok'],
+                    ['LLL:EXT:products/Resources/Private/Language/locallang.xlf:tx_products_domain_model_product.unit_node','unit_node'],
+                    ['LLL:EXT:products/Resources/Private/Language/locallang.xlf:tx_products_domain_model_product.unit_lbaas','unit_lbaas'],
                 ],
             ],
         ],

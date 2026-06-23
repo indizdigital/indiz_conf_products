@@ -19,7 +19,7 @@ class Product extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * @var ObjectStorage<Content>
      */
-    protected $leftContent = null;
+    protected $accordeon = null;
     /**
      * @var ObjectStorage<Content>
      */
@@ -31,14 +31,16 @@ class Product extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @var FileReference
      */
     protected $image = null;
+    
     /**
-     * @var ObjectStorage<Productelement>
+     * @var FileReference
      */
-    protected ObjectStorage $servicefeeElements;
+    protected $subimage = null;
     /**
-     * @var ObjectStorage<FileReference>
+     * @var ObjectStorage<Content>
      */
     protected $screenshots = null;
+    protected string $packagetitle = "";
 
     /**
      * @var ObjectStorage<Package>
@@ -51,14 +53,9 @@ class Product extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $referenceProducts;
 
     /**
-     * @var ObjectStorage<Product>
+     * @var ObjectStorage<Content>
      */
-    protected $linkedProducts;
-
-    /**
-     * @var FileReference
-     */
-    protected $factsheet = null;
+    protected $altcontent;
 
     /**
      * @var ObjectStorage<Faq>
@@ -66,7 +63,7 @@ class Product extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $faq;
 
     /**
-     * @var User
+     * @var ObjectStorage<Content>
      */
     protected $feuser = null;
 
@@ -74,11 +71,11 @@ class Product extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     {
         $this->packages = new ObjectStorage();
         $this->screenshots = new ObjectStorage();
-        $this->servicefeeElements = new ObjectStorage();
         $this->referenceProducts = new ObjectStorage();
-        $this->linkedProducts = new ObjectStorage();
+        $this->altcontent = new ObjectStorage();
+        $this->feuser = new ObjectStorage();
         $this->categories = new ObjectStorage();
-        $this->leftContent = new ObjectStorage();
+        $this->accordeon = new ObjectStorage();
         $this->aiContent = new ObjectStorage();
         $this->faq = new ObjectStorage();
     }
@@ -140,24 +137,34 @@ class Product extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         $this->image = $image;
     }
 
-    public function getLeftContent(): ?ObjectStorage
+    public function getSubimage(): ?FileReference
     {
-        return $this->leftContent;
+        return $this->subimage;
     }
 
-    public function setLeftContent(ObjectStorage $leftContent): void
+    public function setSubimage(FileReference $subimage): void
     {
-        $this->leftContent = $leftContent;
+        $this->subimage = $subimage;
     }
 
-    public function addLeftContent(Content $leftContent): void
+    public function getAccordeon(): ?ObjectStorage
     {
-        $this->leftContent->attach($leftContent);
+        return $this->accordeon;
     }
 
-    public function removeLeftContent(Content $leftContent): void
+    public function setAccordeon(ObjectStorage $accordeon): void
     {
-        $this->leftContent->detach($leftContent);
+        $this->accordeon = $accordeon;
+    }
+
+    public function addAccordeon(Content $accordeon): void
+    {
+        $this->accordeon->attach($accordeon);
+    }
+
+    public function removeAccordeon(Content $accordeon): void
+    {
+        $this->accordeon->detach($accordeon);
     }
 
     public function getAiContent(): ?ObjectStorage
@@ -190,6 +197,26 @@ class Product extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     {
         $this->screenshots = $screenshots;
     }
+    
+
+    public function getAltcontent(): ?ObjectStorage
+    {
+        return $this->altcontent;
+    }
+
+    public function setAltcontent(ObjectStorage $altcontent): void
+    {
+        $this->altcontent = $altcontent;
+    }
+    public function getPackagetitle(): string
+    {
+        return $this->packagetitle;
+    }
+
+    public function setPackagetitle($packagetitle): void
+    {
+        $this->packagetitle = $packagetitle;
+    }
 
     public function getPackages():  ?ObjectStorage
     {
@@ -208,49 +235,7 @@ class Product extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function setCategories($categories):  void
     {
         $this->categories = $cateories;
-    }
-
-    /**
-     * @return ObjectStorage<Productelement>
-     */
-    public function getServicefeeElements(): ObjectStorage
-    {
-        return $this->servicefeeElements;
-    }
-
-    /**
-     * @param ObjectStorage<Productelement> $servicefeeElements
-     */
-    public function setServicefeeElements(ObjectStorage $servicefeeElements): void
-    {
-        $this->servicefeeElements = $servicefeeElements;
-    }
-
-    /**
-     * Add a single service fee element
-     */
-    public function addServicefeeElement(Productelement $element): void
-    {
-        $this->servicefeeElements->attach($element);
-    }
-
-    /**
-     * Remove a single service fee element
-     */
-    public function removeServicefeeElement(Productelement $element): void
-    {
-        $this->servicefeeElements->detach($element);
-    }
-
-    public function getServiceFee(): float
-    {
-        $serviceFee = 0.0;
-        foreach ($this->getServicefeeElements() as $servicefee_element) {
-           $serviceFee += $servicefee_element->getPrice();
-        
-        }
-        return $serviceFee;
-    }
+    } 
 
     public function getReferenceProducts(): ?ObjectStorage
     {
@@ -260,17 +245,7 @@ class Product extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function setReferenceProducts(ObjectStorage $referenceProducts): void
     {
         $this->referenceProducts = $referenceProducts;
-    }   
-
-    public function getLinkedProducts(): ?ObjectStorage
-    {
-        return $this->linkedProducts;
-    }   
-
-    public function setLinkedProducts(ObjectStorage $linkedProducts): void
-    {
-        $this->linkedProducts = $linkedProducts;
-    }  
+    } 
 
     public function getFaq(): ?ObjectStorage
     {
@@ -282,22 +257,12 @@ class Product extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         $this->faq = $faq;
     }
 
-    public function getFactsheet(): ?FileReference
-    {
-        return $this->factsheet;
-    }
-
-    public function setFactsheet(?FileReference $factsheet): void
-    {
-        $this->factsheet = $factsheet;
-    }
-
-    public function getFeuser(): ?User
+    public function getFeuser(): ?ObjectStorage
     {
         return $this->feuser;
     }
 
-    public function setFeuser(?User $feuser): void
+    public function setFeuser(?ObjectStorage $feuser): void
     {
         $this->feuser = $feuser;
     }

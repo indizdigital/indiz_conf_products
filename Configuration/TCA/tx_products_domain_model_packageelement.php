@@ -15,55 +15,26 @@ return [
         'searchFields' => 'description,image,images',
         'languageField' => 'sys_language_uid',
         'transOrigPointerField' => 'l10n_parent',
-        'transOrigDiffSourceField' => 'l10n_diffsource',
-        'translationSource' => 'l10n_source',
         'security' => [
             'ignorePageTypeRestriction' => true
         ],
     ],
     'types' => [
-        '1' => ['showitem' => '--palette--;;language,--palette--;;line1'],
+        '1' => ['showitem' => '--palette--;;line1,--palette--;;line2'],
     ],
     'palettes' => [
         'line1' => [
             'label' => '',
-            'showitem' => 'productelement,name,amount'
+            'showitem' => 'productelement,name,subname,desc'
+        ],
+        'line2' => [
+            'label' => '',
+            'showitem' => 'formula,amount,min,max'
         ],
         'language' => ['showitem' => 'sys_language_uid, l10n_parent']
     ],
     'columns' => [
         
-        'sys_language_uid' => [
-            'exclude' => true,
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
-            'config' => [
-                'type' => 'language',
-            ],
-        ],
-        'l10n_parent' => [
-            'displayCond' => 'FIELD:sys_language_uid:>:0',
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent',
-            'config' => [
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                'items' => [
-                    ['label' => '', 'value' => 0],
-                ],
-                'foreign_table' => 'tx_products_domain_model_product',
-                'foreign_table_where' => 'AND {#tx_products_domain_model_product}.{#pid}=###CURRENT_PID### AND {#tx_products_domain_model_product}.{#sys_language_uid} IN (-1,0)',
-                'default' => 0,
-            ],
-        ],
-        'l10n_diffsource' => [
-            'config' => [
-                'type' => 'passthrough',
-            ],
-        ],
-        'l10n_source' => [
-            'config' => [
-                'type' => 'passthrough',
-            ],
-        ],
         'hidden' => [
             'exclude' => true,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.visible',
@@ -109,24 +80,68 @@ return [
             ],
         ],
         'name' => [
-		'label' => 'Label',
-		'config' => ['type' => 'input']
-        ],
-	'amount' => [
-		'label' => 'Menge',
-            'config' => ['type' => 'input', 'eval' => 'int']
-        ],
-	'productelement' => [
-	    'label' => 'Produktelement',
+            'label' => 'Label',
             'config' => [
-		    'type' => 'select',
-		    'renderType' => 'selectSingle',
-		    'foreign_table' => 'tx_products_domain_model_productelement',
-            #'foreign_table_where' => 'AND tx_products_domain_model_productelement.unit != "service_fee"',
-		    'items' => [
-			    ['---',0]
-		    ],
-                'maxitems' => 1,
+                'type' => 'input',
+                'behaviour' => ['allowLanguageSynchronization' => true],
+            ]
+        ],
+        'subname' => [
+            'label' => 'Sublabel (Price)',
+            'config' => [
+                'type' => 'input',
+                'behaviour' => ['allowLanguageSynchronization' => true],
+            ]
+        ],
+        'amount' => [
+            'label' => 'Amount',
+            'config' => [
+                'type' => 'input',
+                'eval' => 'int',
+                'size' => 5,
+                'behaviour' => ['allowLanguageSynchronization' => true],
+            ]
+        ],
+        'min' => [
+            'label' => 'Min',
+            'config' => [
+                'type' => 'input',
+                'eval' => 'int',
+                'size' => 5,
+                'behaviour' => ['allowLanguageSynchronization' => true],
+            ]
+        ],
+        'max' => [
+            'label' => 'Max',
+            'config' => [
+                'type' => 'input',
+                'eval' => 'int',
+                'size' => 5,
+                'behaviour' => ['allowLanguageSynchronization' => true],
+            ]
+        ],
+        'desc' => [
+            'label' => 'Description',
+            'config' => [
+                'type' => 'text',
+                'behaviour' => ['allowLanguageSynchronization' => true],
+            ]
+        ],
+        'productelement' => [
+            'label' => 'Productelement',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'foreign_table' => 'tx_products_domain_model_productelement',
+                'behaviour' => ['allowLanguageSynchronization' => true],
+            ]
+        ],
+        'formula' => [
+            'label' => 'Price Formula',
+            'config' => [
+                'type' => 'input',
+                'eval' => 'trim',
+                'behaviour' => ['allowLanguageSynchronization' => true],
             ]
         ],
     ],

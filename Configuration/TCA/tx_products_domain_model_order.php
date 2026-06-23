@@ -8,8 +8,6 @@ return [
         'delete' => 'deleted',
         'enablecolumns' => [
             'disabled' => 'hidden',
-            'starttime' => 'starttime',
-            'endtime' => 'endtime',
         ],
         'searchFields' => 'description,image,images',
         'security' => [
@@ -17,7 +15,7 @@ return [
         ],
     ],
     'types' => [
-        '1' => ['showitem' => 'ordername,name,email,street,postalcode,city,country,package_uid,product_uid,  --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access, hidden, starttime, endtime'],
+        '1' => ['showitem' => 'ordername,ordertype,firstname,name,company,email,street,postalcode,city,country,package_uid,product_uid,data,  --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access, hidden, starttime, endtime'],
     ],
     'columns' => [
         'sys_language_uid' => [
@@ -42,53 +40,46 @@ return [
                 ],
             ],
         ],
-        'starttime' => [
-            'exclude' => true,
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
-            'config' => [
-                'type' => 'input',
-                'renderType' => 'inputDateTime',
-                'eval' => 'datetime,int',
-                'default' => 0,
-                'behaviour' => [
-                    'allowLanguageSynchronization' => true
-                ]
-            ],
-        ],
-        'endtime' => [
-            'exclude' => true,
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.endtime',
-            'config' => [
-                'type' => 'input',
-                'renderType' => 'inputDateTime',
-                'eval' => 'datetime,int',
-                'default' => 0,
-                'range' => [
-                    'upper' => mktime(0, 0, 0, 1, 1, 2038)
-                ],
-                'behaviour' => [
-                    'allowLanguageSynchronization' => true
-                ]
-            ],
-        ],
         'ordername' => [
             'label' => 'Bestellname',
+            'config' => ['type' => 'input']
+        ],
+        'ordertype' => [
+            'label' => 'Order Type',
+            'config' => [
+                'type' => 'check'
+            ]
+        ],
+        'firstname' => [
+            'label' => 'Vorname',
             'config' => ['type' => 'input']
         ],
         'name' => [
             'label' => 'Name',
             'config' => ['type' => 'input']
         ],
+        'gender' => [
+            'label' => 'Gender',
+            'config' => ['type' => 'input']
+        ],
         'email' => [
             'label' => 'Email',
             'config' => ['type' => 'input']
         ],
-        'street' => [
-            'label' => 'Straße',
+        'addressline' => [
+            'label' => 'Addressline',
+            'config' => ['type' => 'input']
+        ],
+        'addressline2' => [
+            'label' => 'Addressline2',
             'config' => ['type' => 'input']
         ],
         'postalcode' => [
             'label' => 'PLZ',
+            'config' => ['type' => 'input']
+        ],
+        'phone' => [
+            'label' => 'Phone',
             'config' => ['type' => 'input']
         ],
         'city' => [
@@ -99,6 +90,10 @@ return [
             'label' => 'Land',
             'config' => ['type' => 'input']
         ],
+        'company' => [
+            'label' => 'Firma',
+            'config' => ['type' => 'input']
+        ],
         'package_uid' => [
             'label' => 'Paket UID',
             'config' => ['type' => 'input', 'eval' => 'int']
@@ -106,6 +101,22 @@ return [
         'product_uid' => [
             'label' => 'Produkt UID',
             'config' => ['type' => 'input', 'eval' => 'int']   
+        ],
+        'data' => [
+            'label' => 'Data',
+            'config' => ['type' => 'text']   
+        ],
+        'total' => [
+            'label' => 'Total',
+            'config' => ['type' => 'input']   
+        ],
+        'agb' => [
+            'label' => 'AGB',
+            'config' => ['type' => 'check']   
+        ],
+        'newsletter' => [
+            'label' => 'Newsletter',
+            'config' => ['type' => 'check']   
         ],
        
     ],

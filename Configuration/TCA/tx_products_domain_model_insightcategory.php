@@ -1,24 +1,32 @@
 <?php
 return [
     'ctrl' => [
-        'title' => 'Package div',
+        'title' => 'Insight Category',
         'label' => 'name',
         'tstamp' => 'tstamp',
-        'sortby' => 'sorting',
         'crdate' => 'crdate',
         'delete' => 'deleted',
+        'sortby' => 'sorting',
+        'default_sortby' => 'sorting',
         'enablecolumns' => [
             'disabled' => 'hidden',
             'starttime' => 'starttime',
             'endtime' => 'endtime',
         ],
-        'searchFields' => 'name',
+        'searchFields' => 'name,description,image',
+        'languageField' => 'sys_language_uid',
+        'transOrigPointerField' => 'l10n_parent',
+        'transOrigDiffSourceField' => 'l10n_diffsource',
+        'translationSource' => 'l10n_source',
         'security' => [
             'ignorePageTypeRestriction' => true
         ],
     ],
     'types' => [
-        '1' => ['showitem' => 'name,packageelements'],
+        '1' => ['showitem' => '--palette--;;language,name,slug,description,image,show_in_menu'],
+    ],
+    'palettes' => [
+        'language' => ['showitem' => 'sys_language_uid,l10n_parent'],
     ],
     'columns' => [
         'sys_language_uid' => [
@@ -26,6 +34,30 @@ return [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
             'config' => [
                 'type' => 'language',
+            ],
+        ],
+        'l10n_parent' => [
+            'displayCond' => 'FIELD:sys_language_uid:>:0',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'items' => [
+                    ['label' => '', 'value' => 0],
+                ],
+                'foreign_table' => 'tx_products_domain_model_category',
+                'foreign_table_where' => 'AND {#tx_products_domain_model_category}.{#pid}=###CURRENT_PID### AND {#tx_products_domain_model_category}.{#sys_language_uid} IN (-1,0)',
+                'default' => 0,
+            ],
+        ],
+        'l10n_diffsource' => [
+            'config' => [
+                'type' => 'passthrough',
+            ],
+        ],
+        'l10n_source' => [
+            'config' => [
+                'type' => 'passthrough',
             ],
         ],
         'hidden' => [
@@ -42,6 +74,16 @@ return [
                     ]
                 ],
             ],
+        ],
+        'slug' => [
+            'label' => 'Slug',
+            'config' => [
+                'type' => 'slug', 
+                'eval' => 'uniqueInSite',
+                'generatorOptions' => [
+                    'fields' => ['name'],
+                ]
+            ]
         ],
         'starttime' => [
             'exclude' => true,
@@ -71,19 +113,26 @@ return [
                     'allowLanguageSynchronization' => true
                 ]
             ],
+	],
+    'show_in_menu' => [
+        'label' => 'Show in Menu',
+        'config' => [
+            'type' => 'check',
+        ]
+    ],
+	'name' => [
+		'label' => 'name',
+		'config' => ['type' => 'input']
+	],
+	'description' => [
+		'label' => 'Beschreibung',
+            'config' => ['type' => 'text']
         ],
-        'name' => [
-            'label' => 'Label',
-            'config' => ['type' => 'input']
-        ],
-	    'packageelements' => [
-	        'label' => 'Packageelement',
+	'image' => [
+		'label' => 'Bild',
             'config' => [
-                'type' => 'inline',
-		        'foreign_table' => 'tx_products_domain_model_packageelement',
-                'appearance' => [
-                    'useSortable' => true,
-                ],
+                'type' => 'file',
+                'maxitems' => 1
             ]
         ],
     ],

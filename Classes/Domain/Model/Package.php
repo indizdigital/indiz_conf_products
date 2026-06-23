@@ -6,17 +6,15 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use Indiz\Products\Services\Formula;
 
 class Package extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {
     protected string $name = '';
+    protected string $desc = '';
+    protected bool $configurable = false;
 
     protected string $packageelements = "";
-
-    public function __construct()
-    {
-        $this->packageelements = new ObjectStorage();
-    }
 
     // Getter / Setter
 	public function getName(): string
@@ -28,7 +26,25 @@ class Package extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     {
         $this->name = $name;
     }
-    public function getMagicdivs(){
+	public function getDesc(): string
+    {
+        return $this->desc;
+    }
+
+    public function setDesc(string $desc): void
+    {
+        $this->desc = $desc;
+    }
+	public function getConfigurable(): bool
+    {
+        return $this->configurable;
+    }
+
+    public function setConfigurable(bool $configurable): void
+    {
+        $this->configurable = $configurable;
+    }
+    /*public function getMagicdivs(){
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getQueryBuilderForTable('tx_products_domain_model_product');
 
@@ -46,7 +62,7 @@ class Package extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         $objects = GeneralUtility::makeInstance(DataMapper::class)->map(Product::class, $rows);
         
         return array_shift($objects);
-    }
+    }*/
     
     public function getPackageelements()
     {
@@ -97,11 +113,26 @@ class Package extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     public function getTotal(): float
     {
+        $formulaservice = GeneralUtility::makeInstance(Formula::class);
         $total = 0.0;
         foreach ($this->getPackageelements() as $packageelement) {
-            $price = $packageelement->getProductelement()->getPrice();
-            $amount = $packageelement->getAmount();
-            $total += $amount * $price;
+            $price = $packageelement->getTotalPrice();
+            $total += $price;
+        }
+        return $total;
+    }
+
+    public function getMinTotal(): float
+    {
+        $formulaservice = GeneralUtility::makeInstance(Formula::class);
+        $total = 0.0;
+        foreach ($this->getPackageelements() as $packageelement) {
+            $price = $packageelement->getPrice();
+            
+            $amount = $packageelement->getAmount()?:$packageelement->getMin();
+            if($amount){
+                $total += $amount * $price;
+            }
         }
         return $total;
     }

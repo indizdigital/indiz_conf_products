@@ -9,6 +9,9 @@ use Indiz\Products\Domain\Repository\ProductelementRepository;
 use Indiz\Products\Domain\Repository\CategoryRepository;
 use Indiz\Products\Domain\Repository\OrderRepository;
 use Indiz\Products\Domain\Repository\TagRepository;
+use Indiz\Products\Domain\Model\Order;
+use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+
 
 class ProductController extends ActionController
 {
@@ -18,46 +21,90 @@ class ProductController extends ActionController
         protected readonly TagRepository $tagRepository,
         protected readonly ProductelementRepository $productElementRepository,
         protected readonly OrderRepository $orderRepository,
-        protected readonly Mailer $mailer
+        protected readonly Mailer $mailer,
+        private readonly PersistenceManager $persistenceManager
     ) {}
+
+    public function filterAction(): \Psr\Http\Message\ResponseInterface
+    {
+        $allowed = ['categories', 'tags', 'searchquery', 'pagesize', 'page'];
+        $filter = [];
+        foreach ($allowed as $key) {
+            if ($this->request->hasArgument($key)) {
+                $filter[$key] = $this->request->getArgument($key);
+            }
+        }
+        $feUser = $this->request->getAttribute('frontend.user');
+        $feUser->setKey('ses', 'productFilter', $filter);
+        $feUser->storeSessionData();
+
+        return $this->redirect('index');
+    }
 
     public function indexAction(): \Psr\Http\Message\ResponseInterface
     {
         $this->view->assign("categories",$this->categoryRepository->findAll());
         $this->view->assign("tags",$this->tagRepository->findAll());
-        
-        $this->view->assign('productscount',$this->productRepository->countAll());
-        $searchquery = $this->getSearch();
 
-        if(($this->request->hasArgument("categories") && !empty($this->request->getArgument("categories"))) || 
-        ($this->request->hasArgument("tags") && !empty($this->request->getArgument("tags")))){
-            $categories = $this->request->hasArgument("categories")?$this->request->getArgument("categories"):[];
-            $tags = $this->request->hasArgument("tags")?$this->request->getArgument("tags"):[];
-            if(!empty($categories)){
-                $this->view->assign("selectedCategories",array_flip($categories));
+        // Merge session filter as base; direct request arguments override
+        $sessionFilter = $this->request->getAttribute('frontend.user')->getKey('ses', 'productFilter') ?? [];
+        $getArg = function (string $key, mixed $default = null) use ($sessionFilter) {
+            if ($this->request->hasArgument($key)) {
+                return $this->request->getArgument($key);
             }
-            if(!empty($tags)){
-                $this->view->assign("selectedTags",array_flip($tags));
-            }
-            $this->view->assign('products',$this->productRepository->findByAttributes($categories,$tags,$searchquery));  
-        }elseif($searchquery){
-            $this->view->assign('products',$this->productRepository->findByAttributes([],[],$searchquery));
-            $this->view->assign("selectedCategories",[]);
-        }else{
-            $this->view->assign('products',$this->productRepository->findByAttributes([],[],""));  
-            $this->view->assign("selectedCategories",[]);
+            return $sessionFilter[$key] ?? $default;
+        };
+
+        $pagesize    = (int) $getArg('pagesize', 12);
+        if(!$pagesize){
+            $pagesize = 12;
         }
-        
+        $page        = (int) $getArg('page', 0);
+        $searchquery = $getArg('searchquery', '');
+        $categories  = $getArg('categories', []);
+        $tags        = $getArg('tags', []);
+
+        if ($searchquery) {
+            $this->view->assign('searchquery', $searchquery);
+        }
+
+        $productsallcount = $this->productRepository->countAll();
+        $this->view->assign('productsallcount', $productsallcount);
+        $this->view->assign('currentpage', $page);
+
+        // Singular 'category' comes from the URL route enhancer; normalise into the array used everywhere else
+        if ($this->request->hasArgument("category") && !empty($this->request->getArgument("category"))) {
+            $categories = [(int)$this->request->getArgument("category")];
+            $this->view->assign("selectedCategories", array_flip($categories));
+            $this->view->assign('products', $this->productRepository->findByAttributes($categories, [], $searchquery, $page, $pagesize));
+            $this->view->assign('productscount', $this->productRepository->findByAttributes($categories, [], $searchquery));
+            return $this->htmlResponse();
+        }
+
+        if (!empty($categories) || !empty($tags)) {
+            if (!empty($categories)) {
+                $this->view->assign("selectedCategories", array_flip((array)$categories));
+            }
+            if (!empty($tags)) {
+                $this->view->assign("selectedTags", array_flip((array)$tags));
+            }
+            $this->view->assign('products', $this->productRepository->findByAttributes($categories, $tags, $searchquery, $page, $pagesize));
+            $productscount = $this->productRepository->findByAttributes($categories, $tags, $searchquery);
+        } elseif ($searchquery) {
+            $this->view->assign('products', $this->productRepository->findByAttributes([], [], $searchquery, $page, $pagesize));
+            $this->view->assign("selectedCategories", []);
+            $productscount = $this->productRepository->findByAttributes([], [], $searchquery);
+        } else {
+            $this->view->assign('products', $this->productRepository->findByAttributes([], [], "", $page, $pagesize));
+            $this->view->assign("selectedCategories", []);
+            $productscount = $this->productRepository->findByAttributes([], [], "");
+        }
+
+        $this->view->assign('pages', array_fill(0, ceil($productscount / $pagesize), 1));
+        $this->view->assign('productscount', $productscount);
+        $this->view->assign('pagesize', $pagesize);
+
         return $this->htmlResponse();
-    }
-
-    public function getSearch(){
-        $searchquery = "";
-        if($this->request->hasArgument("searchquery")){
-            $searchquery = $this->request->getArgument("searchquery");
-            $this->view->assign("searchquery",$searchquery);
-        }
-        return $searchquery;
     }
 
     /**
@@ -109,53 +156,53 @@ class ProductController extends ActionController
     }
     /**
      * send a mail with selected product
-     * @param string $ordername
-     * @param string $name
-     * @param string $email
-     * @param string $street
-     * @param string $postalcode
-     * @param string $city
-     * @param string $country
-     * @param string $company
-     * @param array $packageelements
-     * @param int $packageUid
-     * @param int $productUid
+     * @param Order $order
      */
-    public function orderAction($ordername,$name, $email, $street, $postalcode, $city, $country, $company,$packageelements, $packageUid = null, $productUid = null): \Psr\Http\Message\ResponseInterface
+    public function orderAction(Order $order): \Psr\Http\Message\ResponseInterface
     {
         $receiver = "tech@indiz.digital";
-           $vars =[
-            'ordername'=>$ordername,
-            'name' => $name,
-            'email' => $email,
-            'street' => $street,
-            'postalcode' => $postalcode,
-            'city' => $city,
-            'country' => $country,
-            'company' => $company,
-            'package_uid' => $packageUid,
-            'product_uid' => $productUid,
-            'packageelements' => $packageelements
-        ];
+        $order->setPid($this->settings["orderpid"]);
         
-        $this->createOrder($vars);
-        if ($productUid) {
-            // Assuming you have a method to find package by uid, e.g., in ProductRepository or a PackageRepository
-            $product = $this->productRepository->findByUid($productUid);
+        $cc = $receiver;
+        $packageelements = $this->request->hasArgument("packageelements")?$this->request->getArgument("packageelements"):[];
+
+        if ($order->getProductUid()) {
+            $product = $this->productRepository->findByUid($order->getProductUid());
             $vars['product'] = $product;
-            if ($product) {
+            $vars['order'] = $order;
+            if(isset($packageelements[$order->getPackageUid()])){
+                $vars['packageelements'] = $packageelements[$order->getPackageUid()];
+                $order->setData(json_encode($vars['packageelements']));
+            }
+            
+            $this->orderRepository->add($order);
+            $this->persistenceManager->persistAll();
+        
+            // Assuming you have a method to find package by uid, e.g., in ProductRepository or a PackageRepository
+             if ($product) {
                 
+                $subject = ($order->getOrdertype()?"Order for ":"Config check for ") . $order->getOrdername();
+                $template = "Order";
+                $this->mailer->send($receiver,$cc,$subject,$template, $vars);
                 
-                $this->mailer->send($receiver,$email,"Order", $vars);
-                
-                $this->view->assign('message', 'Mail sent successfully.');
+                $message = 'Mail sent successfully.';
             } else {
-                $this->view->assign('message', 'Package not found.');
+                $message =  'Package not found.';
             }
         } else {
-            $this->view->assign('message', 'No package selected.');
+            $message =  'No package selected.';
         }
-        $this->view->assign('products', $this->productRepository->findAll());
+        echo $message;exit;
+        
+        return $this->redirect("finish",NULL,NULL,["order"=>$order->getUid(),"message"=>urlencode($message)]);
+    }
+
+    /**
+     * @param Order $order
+     * @param string $message
+     */
+    public function finishAction(Order $order,$message){
+        $this->view->assign('order', $order);
         return $this->htmlResponse();
     }
 
@@ -164,7 +211,7 @@ class ProductController extends ActionController
         // Here you would typically create an Order object and persist it to the database
         // For example:
         
-        $order = new \Indiz\Products\Domain\Model\Order();
+        /*$order = new \Indiz\Products\Domain\Model\Order();
         $order->setPid($this->settings["orderpid"]);
         $order->setOrdername($vars['ordername']);
         $order->setName($vars['name']);
@@ -175,7 +222,7 @@ class ProductController extends ActionController
         $order->setCountry($vars['country']);
         $order->setCompany($vars['company']);
         $order->setPackageUid(isset($vars['package_uid']) ? $vars['package_uid'] : 0);
-        $order->setProductUid($vars['product_uid']);
+        $order->setProductUid($vars['product_uid']);*/
         $this->orderRepository->add($order);
         
     }

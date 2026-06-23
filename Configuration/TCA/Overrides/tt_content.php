@@ -16,7 +16,7 @@ ExtensionUtility::registerPlugin(
 ExtensionUtility::registerPlugin(
   'Products',
   'Import',
-  'Import'
+  'Import Prices'
 );
 
 
@@ -24,4 +24,11 @@ ExtensionUtility::registerPlugin(
   'Products',
   'Categories',
   'Category Shortlist'
+);
+
+
+ExtensionUtility::registerPlugin(
+  'Insights',
+  'Import',
+  'Import Insights'
 );

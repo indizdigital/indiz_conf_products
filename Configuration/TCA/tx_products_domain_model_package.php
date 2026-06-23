@@ -14,50 +14,18 @@ return [
         'searchFields' => 'description,image,images',
         'languageField' => 'sys_language_uid',
         'transOrigPointerField' => 'l10n_parent',
-        'transOrigDiffSourceField' => 'l10n_diffsource',
-        'translationSource' => 'l10n_source',
         'security' => [
             'ignorePageTypeRestriction' => true
         ],
     ],
     'types' => [
-        '1' => ['showitem' => '--palette--;;language,name,packageelements'],
+        '1' => ['showitem' => '--palette--;;titleline,packageelements'],
     ],
     'palettes' => [
         'language' => ['showitem' => 'sys_language_uid, l10n_parent'],
+        'titleline' => ['showitem' => 'name,desc,configurable'],
     ],
     'columns' => [
-        'sys_language_uid' => [
-            'exclude' => true,
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
-            'config' => [
-                'type' => 'language',
-            ],
-        ],
-        'l10n_parent' => [
-            'displayCond' => 'FIELD:sys_language_uid:>:0',
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent',
-            'config' => [
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                'items' => [
-                    ['label' => '', 'value' => 0],
-                ],
-                'foreign_table' => 'tx_products_domain_model_product',
-                'foreign_table_where' => 'AND {#tx_products_domain_model_product}.{#pid}=###CURRENT_PID### AND {#tx_products_domain_model_product}.{#sys_language_uid} IN (-1,0)',
-                'default' => 0,
-            ],
-        ],
-        'l10n_diffsource' => [
-            'config' => [
-                'type' => 'passthrough',
-            ],
-        ],
-        'l10n_source' => [
-            'config' => [
-                'type' => 'passthrough',
-            ],
-        ],
         'hidden' => [
             'exclude' => true,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.visible',
@@ -105,7 +73,28 @@ return [
         'name' => [
             'label' => 'Name',
             'config' => [
-                'type' => 'input'
+                'type' => 'input',
+                'behaviour' => [
+                    'allowLanguageSynchronization' => true,
+                ],
+            ]
+        ],
+        'desc' => [
+            'label' => 'Summary',
+            'config' => [
+                'type' => 'text',
+                'behaviour' => [
+                    'allowLanguageSynchronization' => true,
+                ],
+            ]
+        ],
+        'configurable' => [
+            'label' => 'Configurable',
+            'config' => [
+                'type' => 'check',
+                'behaviour' => [
+                    'allowLanguageSynchronization' => true,
+                ],
             ]
         ],
         'packageelements' => [
@@ -116,7 +105,10 @@ return [
                 'appearance' => [
                     'useSortable' => true,
                 ],
-	        ]
+                'behaviour' => [
+                    'allowLanguageSynchronization' => true,
+                ],
+            ]
         ],
     ],
 ];

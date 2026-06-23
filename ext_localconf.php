@@ -6,16 +6,16 @@ use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 ExtensionUtility::configurePlugin(
   'Products',
   'Index',
-  [\Indiz\Products\Controller\ProductController::class => 'index,show,order'],
-  [\Indiz\Products\Controller\ProductController::class => 'index,show,order'],
+  [\Indiz\Products\Controller\ProductController::class => 'filter,index,show,order,finish'],
+  [\Indiz\Products\Controller\ProductController::class => 'filter,index,show,order,finish'],
   'CType'
 );
 
 ExtensionUtility::configurePlugin(
   'Products',
   'Product',
-  [\Indiz\Products\Controller\ProductController::class => 'show,order'],
-  [\Indiz\Products\Controller\ProductController::class => 'show,order'],
+  [\Indiz\Products\Controller\ProductController::class => 'show,order,finish'],
+  [\Indiz\Products\Controller\ProductController::class => 'show,order,finish'],
   'CType'
 );
 
@@ -32,6 +32,14 @@ ExtensionUtility::configurePlugin(
   'Categories',
   [\Indiz\Products\Controller\CategoryController::class => 'shortlist'],
   [\Indiz\Products\Controller\CategoryController::class => 'shortlist'],
+  'CType'
+);
+
+ExtensionUtility::configurePlugin(
+  'Insights',
+  'Import',
+  [\Indiz\Products\Controller\InsightController::class => 'import'],
+  [\Indiz\Products\Controller\InsightController::class => 'import'],
   'CType'
 );
 

@@ -3,6 +3,8 @@ return [
     'ctrl' => [
         'title' => 'Product',
         'label' => 'name',
+        'label_alt' => 'subname',
+        'label_alt_force' => true,
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
         'delete' => 'deleted',
@@ -11,7 +13,7 @@ return [
             'starttime' => 'starttime',
             'endtime' => 'endtime',
         ],
-        'searchFields' => 'description,images',
+        'searchFields' => 'name,subname',
         'languageField' => 'sys_language_uid',
         'transOrigPointerField' => 'l10n_parent',
         'transOrigDiffSourceField' => 'l10n_diffsource',
@@ -21,10 +23,12 @@ return [
         ],
     ],
     'types' => [
-        '1' => ['showitem' => '--palette--;;language,name,subname,rendertype,shortdescription,description,image,factsheet,categories,tags,screenshots,servicefee_elements,--div--;Akkordeon,left_content,feuser,--div--;Referenzenprodukte,linked_products,reference_products,--div--;Pakete,packages,--div--;AI Inhalt,ai_content,--div--;FAQ,faq,  --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access, hidden, starttime, endtime'],
+        '1' => ['showitem' => '--palette--;;titleline,--palette--;;subtit,--palette--;;render,shortdescription,description,--div--;Filter,categories,tags,--div--;Akkordeon/Berater,accordeon,feuser,--div--;Karuselle,altcontent,reference_products,screenshots,--div--;Pakete,packagetitle,packages,--div--;AI Inhalt,ai_content,--div--;FAQ,faq,  --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access, hidden, starttime, endtime'],
     ],
     'palettes' => [
-        'language' => ['showitem' => 'sys_language_uid, l10n_parent'],
+        'render' => ['showitem' => 'rendertype,sys_language_uid,slug'],
+        'titleline' => ['showitem' => 'name,image'],
+        'subtit' => ['showitem' => 'subname, subimage'],
     ],
     'columns' => [
         'sys_language_uid' => [
@@ -72,6 +76,17 @@ return [
                     ]
                 ],
             ],
+        ],
+        'slug' => [
+            'label' => 'Slug',
+            'config' => [
+                'type' => 'slug', 
+                'eval' => 'uniqueInSite',
+                'generatorOptions' => [
+                    'fields' => ['name', 'subname'],
+                    'fieldSeparator' => '-',
+                ]
+            ]
         ],
         'starttime' => [
             'exclude' => true,
@@ -125,7 +140,7 @@ return [
         ],
         'shortdescription' => [
             'label' => 'Kurzbeschreibung',
-            'config' => ['type' => 'input']
+            'config' => ['type' => 'text']
         ],
         'description' => [
             'label' => 'Beschreibung',
@@ -134,11 +149,20 @@ return [
                 'enableRichtext' => true,
             ]
         ],
-        'left_content' => [
-            'label' => 'Inhalt',
+        'accordeon' => [
+            'label' => 'Akkordeon',
                 'config' => [
                     'type' => 'inline',
                     'foreign_table' => 'tt_content',
+                    'maxitems' => 1
+                ]
+        ],
+        'altcontent' => [
+            'label' => 'Leistungsumfang',
+                'config' => [
+                    'type' => 'inline',
+                    'foreign_table' => 'tt_content',
+                    'maxitems' => 1
                 ]
         ],
         'ai_content' => [
@@ -156,6 +180,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
                 'foreign_table' => 'tx_products_domain_model_category',
+                'foreign_table_where' => ' AND tx_products_domain_model_category.sys_language_uid IN (0,-1)',
                 'MM' => 'tx_products_product_category',
                 'minitems' => 1,
             ]
@@ -167,8 +192,9 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
                 'foreign_table' => 'tx_products_domain_model_tag',
+                'foreign_table_where' => ' AND tx_products_domain_model_tag.sys_language_uid IN (0,-1) ORDER BY name',
                 'MM' => 'tx_products_product_tag',
-                'minitems' => 1,
+                'minitems' => 0,
             ]
         ],
         'reference_products' => [
@@ -180,17 +206,18 @@ return [
                 'foreign_table' => 'tx_products_domain_model_product',
             ]
         ],
-        'linked_products' => [
-            'label' => 'Verknüpfte Produkte',
-            'l10n_mode' => 'exclude',
-            'config' => [
-                'type' => 'select',
-                'renderType' => 'selectMultipleSideBySide',
-                'foreign_table' => 'tx_products_domain_model_product',
-            ]
-        ],
+        
         'image' => [
             'label' => 'Bild',
+            'l10n_mode' => 'exclude',
+            'config' => [
+                'type' => 'file',
+                'maxitems' => 1
+            ]
+        ],
+        'subimage' => [
+            'label' => 'Icon',
+            'l10n_mode' => 'exclude',
             'config' => [
                 'type' => 'file',
                 'maxitems' => 1
@@ -198,13 +225,22 @@ return [
         ],
         'screenshots' => [
             'label' => 'Screenshots',
+            'l10n_mode' => 'exclude',
             'config' => [
-                'type' => 'file',
-                'maxitems' => 10
+                    'type' => 'inline',
+                    'foreign_table' => 'tt_content',
+                    'maxitems' => 1
+            ]
+        ],
+        'packagetitle' => [
+            'label' => 'Package title',
+            'config' => [
+                'type' => 'input',
             ]
         ],
         'packages' => [
             'label' => 'Pakete',
+            'exclude' => true,
             'displayCond' => 'FIELD:rendertype:!=:ai',
             'config' => [
                 'type' => 'inline',
@@ -212,44 +248,32 @@ return [
             ]
         ],
         #reload element on change
-        'servicefee_elements' => [
-            'label' => 'Produktelement für Servicegebühr',
-            'description' => 'Produktelement auswählen',
-            'l10n_mode' => 'exclude',
-            'config' => [
-                'type' => 'select',
-                'renderType' => 'selectMultipleSideBySide',
-                'foreign_table' => 'tx_products_domain_model_productelement',
-                'foreign_table_where' => 'AND tx_products_domain_model_productelement.unit = "service_fee"',
-                'minitems' => 0,
-            ]
-        ],
         'faq' => [
             'label' => 'Pakete',
+            'l10n_mode' => 'exclude',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
                 'foreign_table' => 'tx_products_domain_model_faq',
+                'foreign_table_where' => ' AND tx_products_domain_model_faq.sys_language_uid IN (0,-1) ORDER BY name',
             ]
         ],
-        'factsheet' => [
-            'label' => 'Factsheet',
-            'config' => [
-                'type' => 'file',
-                'maxitems' => 1,
-                'allowed' => 'pdf',
-            ],
-        ],
         'feuser' => [
-            'label' => 'Feuser',
+            'label' => 'Beratung',
             'l10n_mode' => 'exclude',
             'config' => [
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                'foreign_table' => 'fe_users',
-                'items' => [
-                    ["---",0]
-                ]
+                'type' => 'inline',
+                'foreign_table' => 'tt_content',
+                'maxitems' => 1,
+                /*'overrideChildTca' => [
+                    'columns' => [
+                        'CType' => [
+                            'config' => [
+                                'items' => [],
+                            ],
+                        ],
+                    ],
+                ]*/
             ]
         ],
     ],

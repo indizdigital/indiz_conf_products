@@ -1,19 +1,17 @@
 <?php
 return [
     'ctrl' => [
-        'title' => 'Product category',
+        'title' => 'Insight Tag',
         'label' => 'name',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
         'delete' => 'deleted',
-        'sortby' => 'sorting',
-        'default_sortby' => 'sorting',
         'enablecolumns' => [
             'disabled' => 'hidden',
             'starttime' => 'starttime',
             'endtime' => 'endtime',
         ],
-        'searchFields' => 'name,description,image',
+        'searchFields' => 'name',
         'languageField' => 'sys_language_uid',
         'transOrigPointerField' => 'l10n_parent',
         'transOrigDiffSourceField' => 'l10n_diffsource',
@@ -23,10 +21,7 @@ return [
         ],
     ],
     'types' => [
-        '1' => ['showitem' => '--palette--;;language,name,slug,description,image,show_in_menu'],
-    ],
-    'palettes' => [
-        'language' => ['showitem' => 'sys_language_uid,l10n_parent'],
+        '1' => ['showitem' => 'name,sys_language_uid,  --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access, hidden, starttime, endtime'],
     ],
     'columns' => [
         'sys_language_uid' => [
@@ -45,8 +40,8 @@ return [
                 'items' => [
                     ['label' => '', 'value' => 0],
                 ],
-                'foreign_table' => 'tx_products_domain_model_category',
-                'foreign_table_where' => 'AND {#tx_products_domain_model_category}.{#pid}=###CURRENT_PID### AND {#tx_products_domain_model_category}.{#sys_language_uid} IN (-1,0)',
+                'foreign_table' => 'tx_products_domain_model_tag',
+                'foreign_table_where' => 'AND {#tx_products_domain_model_tag}.{#pid}=###CURRENT_PID### AND {#tx_products_domain_model_tag}.{#sys_language_uid} IN (-1,0)',
                 'default' => 0,
             ],
         ],
@@ -74,16 +69,6 @@ return [
                     ]
                 ],
             ],
-        ],
-        'slug' => [
-            'label' => 'Slug',
-            'config' => [
-                'type' => 'slug', 
-                'eval' => 'uniqueInSite',
-                'generatorOptions' => [
-                    'fields' => ['name'],
-                ]
-            ]
         ],
         'starttime' => [
             'exclude' => true,
@@ -113,21 +98,10 @@ return [
                     'allowLanguageSynchronization' => true
                 ]
             ],
-	],
-	'name' => [
-		'label' => 'name',
-		'config' => ['type' => 'input']
-	],
-	'description' => [
-		'label' => 'Beschreibung',
-            'config' => ['type' => 'text']
         ],
-	'image' => [
-		'label' => 'Bild',
-            'config' => [
-                'type' => 'file',
-                'maxitems' => 1
-            ]
+        'name' => [
+            'label' => 'Name',
+            'config' => ['type' => 'input']
         ],
     ],
 ];

@@ -2,8 +2,7 @@
 	<f:then>
 		<f:for each="{categories}" as="category">
 			<f:if condition="{selectedCategories.{category.uid}} > -1">
-				
-				<section class="bg-lightblue text-blue flex items-center gap-5 px-5 py-10 md:px-10 xl:px-20 xl:gap-10">
+				<section class="bg-lightblue text-blue flex items-center gap-5 -mx-5 px-5 py-10 md:-mx-10 md:px-10 lg:-mx-20 lg:px-20 xl:gap-10">
 					<div class="w-1/4 max-w-45 flex-none">
 						<span class="relative h-0 pb-[100%] bg-white rounded-full flex items-center justify-center text-blue">
 							<f:if condition="{category.image}">
@@ -11,7 +10,7 @@
 							</f:if>
 						</span>
 					</div>
-					<div class="flex-1 max-w-160">
+					<div class="flex-1">
 						<h1 class="font-extrabold text-3.5xl xl:text-5.5xl mb-3 xl:mb-5">{category.name}</h1>
 						<div class="font-extrabold xl:text-2.5xl"><f:format.html>{category.description}</f:format.html></div>
 					</div>
@@ -20,29 +19,17 @@
 		</f:for>
 	</f:then>
 	<f:else>
-		<section class="ndz-header-default flex items-center gap-5 px-5 py-10 md:px-10 xl:px-20 xl:gap-10">
-			<div class="hidden lg:block lg:w-1/4 lg:max-w-45 lg:flex-none"></div>
-			<div class="flex-1 max-w-160">
-				<h1 class="font-bold text-3.5xl xl:text-5.5xl mb-1 xl:mb-5">Beispieltitel</h1>
-				<p class="font-bold xl:text-2.5xl">Beispieltext</p>
-			</div>
-		</section>
+		<f:cObject typoscriptObjectPath="lib.renderHeaderElement" />
 	</f:else>
 </f:if>
-<section class="px-5 space-y-10 md:px-10 xl:px-20">
-	<f:form class="space-y-5" action="index" method="post">
-		<div class="flex items-center justify-between gap-5">
-			<div class="ndz-product-search relative flex-1">
-				<label class="sr-only" for="search">Suche</label>
-				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="fill-current absolute top-1/2 left-2 -translate-y-1/2">
-					<path d="M11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19C12.8487 19 14.551 18.3729 15.9056 17.3199L19.2929 20.7071C19.6834 21.0976 20.3166 21.0976 20.7071 20.7071C21.0976 20.3166 21.0976 19.6834 20.7071 19.2929L17.3199 15.9056C18.3729 14.551 19 12.8487 19 11C19 6.58172 15.4183 3 11 3ZM5 11C5 7.68629 7.68629 5 11 5C14.3137 5 17 7.68629 17 11C17 14.3137 14.3137 17 11 17C7.68629 17 5 14.3137 5 11Z"></path>
-				</svg>
-				<f:form.textfield id="search" placeholder="Suchbegriff eingeben" name="searchquery" value="{searchquery}" class="bg-grey/10 text-xs py-3 pl-10 pr-2 w-full max-w-120" />
-			</div>
-			<ul class="flex-none flex items-center gap-5 text-sm">
-				<li>A bis Z</li>
-				<li>Liste/Kachel</li>
-			</ul>
+<section class="space-y-10 lg:space-y-16">
+	<f:form id="filter-form" class="space-y-5 js-filter-products" action="filter" method="post">
+		<div class="ndz-product-search ndz-input-field relative py-3">
+			<label class="sr-only" for="search">Suche</label>
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="fill-current absolute top-1/2 left-2 -translate-y-1/2">
+				<path d="M11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19C12.8487 19 14.551 18.3729 15.9056 17.3199L19.2929 20.7071C19.6834 21.0976 20.3166 21.0976 20.7071 20.7071C21.0976 20.3166 21.0976 19.6834 20.7071 19.2929L17.3199 15.9056C18.3729 14.551 19 12.8487 19 11C19 6.58172 15.4183 3 11 3ZM5 11C5 7.68629 7.68629 5 11 5C14.3137 5 17 7.68629 17 11C17 14.3137 14.3137 17 11 17C7.68629 17 5 14.3137 5 11Z"></path>
+			</svg>
+			<f:form.textfield id="search" placeholder="Suchbegriff eingeben" name="searchquery" value="{searchquery}" class="pl-8" />
 		</div>
 		<div class="flex items-center flex-wrap gap-3">
 			<div class="ndz-multiselect" data-multiselect>
@@ -127,26 +114,64 @@
 			</f:if>
 			<f:link.page class="ndz-btn ndz-btn-link" pageUid="3">Filter zurücksetzen</f:link.page>
 		</div>
+		<f:form.textfield class="js-page" type="hidden" name="page" value="{currentpage}" />
+		<f:form.textfield class="js-pagesize" type="hidden" name="pagesize" value="{pagesize}" />
 	</f:form>
-	<h2 class="font-bold"><span class="text-darkgrey"><f:count>{products}</f:count></span> von {productscount} Produkte</h2>
-	<div aria-label="Suchresultate">
+	<div aria-label="Suchresultate" class="space-y-5">
+		<div class="flex items-center justify-between gap-5">
+			<h2 class="font-bold"><span class="text-darkgrey">{productscount}</span> von {productsallcount} Produkte</h2>
+			<ul class="flex items-center gap-x-2">
+				<li>
+					<button type="submit" class="ndz-btn ndz-btn-primary ndz-btn-circle" form="filter-form" name="sort">
+						<svg xmlns="http://www.w3.org/2000/svg" class="fill-current" height="24px" viewBox="0 -960 960 960" width="24px"><path d="m196-376-23 70q-4 11-14 18.5t-22 7.5q-20 0-32.5-16.5T100-333l120-321q5-12 15-19t23-7h30q13 0 23 7t15 19l121 323q7 19-4.5 35T411-280q-12 0-22-7.5T375-306l-25-70H196Zm24-68h104l-48-150h-6l-50 150Zm418 92h166q15 0 25.5 10.5T840-316q0 15-10.5 25.5T804-280H572q-10 0-17-7t-7-17v-38q0-7 2-13.5t7-11.5l193-241H592q-15 0-25.5-10.5T556-644q0-15 10.5-25.5T592-680h222q10 0 17 7t7 17v38q0 7-2 13.5t-7 11.5L638-352ZM384-760q-7 0-9.5-6t2.5-11l89-89q6-6 14-6t14 6l89 89q5 5 2.5 11t-9.5 6H384Zm82 666-89-89q-5-5-2.5-11t9.5-6h192q7 0 9.5 6t-2.5 11l-89 89q-6 6-14 6t-14-6Z"/></svg>
+					</button>
+				</li>
+				<li>
+					<button type="submit" class="ndz-btn ndz-btn-primary ndz-btn-circle" form="filter-form" name="listview">
+						<svg xmlns="http://www.w3.org/2000/svg" class="fill-current" height="24px" viewBox="0 -960 960 960" width="24px"><path d="M320-600q-17 0-28.5-11.5T280-640q0-17 11.5-28.5T320-680h480q17 0 28.5 11.5T840-640q0 17-11.5 28.5T800-600H320Zm0 160q-17 0-28.5-11.5T280-480q0-17 11.5-28.5T320-520h480q17 0 28.5 11.5T840-480q0 17-11.5 28.5T800-440H320Zm0 160q-17 0-28.5-11.5T280-320q0-17 11.5-28.5T320-360h480q17 0 28.5 11.5T840-320q0 17-11.5 28.5T800-280H320ZM160-600q-17 0-28.5-11.5T120-640q0-17 11.5-28.5T160-680q17 0 28.5 11.5T200-640q0 17-11.5 28.5T160-600Zm0 160q-17 0-28.5-11.5T120-480q0-17 11.5-28.5T160-520q17 0 28.5 11.5T200-480q0 17-11.5 28.5T160-440Zm0 160q-17 0-28.5-11.5T120-320q0-17 11.5-28.5T160-360q17 0 28.5 11.5T200-320q0 17-11.5 28.5T160-280Z"/></svg>
+					</button>
+				</li>
+				<li>
+					<button type="submit" class="ndz-btn ndz-btn-primary ndz-btn-circle ndz-btn-active" form="filter-form" name="cardview">
+						<svg xmlns="http://www.w3.org/2000/svg" class="fill-current" height="24px" viewBox="0 -960 960 960" width="24px"><path d="M200-520q-33 0-56.5-23.5T120-600v-160q0-33 23.5-56.5T200-840h160q33 0 56.5 23.5T440-760v160q0 33-23.5 56.5T360-520H200Zm0 400q-33 0-56.5-23.5T120-200v-160q0-33 23.5-56.5T200-440h160q33 0 56.5 23.5T440-360v160q0 33-23.5 56.5T360-120H200Zm400-400q-33 0-56.5-23.5T520-600v-160q0-33 23.5-56.5T600-840h160q33 0 56.5 23.5T840-760v160q0 33-23.5 56.5T760-520H600Zm0 400q-33 0-56.5-23.5T520-200v-160q0-33 23.5-56.5T600-440h160q33 0 56.5 23.5T840-360v160q0 33-23.5 56.5T760-120H600ZM200-600h160v-160H200v160Zm400 0h160v-160H600v160Zm0 400h160v-160H600v160Zm-400 0h160v-160H200v160Zm400-400Zm0 240Zm-240 0Zm0-240Z"/></svg>
+					</button>
+				</li>
+			</ul>
+		</div>
 		<f:if condition="{products}">
 			<f:then>
-				<div class="grid gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:gap-8">
+				<div class="grid gap-3 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:gap-8">
 					<f:for each="{products}" as="product">
-						<f:link.action class="ndz-card" action="show" arguments="{product:product}">
-							<div class="w-[65%]">
-								<span class="relative h-0 pb-[100%] bg-white rounded-full flex items-center justify-center text-blue">
-									<f:if condition="{product.image}">
-										<img class="absolute inset-0 fill-current size-full p-[20%]" src="{f:uri.image(image: product.image, maxWidth: 100)}" alt="{product.name}" />
-									</f:if>
-								</span>
-							</div>
-							<h3 class="xl:text-1.5xl font-bold">{product.name}</h3>
-							<p>{product.description}</p>
-						</f:link.action>
+    					<div class="ndz-card ndz-card-lightblue ndz-card-link">
+							<f:render partial="Product/ProductBox" arguments="{product:product}" />
+    					</div>
 					</f:for>
 				</div>
+				<div class="space-y-2 hidden">
+					<f:for each="{products}" as="product">
+    					<div class="ndz-card ndz-card-lightblue ndz-card-link px-5 gap-5 space-y-0 flex-row items-center md:px-16 md:gap-16 lg:gap-26 lg:px-26">
+							<f:render partial="Product/ProductList" arguments="{product:product}" />
+    					</div>
+					</f:for>
+				</div>
+				<f:if condition="{pages -> f:count()} > 1">
+					<div class="flex items-center justify-between">
+						<div class="flex items-center gap-3 flex-1">
+							<select id="pages" class="js-goto-pagesize pl-2 pr-7 py-1 text-blue border-1 border-blue rounded-lg bg-[url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2213.99%22%20height%3D%227.89%22%20viewBox%3D%220%200%2013.99%207.89%22%3E%3Cpath%20d%3D%22M13.7.29c.39.39.39%2C1.02%2C0%2C1.41l-5.82%2C5.82c-.49.49-1.28.49-1.77%2C0L.29%2C1.7C-.1%2C1.31-.1.68.29.29.68-.1%2C1.31-.1%2C1.7.29l5.29%2C5.29L12.28.29c.39-.39%2C1.02-.39%2C1.41%2C0h.01Z%22%20style%3D%22fill%3A%23001280%3B%22%2F%3E%3C%2Fsvg%3E)] bg-no-repeat bg-position-[right_0.5rem_center]">
+								<option {f:if(condition:'{pagesize} == 12',then:'selected')}>12</option>
+								<option {f:if(condition:'{pagesize} == 24',then:'selected')}>24</option>
+								<option {f:if(condition:'{pagesize} == 36',then:'selected')}>36</option>
+							</select>
+							<label for="pages">Pro Seite</label>
+						</div>
+						<ul class="flex items-center gap-2">
+							<f:for each="{pages}" key="pagenum" as="page">
+								<li><a class="{f:if(condition:'{pagenum} == {currentpage}',then:'ndz-btn-active',else:'js-goto-page')} ndz-btn ndz-btn-circle ndz-btn-primary font-normal " data-page="{pagenum}">{pagenum + 1}</a></li>
+							</f:for>
+						</ul>
+						<div class="flex-1"></div>
+					</div>
+				</f:if>
 			</f:then>
 			<f:else>
 				<div>
@@ -261,6 +286,12 @@
 
     });
 
+	 document.querySelectorAll(".js-show-products").forEach(btn => {
+		btn.addEventListener("click",target => {
+			//reset pagingation
+            document.querySelector(".js-page").value = 0;
+	 });})
+	 
 	document.querySelectorAll('.js-multiselect-chip-remove').forEach(chip => {
 		chip.addEventListener('click', () => {
 			if(typeof chip.dataset.cat !== "undefined"){
@@ -283,6 +314,24 @@
 	});
 
     updateLabel();
+
+	
+    document.querySelectorAll("a.js-goto-page").forEach(function(link) {
+        link.addEventListener("click", function(e) {
+            e.preventDefault();
+            document.querySelector(".js-page").value = this.dataset.page;
+            document.querySelector("form.js-filter-products").submit();
+        });
+    });
+	if(document.querySelector(".js-goto-pagesize")){
+
+		document.querySelector(".js-goto-pagesize").addEventListener("change", function(e) {
+			e.preventDefault();
+			document.querySelector(".js-pagesize").value = this.value;
+			document.querySelector(".js-page").value = 0;
+			document.querySelector("form.js-filter-products").submit();
+		});
+	}
 
 });
 </script>

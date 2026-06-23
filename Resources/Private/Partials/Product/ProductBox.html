@@ -1,0 +1,21 @@
+<html xmlns:ndz="http://typo3.org/ns/IndizDigitalGmbh/SteppingStoneSitePackage/ViewHelpers">
+    <f:link.action action="show" arguments="{product:product}" class="absolute inset-0 z-10"><span class="sr-only">Link</span></f:link.action>
+    <div class="relative w-[65%]">
+        <span class="relative h-0 pb-[100%] bg-white rounded-full flex items-center justify-center text-blue">
+            <f:if condition="{product.image}">
+                <img class="absolute inset-0 fill-current size-full p-[20%] object-contain object-center" src="{f:uri.image(image: product.image, maxWidth: 100)}" alt="{product.name}" />
+            </f:if>
+        </span>
+        <f:if condition="{product.subimage}">
+            <div class="absolute -right-[5%] bottom-0 w-[35%]">
+                <span class="relative h-0 pb-[100%] bg-white rounded-full flex items-center justify-center text-blue shadow-lg">
+                    <f:if condition="{product.subimage}">
+                        <img class="absolute inset-0 fill-current size-full p-[20%] object-contain object-center" src="{f:uri.image(image: product.subimage, maxWidth: 100)}" alt="{product.subimage}" />
+                    </f:if>
+                </span>
+            </div>
+        </f:if>
+    </div>
+    <h3 class="font-extrabold flex-1">{product.name}<br> <span class="font-normal">{product.subname}</span></h3>
+    <p class="hidden sm:block">{product.shortdescription}</p>
+</html>

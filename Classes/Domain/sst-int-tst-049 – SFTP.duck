@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Protocol</key>
+	<string>sftp</string>
+	<key>Provider</key>
+	<string>iterate GmbH</string>
+	<key>UUID</key>
+	<string>d4defdfe-d457-4e21-ac72-b45c6ea02532</string>
+	<key>Hostname</key>
+	<string>sst-int-tst-049</string>
+	<key>Port</key>
+	<string>22</string>
+	<key>Username</key>
+	<string>idi-pho</string>
+	<key>Private Key File</key>
+	<string>~/.ssh/steppingstone</string>
+	<key>Private Key File Dictionary</key>
+	<dict>
+		<key>Path</key>
+		<string>~/.ssh/steppingstone</string>
+	</dict>
+	<key>Access Timestamp</key>
+	<string>1778488857968</string>
+</dict>
+</plist>

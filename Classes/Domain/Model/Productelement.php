@@ -7,6 +7,8 @@ class Productelement extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected string $name = '';
     protected float $price = 0.0;
 	protected string $unit = "";
+	protected string $uniqid = "";
+    protected int $elementtype = 0;
     protected int $min = 0;
     protected int $max = 0;
 
@@ -28,6 +30,15 @@ public function getUnit(): string
 public function setUnit($unit): void
 {
     $this->unit = $unit;
+}
+public function getUniqid(): string
+{
+    return $this->uniqid;
+}
+
+public function setUniqid($uniqid): void
+{
+    $this->uniqid = $uniqid;
 }
 public function getPrice(): float
 {
@@ -56,6 +67,15 @@ public function setMin($min): void
 public function getMin(): int
 {
     return $this->min;
+}
+
+public function setElementtype($elementtype): void
+{
+    $this->elementtype = $elementtype;
+}
+public function getElementtype(): int
+{
+    return $this->elementtype;
 }
 
 }

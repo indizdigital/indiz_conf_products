@@ -16,22 +16,37 @@ class ProductRepository extends Repository
     public function initializeObject(): void
     {
         $querySettings = $this->createQuery()->getQuerySettings();
-        // Show comments from all pages
         $querySettings->setRespectStoragePage(false);
+        $querySettings->setRespectSysLanguage(true);
         $this->setDefaultQuerySettings($querySettings);
     }
 
     public function countAll(): int
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->table);
+        $conditions = $this->getLanguageConditions($queryBuilder);
         return (int)$queryBuilder
             ->count('uid')
             ->from($this->table)
+            ->where(...$conditions)
             ->executeQuery()
             ->fetchOne();
     }
 
-    public function findByAttributes($categories,$tags, $searchquery)
+    public function getLanguageConditions($queryBuilder){
+         $languageId = GeneralUtility::makeInstance(Context::class)
+            ->getPropertyFromAspect('language', 'id', 0);
+
+        $conditions = [
+            $queryBuilder->expr()->or(
+                 $queryBuilder->expr()->eq( $this->table . '.sys_language_uid',$queryBuilder->createNamedParameter($languageId) ),
+                 $queryBuilder->expr()->eq( $this->table . '.sys_language_uid',-1 )
+            ),
+        ];
+        return $conditions;
+    }
+
+    public function findByAttributes($categories,$tags, $searchquery,$page = 0,$pagesize = 100)
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->table);
         $mmtable_cats = 'tx_products_product_category';
@@ -54,10 +69,8 @@ class ProductRepository extends Repository
             
             );
 
-            
-        $conditions = [
-            //$queryBuilder->expr()->eq('uid', 6)
-        ];
+        
+        $conditions = $this->getLanguageConditions($query);
 
         if (!empty($categories)) {
             $i_conditions = [];
@@ -87,9 +100,15 @@ class ProductRepository extends Repository
             );
         }
         $query->where(...$conditions);
+        $query->setMaxResults($pagesize);
+        $query->setFirstResult($pagesize * $page);
         
         $query->groupBy($this->table . '.uid');
         $query->orderBy('name', 'ASC');
+
+        if($pagesize == 100){
+            return count($queryBuilder->executeQuery()->fetchAllAssociative());
+        }
 
         $dataMapper = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper::class);
         //print_r($query->executeQuery()->fetchAllAssociative());exit;

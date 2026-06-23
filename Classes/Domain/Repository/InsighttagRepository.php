@@ -4,9 +4,9 @@ namespace Indiz\Products\Domain\Repository;
 
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
-class TagRepository extends Repository
+class InsighttagRepository extends Repository
 {
-    protected $table = 'tx_products_domain_model_tag';
+    protected $table = 'tx_products_domain_model_insighttag';
 
     public function initializeObject(): void
     {

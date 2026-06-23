@@ -1,0 +1,7 @@
+<f:for each="{stats}" as="stat">
+    {stat.error}
+</f:for>
+<form enctype="multipart/form-data" method="post">
+    <input type="file" name="csvFile">
+    <input type="submit" value="import" />
+</form>

@@ -13,3 +13,19 @@ plugin.tx_products_index {
     orderpid = 28
   }
 }
+plugin.tx_insights_import < plugin.tx_products_index
+
+lib.renderContentElement = RECORDS
+lib.renderContentElement {
+    tables = tt_content
+    source.current = 1
+    dontCheckPid = 1
+}
+
+
+lib.renderHeaderElement = RECORDS
+lib.renderHeaderElement {
+    tables = tt_content
+    source = 163
+    dontCheckPid = 1
+}

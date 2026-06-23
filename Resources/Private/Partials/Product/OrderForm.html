@@ -1,67 +1,70 @@
-<div class="p-5 space-y-3 bg-lightgrey md:p-10 lg:py-12 lg:px-20 lg:space-y-5 xl:space-y-12">
-    <h2 class="text-base text-blue font-extrabold md:text-xl lg:text-2xl xl:text-4xl">Produktanfrage</h2>
-    <f:form.textfield type="hidden" class="js-order-package-name" name="ordername" value="" />
-    <f:form.textfield type="hidden" class="js-order-package" name="packageUid" value="" />
-    <f:form.textfield type="hidden" class="js-order-product" name="productUid" value="" />
+<div class="-mx-5 p-5 space-y-3 bg-grey-100 md:-mx-10 md:p-10 lg:py-12 lg:-mx-20 lg:px-20 lg:space-y-5 xl:space-y-12">
+    <h2 class="text-base text-blue font-extrabold md:text-xl lg:text-2xl xl:text-4xl"><span class="js-orderform-title"><f:translate key="tx_products_domain_model_product.request_for" /></span> <span class="js-order-package-name-text"></span></h2>
+    <f:form.textfield type="hidden" class="js-order-type" property="ordertype" value="" />
+    <f:form.textfield type="hidden" class="js-order-package-name" property="ordername" value="" />
+    <f:form.textfield type="hidden" class="js-order-package" property="packageUid" value="" />
+    <f:form.textfield type="hidden" class="js-order-product" property="productUid" value="" />
+    <f:form.textfield class="js-order-total" type="hidden" name="order[total]" value="{personalised_package.minTotal}" />
+    
     <div class="grid gap-x-10 gap-y-5 md:grid-cols-2">
         <div class="ndz-input-field">
             <label for="company" class="text-blue block">Firma</label>
-            <f:form.textfield id="company" name="company" placeholder="z.B. Musterfirma AG" />
+            <f:form.textfield id="company" property="company" placeholder="z.B. Musterfirma AG" />
         </div>
         <div class="ndz-input-field">
             <label for="gender" class="text-blue block">Anrede*</label>
-            <f:form.select id="gender" name="gender" options="{1: 'Herr', 2: 'Frau', 3: 'Divers'}" />
+            <f:form.select id="gender" property="gender" options="{1: 'Herr', 2: 'Frau', 3: 'Divers'}" />
         </div>
         <div class="ndz-input-field">
-            <label for="prename" class="text-blue block">Vorname*</label>
-            <f:form.textfield id="prename" name="prename" placeholder="z.B. Maximilian" />
+            <label for="firstname" class="text-blue block">Vorname*</label>
+            <f:form.textfield id="firstname" property="firstname" placeholder="z.B. Maximilian" />
         </div>
         <div class="ndz-input-field">
             <label for="name" class="text-blue block">Nachname*</label>
-            <f:form.textfield id="name" name="name" placeholder="z.B. Mustermann" />
+            <f:form.textfield id="name" property="name" placeholder="z.B. Mustermann" />
         </div>
         <div class="ndz-input-field">
             <label for="addressline" class="text-blue block">Adresszeile 1*</label>
-            <f:form.textfield id="addressline" name="addressline" placeholder="z.B. Musterstrasse 12" />
+            <f:form.textfield id="addressline" property="addressline" placeholder="z.B. Musterstrasse 12" />
         </div>
         <div class="ndz-input-field">
             <label for="addressline2" class="text-blue block">Adresszeile 2</label>
-            <f:form.textfield id="addressline2" name="addressline2" placeholder="z.B. 2. Stock oder c/o Musterfirma AG" />
+            <f:form.textfield id="addressline2" property="addressline2" placeholder="z.B. 2. Stock oder c/o Musterfirma AG" />
         </div>
         <div class="flex gap-5">
             <div class="ndz-input-field w-34">
                 <label for="postalcode" class="text-blue block">PLZ*</label>
-                <f:form.textfield id="postalcode" name="postalcode" placeholder="z.B. 3000" />
+                <f:form.textfield id="postalcode" property="postalcode" placeholder="z.B. 3000" />
             </div>
             <div class="ndz-input-field flex-1">
                 <label for="city" class="text-blue block">Ort*</label>
-                <f:form.textfield id="city" name="city" placeholder="z.B. Bern" />
+                <f:form.textfield id="city" property="city" placeholder="z.B. Bern" />
             </div>
         </div>
         <div class="ndz-input-field">
             <label for="country" class="text-blue block">Land*</label>
-            <f:form.textfield id="country" name="country" placeholder="z.B. Schweiz" />
+            <f:form.textfield id="country" property="country" placeholder="z.B. Schweiz" />
         </div>
         <div class="ndz-input-field">
             <label for="phone" class="text-blue block">Mobile oder Telefon</label>
-            <f:form.textfield id="phone" name="phone" placeholder="z.B. +41 79 123 45 67" />
+            <f:form.textfield id="phone" property="phone" placeholder="z.B. +41 79 123 45 67" />
         </div>
         <div class="ndz-input-field">
             <label for="email" class="text-blue block">E-Mail*</label>
-            <f:form.textfield id="email" name="email" placeholder="z.B. maximilian.mustermann@musterfirma.ch" />
+            <f:form.textfield id="email" property="email" placeholder="z.B. maximilian.mustermann@musterfirma.ch" />
         </div>
         <div class="p-3 space-y-5">
             <div>
-                <div>
-                    <input type="checkbox" id="agb" name="agb" />
+                <div class="flex items-center gap-2">
+                    <f:form.checkbox id="agb" property="agb" value="1" />
                     <label for="agb">Ich habe die AGB gelesen und stimme ihnen zu.</label>
                 </div>
-                <div>
-                    <input type="checkbox" id="newsletter" name="newsletter" />
+                <div class="flex items-center gap-2">
+                    <f:form.checkbox id="newsletter" property="newsletter" value="1" />
                     <label for="newsletter">Ich möchte den Newsletter erhalten</label>
                 </div>
             </div>
-            <div>
+            <div class="ml-6">
                 <h3 class="font-extrabold">Konditionen:</h3>
                 <ul>
                     <li>Die Vertragslaufzeit begrägt 12 Monate.</li>
@@ -74,16 +77,15 @@
             <label for="message" class="text-blue block">Fragen oder Kommentare</label>
             <f:form.textarea id="message" class="flex-1 resize-none" name="message" />
         </div>
-        <div>
-            <f:form.submit class="ndz-btn" value="Produktanfrage senden" />
-        </div>
     </div>
-    
-    <!-- <f:form.textfield name="email" placeholder="Email" />
-    <f:form.textfield name="street" placeholder="Strasse" />
-    <f:form.textfield name="postalcode" placeholder="PLZ" />
-    <f:form.textfield name="city" placeholder="Ort" />
-    <f:form.textfield name="country" placeholder="Land" />
-    <f:form.textfield name="company" placeholder="Firma" /> -->
+    <div class="flex flex-wrap items-center justify-end gap-2">
+        <button class="ndz-btn ndz-btn-outline" type="button" name="" value="">
+            <svg xmlns="http://www.w3.org/2000/svg" class="fill-current" width="17.12" height="16.13" viewBox="0 0 17.12 16.13">
+                <path d="M16.42,16.13c-.09,0-.18-.02-.26-.05-.09-.03-.17-.09-.25-.16l-2.14-2.14H4.91c-.4,0-.73-.14-1.01-.42-.28-.28-.42-.61-.42-1.01v-1.67h9.11c.39,0,.73-.14,1-.41.28-.28.42-.61.42-1.01V3.49h1.67c.4,0,.73.14,1.01.42.28.28.42.61.42,1.01v10.5c0,.22-.07.4-.23.52-.15.13-.31.19-.48.19M1.43,9.4l1.39-1.39h8.53V1.43H1.43v7.97ZM.71,11.83c-.17,0-.33-.06-.49-.19-.15-.13-.22-.3-.22-.52V1.43c0-.4.14-.73.42-1.01.28-.28.61-.42,1.01-.42h9.92c.39,0,.73.14,1,.42.28.28.42.61.42,1.01v6.58c0,.39-.14.73-.42,1.01-.28.28-.61.42-1,.42H3.4l-2.19,2.18c-.08.08-.16.14-.25.17-.09.03-.17.05-.25.05M1.43,8.01V1.43v6.58Z"></path>
+            </svg>
+            Bestellung besprechen
+        </button>
+        <f:form.submit class="ndz-btn" value="Bestellung abschliessen" />
+    </div>
 
 </div>

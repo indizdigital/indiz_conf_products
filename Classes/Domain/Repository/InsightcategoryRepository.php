@@ -7,23 +7,23 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class ProductelementRepository extends Repository
+class InsightcategoryRepository extends Repository
 {
-    protected $table = 'tx_products_domain_model_productelement';
+    protected $table = 'tx_products_domain_model_insightcategory';
+    
+    protected $defaultOrderings = [
+        'name'   => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING,
+        'tstamp' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING,
+    ];
+
     // You can add custom query methods here later
 
     public function initializeObject(): void
     {
         $querySettings = $this->createQuery()->getQuerySettings();
+        // Show comments from all pages
         $querySettings->setRespectStoragePage(false);
         $this->setDefaultQuerySettings($querySettings);
     }
-
-    public function findByUniqid(string $uniqid): ?object
-    {
-        $query = $this->createQuery();
-        $query->matching($query->equals('uniqid', $uniqid));
-        return $query->execute()->getFirst();
-    }
-
+    
 }

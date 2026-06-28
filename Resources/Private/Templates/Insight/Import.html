@@ -1,6 +1,11 @@
-<f:for each="{stats}" as="stat">
-    {stat.error}
-</f:for>
+<ul>
+    <f:for each="{stats.errors}" as="error">
+        <li>{error}</li>
+    </f:for>
+    <f:for each="{stats.filesmissing}" as="error">
+        <li>{error}</li>
+    </f:for>
+</ul>
 <form enctype="multipart/form-data" method="post">
     <input type="file" name="csvFile">
     <input type="submit" value="import" />

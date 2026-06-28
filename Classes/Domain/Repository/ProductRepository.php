@@ -46,7 +46,7 @@ class ProductRepository extends Repository
         return $conditions;
     }
 
-    public function findByAttributes($categories,$tags, $searchquery,$page = 0,$pagesize = 100)
+    public function findByAttributes($categories,$tags, $searchquery,$page = 0,$pagesize = 5000)
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->table);
         $mmtable_cats = 'tx_products_product_category';
@@ -96,6 +96,7 @@ class ProductRepository extends Repository
         if ($searchquery) {
             $conditions[] = $queryBuilder->expr()->or(
                 $queryBuilder->expr()->like('name', $queryBuilder->createNamedParameter('%' . $searchquery . '%')),
+                $queryBuilder->expr()->like('subname', $queryBuilder->createNamedParameter('%' . $searchquery . '%')),
                 $queryBuilder->expr()->like('description', $queryBuilder->createNamedParameter('%' . $searchquery . '%'))
             );
         }
@@ -106,7 +107,7 @@ class ProductRepository extends Repository
         $query->groupBy($this->table . '.uid');
         $query->orderBy('name', 'ASC');
 
-        if($pagesize == 100){
+        if($pagesize == 5000){
             return count($queryBuilder->executeQuery()->fetchAllAssociative());
         }
 

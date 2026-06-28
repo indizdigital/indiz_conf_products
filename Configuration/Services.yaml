@@ -6,3 +6,4 @@ services:
 
   Indiz\Products\DataProcessing\CategoryShortlistProcessor:
     public: true
+

@@ -23,7 +23,7 @@ return [
         ],
     ],
     'types' => [
-        '1' => ['showitem' => '--palette--;;titleline,--palette--;;subtit,--palette--;;render,shortdescription,description,--div--;Filter,categories,tags,--div--;Akkordeon/Berater,accordeon,feuser,--div--;Karuselle,altcontent,reference_products,screenshots,--div--;Pakete,packagetitle,packages,--div--;AI Inhalt,ai_content,--div--;FAQ,faq,  --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access, hidden, starttime, endtime'],
+        '1' => ['showitem' => '--palette--;;titleline,--palette--;;subtit,--palette--;;render,shortdescription,description,--div--;Filter,categories,tags,--div--;Akkordeon/Berater,accordeon,feuser,contactlabel,contactlink,--div--;Karuselle,altcontent,reference_products,screenshots,--div--;Pakete,packagetitle,packages,--div--;AI Inhalt,ai_content,--div--;FAQ,faq,  --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access, hidden, starttime, endtime'],
     ],
     'palettes' => [
         'render' => ['showitem' => 'rendertype,sys_language_uid,slug'],
@@ -162,7 +162,7 @@ return [
                 'config' => [
                     'type' => 'inline',
                     'foreign_table' => 'tt_content',
-                    'maxitems' => 1
+                    'maxitems' => 10
                 ]
         ],
         'ai_content' => [
@@ -225,17 +225,32 @@ return [
         ],
         'screenshots' => [
             'label' => 'Screenshots',
-            'l10n_mode' => 'exclude',
+            'exclude' => true,
             'config' => [
                     'type' => 'inline',
                     'foreign_table' => 'tt_content',
-                    'maxitems' => 1
+                    'maxitems' => 1,
+                    'behaviour' => [
+                        'allowLanguageSynchronization' => true
+                    ]
             ]
         ],
         'packagetitle' => [
             'label' => 'Package title',
             'config' => [
                 'type' => 'input',
+            ]
+        ],
+        'contactlabel' => [
+            'label' => 'Contact Button Label',
+            'config' => [
+                'type' => 'input',
+            ]
+        ],
+        'contactlink' => [
+            'label' => 'Contact Button Label',
+            'config' => [
+                'type' => 'link',
             ]
         ],
         'packages' => [

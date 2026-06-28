@@ -14,10 +14,17 @@
                 </h3>
                 <div id="panel-1" role="region" aria-labelledby="accordion-1" class="ndz-accordion-content js-accordion-content">
                     <div class="ndz-accordion-content-inner">
-                        <p><f:format.nl2br>{category.description}</f:format.nl2br></p>
+                        <p><f:format.nl2br>
+                            <f:if condition="{category.shortdesc}">
+                                <f:then>{category.shortdesc}</f:then>
+                                <f:else>{category.description}</f:else>
+                            </f:if></f:format.nl2br></p>
                         <p class="my-5">
                             <f:link.action pageUid="3" class="ndz-btn ndz-btn-link ndz-btn-secondary" action="index" controller="Product" pluginName="Index" arguments="{category: category}">
-                                Mehr erfahren
+                                <f:if condition="{category.shortbtn}">
+                                    <f:then>{category.shortbtn}</f:then>
+                                    <f:else><f:translate key="tx_products_domain_model_product.learnmore" /></f:else>
+                                </f:if>
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 17.14" class="fill-current w-4">
                                     <path d="M18.72,10.11H1.54c-.44,0-.8-.15-1.1-.44s-.44-.66-.44-1.1.15-.8.44-1.1c.3-.3.66-.44,1.1-.44h17.18l-4.39-4.39c-.31-.31-.46-.67-.44-1.08s.16-.77.44-1.08C14.64.17,15,.01,15.43,0c.42-.01.79.13,1.1.44l7.05,7.05c.15.15.26.32.33.5s.1.37.1.58-.03.4-.1.58-.17.35-.33.5l-7.05,7.05c-.31.31-.67.46-1.1.44s-.79-.17-1.1-.48c-.28-.31-.43-.67-.44-1.08s.13-.77.44-1.08l4.39-4.39Z"></path>
                                 </svg>

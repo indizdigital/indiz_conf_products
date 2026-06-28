@@ -43,6 +43,23 @@ ExtensionUtility::configurePlugin(
   'CType'
 );
 
+ExtensionUtility::configurePlugin(
+  'Insights',
+  'View',
+  [\Indiz\Products\Controller\InsightController::class => 'index,filter,show'],
+  [\Indiz\Products\Controller\InsightController::class => 'index,filter,show'],
+  'CType'
+);
+
+ExtensionUtility::configurePlugin(
+  'Insights',
+  'Tease',
+  [\Indiz\Products\Controller\InsightController::class => 'tease'],
+  [\Indiz\Products\Controller\InsightController::class => 'tease'],
+  'CType'
+);
+
+
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRecord'][\Indiz\Products\FormDataProvider\PackageElementInitializer::class] = [
     'depends' => [
         \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordDefaultValues::class,

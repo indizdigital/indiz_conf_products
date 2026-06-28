@@ -9,6 +9,8 @@ use TYPO3\CMS\Extbase\Domain\Model\Category;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 
 class Insight extends AbstractEntity
 {
@@ -28,6 +30,9 @@ class Insight extends AbstractEntity
     protected bool $istopnews = false;
     protected string $pathSegment = '';
     protected string $notes = '';
+    protected int $hidden = 0;
+    protected int $l10nParent = 0;
+    protected int $sysLanguageUid = 0;
 
     /**
      * @var ObjectStorage<Insightcategory>
@@ -71,8 +76,13 @@ class Insight extends AbstractEntity
         $this->falRelatedFiles ??= new ObjectStorage();
     }
 
+    public function getL10nParent(): int { return $this->l10nParent; }
+    public function setSysLanguageUid($sysLanguageUid): void { $this->sysLanguageUid = $sysLanguageUid; }
+    public function getSysLanguageUid(): int { return $this->sysLanguageUid; }
     public function getTitle(): string { return $this->title; }
     public function setTitle(string $title): void { $this->title = $title; }
+    public function getHidden(): int { return $this->hidden; }
+    public function setHidden(int $hidden): void { $this->hidden = $hidden; }
 
     public function getAlternativeTitle(): string { return $this->alternativeTitle; }
     public function setAlternativeTitle(string $alternativeTitle): void { $this->alternativeTitle = $alternativeTitle; }
@@ -132,6 +142,7 @@ class Insight extends AbstractEntity
     public function getRelatedLinks(): String { return $this->relatedLinks; }
     public function setRelatedLinks(String $relatedLinks): void { $this->relatedLinks = $relatedLinks; }
 
+    public function getFalMediaCount(): int { return $this->falMedia->count(); }
     public function getFalMedia(): ObjectStorage { return $this->falMedia; }
     public function setFalMedia(ObjectStorage $falMedia): void { $this->falMedia = $falMedia; }
     public function addFalMedia(FileReference $fileReference): void { $this->falMedia->attach($fileReference); }
@@ -141,4 +152,14 @@ class Insight extends AbstractEntity
     public function setFalRelatedFiles(ObjectStorage $falRelatedFiles): void { $this->falRelatedFiles = $falRelatedFiles; }
     public function addFalRelatedFile(FileReference $fileReference): void { $this->falRelatedFiles->attach($fileReference); }
     public function removeFalRelatedFile(FileReference $fileReference): void { $this->falRelatedFiles->detach($fileReference); }
+
+    public function modifySlug($params){
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_products_domain_model_insight');
+        $datetime = $queryBuilder->select("datetime")->from('tx_products_domain_model_insight')
+            ->where(
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($params["record"]["uid"])),
+            )
+            ->executeQuery()->fetchOne();
+        return date("Y-m-d",$datetime) . "/" . $params["slug"];
+    }
 }

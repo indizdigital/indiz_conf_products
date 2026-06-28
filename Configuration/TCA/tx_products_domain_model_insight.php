@@ -194,6 +194,7 @@ return [
                 'cols'             => 60,
                 'rows'             => 20,
                 'enableRichtext'   => true,
+                'richtextConfiguration' => 'custom',
                 'eval'             => 'trim',
             ],
         ],
@@ -324,10 +325,12 @@ return [
                 'size'              => 50,
                 'generatorOptions'  => [
                     'fields'       => ['title'],
-                    'replacements' => ['/' => '-'],
+                    'replacements' => [],
+                    'postModifiers' => [
+                        Indiz\Products\Domain\Model\Insight::class . '->modifySlug'
+                    ]
                 ],
                 'fallbackCharacter' => '-',
-                'eval'              => 'uniqueInSite',
                 'default'           => '',
             ],
         ],

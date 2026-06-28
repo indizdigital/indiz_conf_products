@@ -9,6 +9,8 @@ class Category extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {
     protected string $name = '';
     protected string $description = '';
+    protected string $shortdesc = '';
+    protected string $shortbtn = '';
     protected $image = null;
 
     // Getter / Setter
@@ -31,6 +33,28 @@ class Category extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     {
         $this->description = $description;
     }
+ 
+    public function getShortbtn():  string
+    {
+            return $this->shortbtn;
+        }
+
+    public function setShortbtn($shortbtn):  void
+    {
+        $this->shortbtn = $shortbtn;
+    }
+
+ 
+    public function getShortdesc():  string
+    {
+            return $this->shortdesc;
+        }
+
+    public function setShortdesc($shortdesc):  void
+    {
+        $this->shortdesc = $shortdesc;
+    }
+
 
     public function getImage():  FileReference
     {

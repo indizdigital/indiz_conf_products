@@ -13,7 +13,7 @@ return [
             'starttime' => 'starttime',
             'endtime' => 'endtime',
         ],
-        'searchFields' => 'name,description,image',
+        'searchFields' => 'name,description,image,shortdesc',
         'languageField' => 'sys_language_uid',
         'transOrigPointerField' => 'l10n_parent',
         'transOrigDiffSourceField' => 'l10n_diffsource',
@@ -23,10 +23,11 @@ return [
         ],
     ],
     'types' => [
-        '1' => ['showitem' => '--palette--;;language,name,slug,description,image,show_in_menu'],
+        '1' => ['showitem' => '--palette--;;language,name,slug,description,image,--palette--;;menu'],
     ],
     'palettes' => [
         'language' => ['showitem' => 'sys_language_uid,l10n_parent'],
+        'menu' => ['showitem' => 'shortdesc,shortbtn,show_in_menu'],
     ],
     'columns' => [
         'sys_language_uid' => [
@@ -119,11 +120,19 @@ return [
 		'config' => ['type' => 'input']
 	],
 	'description' => [
-		'label' => 'Beschreibung',
+		'label' => 'Description',
             'config' => ['type' => 'text']
         ],
+	'shortdesc' => [
+		'label' => 'Short Description',
+            'config' => ['type' => 'text']
+        ],
+	'shortbtn' => [
+		'label' => 'Short Button Label',
+            'config' => ['type' => 'input']
+        ],
 	'image' => [
-		'label' => 'Bild',
+		'label' => 'Image',
             'config' => [
                 'type' => 'file',
                 'maxitems' => 1

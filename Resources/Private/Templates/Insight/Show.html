@@ -1,0 +1,87 @@
+<html 
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:ndz="http://typo3.org/ns/IndizDigitalGmbh/SteppingStoneSitePackage/ViewHelpers"
+>
+<f:asset.script identifier="swiperjs" src="EXT:indiz-digital-gmbh/stepping-stone-site-package/Resources/Public/JavaScript/swiper-bundle.min.js" />
+<f:asset.script identifier="swiper" src="EXT:indiz-digital-gmbh/stepping-stone-site-package/Resources/Public/JavaScript/ndz-swiper.js"/>
+
+<section class="my-5 md:my-10 lg:my-20">
+    <div class="grid grid-cols-1 gap-12 sm:grid-cols-3">
+        <div class="space-y-3 lg:space-y-5{f:if(condition: insight.feuser, then: ' col-span-2', else: ' col-span-3')}">
+            <h1 class="ndz-headline-large">{insight.title}</h1>
+            <p><span class="text-blue"><f:format.date format="d.m.Y">{insight.datetime}</f:format.date></span>{f:if(condition: '{insight.categories.0.name} != NULL', then: ' | <span class="text-orange font-bold">{insight.categories.0.name}</span>' )}{f:if(condition: insight.author, then: ' | {insight.author}' )}</p>
+            <f:if condition="{insight.falMedia}">
+                <div class="swiper w-full pb-10">
+                    <div class="swiper-wrapper">
+                        <f:for each="{insight.falMedia}" as="image">
+                            <div class="swiper-slide w-auto">
+                                <f:image
+                                    image="{image}"
+                                    height="300c"
+                                    srcset="
+                                        {f:uri.image(image:image, height:'300c')} 200h,
+                                    "
+                                    sizes="(max-width: 768px) 100vw, 1200px"
+                                    loading="lazy"
+                                    alt="{image.alternative}"
+                                />
+                            </div>
+                        </f:for>
+                    </div>
+                    <!-- If we need pagination -->
+                    <div class="swiper-pagination"></div>
+
+                    <!-- If we need navigation buttons -->
+                    <div class="swiper-button-prev -mt-10"></div>
+                    <div class="swiper-button-next -mt-10"></div>
+                </div>
+            </f:if>
+            <f:format.html>{insight.bodytext}</f:format.html>
+        </div>
+        <f:if condition="{insight.feuser}">
+            <div class="space-y-3 lg:space-y-5 xl:space-y-8">
+                <f:for each="{insight.feuser}" as="cont">
+                    <f:cObject typoscriptObjectPath="lib.renderContentElement" data="{cont.uid}" />
+                </f:for>
+            </div>
+        </f:if>
+    </div>
+    <div class="bg-lightblue mt-10 -mx-5 md:-mx-10 lg:-mx-20 lg:mt-20">
+        <div class="p-5 space-y-3 bg-lightblue md:p-10 lg:py-12 lg:px-20 lg:space-y-5 xl:space-y-12">
+            <h2 class="ndz-headline-middle">Titel</h2>
+            <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+                <div class="relative text-blue space-y-2 xl:space-y-5">
+                    <div class="relative bg-grey-200 h-0 pb-[65%]">
+                        
+                    </div>
+                    <div class="flex-1 space-y-2 xl:space-y-3">
+                        <p><f:format.date format="d.m.Y">{insight.datetime}</f:format.date>{f:if(condition: '{insight.categories.0.name} != NULL', then: ' | <span class="text-orange font-bold">{insight.categories.0.name}</span>' )}</p>
+                        <h2 class="ndz-headline-small">{insight.title}</h2>
+                        <p>{insight.teaser -> f:format.crop(maxCharacters: 150)}</p>
+                    </div>
+                </div>
+                <div class="relative text-blue space-y-2 xl:space-y-5">
+                    <div class="relative bg-grey-200 h-0 pb-[65%]">
+                        
+                    </div>
+                    <div class="flex-1 space-y-2 xl:space-y-3">
+                        <p><f:format.date format="d.m.Y">{insight.datetime}</f:format.date>{f:if(condition: '{insight.categories.0.name} != NULL', then: ' | <span class="text-orange font-bold">{insight.categories.0.name}</span>' )}</p>
+                        <h2 class="ndz-headline-small">{insight.title}</h2>
+                        <p>{insight.teaser -> f:format.crop(maxCharacters: 150)}</p>
+                    </div>
+                </div>
+                <div class="relative text-blue space-y-2 xl:space-y-5">
+                    <div class="relative bg-grey-200 h-0 pb-[65%]">
+                        
+                    </div>
+                    <div class="flex-1 space-y-2 xl:space-y-3">
+                        <p><f:format.date format="d.m.Y">{insight.datetime}</f:format.date>{f:if(condition: '{insight.categories.0.name} != NULL', then: ' | <span class="text-orange font-bold">{insight.categories.0.name}</span>' )}</p>
+                        <h2 class="ndz-headline-small">{insight.title}</h2>
+                        <p>{insight.teaser -> f:format.crop(maxCharacters: 150)}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</html>

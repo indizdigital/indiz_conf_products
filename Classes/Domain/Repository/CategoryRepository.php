@@ -12,8 +12,7 @@ class CategoryRepository extends Repository
     protected $table = 'tx_products_domain_model_category';
     
     protected $defaultOrderings = [
-        'name'   => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING,
-        'tstamp' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING,
+        'sorting'   => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING,
     ];
 
     // You can add custom query methods here later
@@ -23,6 +22,7 @@ class CategoryRepository extends Repository
         $querySettings = $this->createQuery()->getQuerySettings();
         // Show comments from all pages
         $querySettings->setRespectStoragePage(false);
+        $querySettings->setRespectSysLanguage(true);
         $this->setDefaultQuerySettings($querySettings);
     }
     

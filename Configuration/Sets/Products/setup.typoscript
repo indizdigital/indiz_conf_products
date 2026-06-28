@@ -14,6 +14,8 @@ plugin.tx_products_index {
   }
 }
 plugin.tx_insights_import < plugin.tx_products_index
+plugin.tx_insights_view < plugin.tx_products_index
+plugin.tx_insights_tease < plugin.tx_products_index
 
 lib.renderContentElement = RECORDS
 lib.renderContentElement {

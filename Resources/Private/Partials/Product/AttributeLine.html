@@ -12,7 +12,7 @@
                     
                 </div>
                 <div class="text-blue mr-17">
-                    <span class="text-3.5xl font-extrabold js-range-price" data-formula="{formula}" data-price="{price}" data-total="{price}"><f:format.number decimals="2">{price}</f:format.number></span> CHF<span class="js-calc-time">/Monat</span>
+                    <span class="text-3.5xl font-extrabold js-range-price" data-formula="{formula}" data-price="{price}" data-total="{price}"><f:format.number decimals="2">{price}</f:format.number></span> <f:translate key="tx_products_domain_model_product.chf" /><span class="js-calc-time">/<f:translate key="tx_products_domain_model_product.month" /></span>
                 </div>
             </div>   
         </f:then>
@@ -50,7 +50,7 @@
                     <input type="range" min="{min}" max="{max}" value="0" class="ndz-range js-range" />
                 </div>
                 <div class="text-blue mr-17 self-center text-right w-64">
-                    <span class="text-3.5xl font-extrabold js-range-price" data-price="{price}" data-formula="{formula}" data-total="0">0.00</span> CHF<span class="js-calc-time">/Monat</span>
+                    <span class="text-3.5xl font-extrabold js-range-price" data-price="{price}" data-formula="{formula}" data-total="0">0.00</span> <f:translate key="tx_products_domain_model_product.chf" /><span class="js-calc-time">/<f:translate key="tx_products_domain_model_product.month" /></span>
                 </div>
             </div>   
         </f:else>

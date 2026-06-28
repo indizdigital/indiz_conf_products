@@ -1,0 +1,19 @@
+<html xmlns:ndz="http://typo3.org/ns/IndizDigitalGmbh/SteppingStoneSitePackage/ViewHelpers">
+<div class="relative text-blue space-y-2 xl:space-y-5">
+    <f:link.action action="show" arguments="{insight:insight}" class="absolute inset-0 z-10 mb-0"><span class="sr-only">Link</span></f:link.action>
+    <div class="relative bg-grey-100 h-0 pb-[65%]">
+        <f:if condition="{insight.falMediaCount}">
+            <f:then>
+                <f:image class="absolute size-full object-contain" image="{insight.falMedia.0}" />
+            </f:then>
+            <f:else>
+            </f:else>
+        </f:if>
+    </div>
+    <div class="flex-1 space-y-2 xl:space-y-3">
+        <p><f:format.date format="d.m.Y">{insight.datetime}</f:format.date>{f:if(condition: '{insight.categories.0.name} != NULL', then: ' | <span class="text-orange font-bold">{insight.categories.0.name}</span>' )}</p>
+        <h2 class="ndz-headline-small">{insight.title}</h2>
+        <p>{insight.teaser -> f:format.crop(maxCharacters: 150)}</p>
+    </div>
+</div>
+</html>

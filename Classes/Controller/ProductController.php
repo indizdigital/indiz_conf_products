@@ -11,6 +11,7 @@ use Indiz\Products\Domain\Repository\OrderRepository;
 use Indiz\Products\Domain\Repository\TagRepository;
 use Indiz\Products\Domain\Model\Order;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry;
 
 
 class ProductController extends ActionController
@@ -48,6 +49,7 @@ class ProductController extends ActionController
 
         // Merge session filter as base; direct request arguments override
         $sessionFilter = $this->request->getAttribute('frontend.user')->getKey('ses', 'productFilter') ?? [];
+        $this->request->getAttribute('frontend.user')->setKey('ses', 'productFilter',[]);
         $getArg = function (string $key, mixed $default = null) use ($sessionFilter) {
             if ($this->request->hasArgument($key)) {
                 return $this->request->getArgument($key);
@@ -74,6 +76,7 @@ class ProductController extends ActionController
 
         // Singular 'category' comes from the URL route enhancer; normalise into the array used everywhere else
         if ($this->request->hasArgument("category") && !empty($this->request->getArgument("category"))) {
+            $this->setCategoryMeta($this->request->getArgument("category"));
             $categories = [(int)$this->request->getArgument("category")];
             $this->view->assign("selectedCategories", array_flip($categories));
             $this->view->assign('products', $this->productRepository->findByAttributes($categories, [], $searchquery, $page, $pagesize));
@@ -87,6 +90,10 @@ class ProductController extends ActionController
             }
             if (!empty($tags)) {
                 $this->view->assign("selectedTags", array_flip((array)$tags));
+            }
+
+            if(count($categories)){
+                $this->setCategoryMeta($categories[0]);
             }
             $this->view->assign('products', $this->productRepository->findByAttributes($categories, $tags, $searchquery, $page, $pagesize));
             $productscount = $this->productRepository->findByAttributes($categories, $tags, $searchquery);
@@ -107,12 +114,29 @@ class ProductController extends ActionController
         return $this->htmlResponse();
     }
 
+    public function setCategoryMeta($cat){
+        $c_category = $this->categoryRepository->findByUid($cat);
+
+        if ($c_category->getDescription()) {
+            $manager = GeneralUtility::makeInstance(MetaTagManagerRegistry::class)
+                ->getManagerForProperty('description');
+            $manager->addProperty('description', strip_tags($c_category->getDescription()), [], true);
+        }
+    }
+
     /**
      * @param \Indiz\Products\Domain\Model\Product $product
      */	
     public function showAction(\Indiz\Products\Domain\Model\Product $product): \Psr\Http\Message\ResponseInterface
     {
-        $this->view->assign('product',$product);
+        $description = $product->getDescription();
+        if ($description) {
+            $manager = GeneralUtility::makeInstance(MetaTagManagerRegistry::class)
+                ->getManagerForProperty('description');
+            $manager->addProperty('description', strip_tags($description), [], true);
+        }
+
+        $this->view->assign('product', $product);
         return $this->htmlResponse();
     }
 

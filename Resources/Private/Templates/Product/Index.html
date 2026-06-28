@@ -25,16 +25,16 @@
 <section class="space-y-10 lg:space-y-16">
 	<f:form id="filter-form" class="space-y-5 js-filter-products" action="filter" method="post">
 		<div class="ndz-product-search ndz-input-field relative py-3">
-			<label class="sr-only" for="search">Suche</label>
+			<label class="sr-only" for="search"><f:translate key="tx_products_domain_model_product.search" /></label>
 			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="fill-current absolute top-1/2 left-2 -translate-y-1/2">
 				<path d="M11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19C12.8487 19 14.551 18.3729 15.9056 17.3199L19.2929 20.7071C19.6834 21.0976 20.3166 21.0976 20.7071 20.7071C21.0976 20.3166 21.0976 19.6834 20.7071 19.2929L17.3199 15.9056C18.3729 14.551 19 12.8487 19 11C19 6.58172 15.4183 3 11 3ZM5 11C5 7.68629 7.68629 5 11 5C14.3137 5 17 7.68629 17 11C17 14.3137 14.3137 17 11 17C7.68629 17 5 14.3137 5 11Z"></path>
 			</svg>
-			<f:form.textfield id="search" placeholder="Suchbegriff eingeben" name="searchquery" value="{searchquery}" class="pl-8" />
+			<f:form.textfield id="search" placeholder="<f:translate key='tx_products_domain_model_product.entersearch' />" name="searchquery" value="{searchquery}" class="pl-8" />
 		</div>
 		<div class="flex items-center flex-wrap gap-3">
 			<div class="ndz-multiselect" data-multiselect>
 				<button type="button" class="ndz-btn rounded-full js-multiselect-trigger ndz-multiselect-trigger" aria-expanded="false" aria-haspopup="listbox" aria-controls="multiselect-list">
-					<span class="js-multiselect-label">Produktthemen</span>
+					<span class="js-multiselect-label"><f:translate key="tx_products_domain_model_product.producttopics" /></span>
 				</button>
 				<div class="js-multiselect-dropdown ndz-multiselect-dropdown" id="multiselect-list" role="listbox" aria-multiselectable="true" hidden>
 					<div class="ndz-multiselect-dropdown-inner">
@@ -52,13 +52,13 @@
 						</f:for>
 					</div>
 					<footer class="border-t border-lightgrey px-5 py-2">
-						<f:form.submit class="ndz-btn rounded-full w-full js-show-products" value="Produkte anzeigen"></f:form.submit>
+						<f:form.submit class="ndz-btn rounded-full w-full js-show-products" value="<f:translate key='tx_products_domain_model_product.showproducts' />"></f:form.submit>
 					</footer>
 				</div>
 			</div>
 			<div class="ndz-multiselect" data-multiselect>
 				<button type="button" class="ndz-btn rounded-full js-multiselect-trigger ndz-multiselect-trigger" aria-expanded="false" aria-haspopup="listbox" aria-controls="multiselect-list">
-					<span class="js-multiselect-label">Rubriken</span>
+					<span class="js-multiselect-label"><f:translate key="tx_products_domain_model_product.sections" /></span>
 				</button>
 				<div class="js-multiselect-dropdown ndz-multiselect-dropdown" id="multiselect-list" role="listbox" aria-multiselectable="true" hidden>
 					<div class="ndz-multiselect-dropdown-inner">
@@ -76,7 +76,7 @@
 						</f:for>
 					</div>
 					<footer class="border-t border-lightgrey px-5 py-2">
-						<f:form.submit class="ndz-btn rounded-full w-full js-show-products" value="Produkte anzeigen"></f:form.submit>
+						<f:form.submit class="ndz-btn rounded-full w-full js-show-products" value="<f:translate key='tx_products_domain_model_product.showproducts' />"></f:form.submit>
 					</footer>
 				</div>
 			</div>
@@ -112,14 +112,14 @@
 					</f:if>
 				</f:for>
 			</f:if>
-			<f:link.page class="ndz-btn ndz-btn-link" pageUid="3">Filter zurücksetzen</f:link.page>
+			<f:link.page class="ndz-btn ndz-btn-link" pageUid="3"><f:translate key="tx_products_domain_model_product.resetfilter" /></f:link.page>
 		</div>
 		<f:form.textfield class="js-page" type="hidden" name="page" value="{currentpage}" />
 		<f:form.textfield class="js-pagesize" type="hidden" name="pagesize" value="{pagesize}" />
 	</f:form>
 	<div aria-label="Suchresultate" class="space-y-5">
 		<div class="flex items-center justify-between gap-5">
-			<h2 class="font-bold"><span class="text-darkgrey">{productscount}</span> von {productsallcount} Produkte</h2>
+			<h2 class="font-bold"><span class="text-darkgrey">{productscount}</span> <f:translate key="tx_products_domain_model_product.of" /> {productsallcount} <f:translate key="tx_products_domain_model_product.products" /></h2>
 			<ul class="flex items-center gap-x-2">
 				<li>
 					<button type="submit" class="ndz-btn ndz-btn-primary ndz-btn-circle" form="filter-form" name="sort">
@@ -162,7 +162,7 @@
 								<option {f:if(condition:'{pagesize} == 24',then:'selected')}>24</option>
 								<option {f:if(condition:'{pagesize} == 36',then:'selected')}>36</option>
 							</select>
-							<label for="pages">Pro Seite</label>
+							<label for="pages"><f:translate key="tx_products_domain_model_product.perpage" /></label>
 						</div>
 						<ul class="flex items-center gap-2">
 							<f:for each="{pages}" key="pagenum" as="page">
@@ -175,8 +175,8 @@
 			</f:then>
 			<f:else>
 				<div>
-					<h3 class="font-bold text-blue text-4.5xl mb-5">Keine Produkte gefunden</h3>
-					<p>Leider hat deine Suchanfrage zu keinem Ergebnis geführt.<br>Bitte setze deine Suche fort und benutze einen anderen Filter</p>
+					<h3 class="font-bold text-blue text-4.5xl mb-5"><f:translate key="tx_products_domain_model_product.noproductsfound" /></h3>
+					<p><f:translate key="tx_products_domain_model_product.noresultsfound" /><br><f:translate key="tx_products_domain_model_product.continuesearch" /></p>
 				</div>
 			</f:else>
 		</f:if>

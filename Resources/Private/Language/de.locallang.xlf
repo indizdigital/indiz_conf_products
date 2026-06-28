@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" target-language="de" datatype="plaintext" original="EXT:products/Resources/Private/Language/locallang.xlf" date="2022-06-28T15:35:15Z" product-name="products">
+		<header/>
+		<body>
+			<trans-unit id="tx_products_domain_model_product.pieces">
+				<target>Stück</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.chf">
+				<target>CHF</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.gb">
+				<target>GB</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.service_fee">
+				<target>Servicegebühr</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.unit_cpu">
+				<target>vCPUs</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.unit_gpu">
+				<target>GPUs</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.unit_gb">
+				<target>Gigabyte</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.unit_gib">
+				<target>Gibibyte</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.unit_tb">
+				<target>Terabyte</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.unit_tib">
+				<target>Tebibyte</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.unit_server">
+				<target>Server</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.unit_ipv4">
+				<target>IPv4 Adresse</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.unit_mtok">
+				<target>MTok</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.unit_node">
+				<target>Node</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.unit_lbaas">
+				<target>LBaaS</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.unit_server">
+				<target>Server</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.discover_more_products_in_category">
+				<target>Ähnliche Produkte</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.personalise">
+				<target>Personalisieren</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.config">
+				<target>Konfigurieren</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.discuss_config">
+				<target>Konfiguration besprechen</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.month">
+				<target>Monat</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.hour">
+				<target>Stunde</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.factsheet">
+				<target>Informationsblatt</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.offer_terms_and_conditions">
+				<target>Allgemeine Geschäftsbedingungen</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.price">
+				<target>Preis</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.pricelist">
+				<target>Preisliste</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.all_prices_excluding_vat">
+				<target>Alle Preise in CHF exkl. Mehrwertsteuer.</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.all_prices_mtok_excluding_vat">
+				<target>Alle Preise in CHF/MTok exkl. Mehrwertsteuer.</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.discuss_models">
+				<target>Modelle besprechen</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.order">
+				<target>Bestellen</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.request">
+				<target>Bestellen</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.request_for">
+				<target>Produktanfrage für</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.faq">
+				<target>Häufig gestellte Fragen (FAQ)</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.company">
+				<target>Firma</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.company.placeholder">
+				<target>z.B. Musterfirma AG</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.gender">
+				<target>Anrede</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.gender.male">
+				<target>Herr</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.gender.female">
+				<target>Frau</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.gender.nonbinary">
+				<target>Divers</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.firstname">
+				<target>Vorname</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.firstname.placeholder">
+				<target>z.B. Maximilian</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.name">
+				<target>Nachname</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.name.placeholder">
+				<target>z.B. Mustermann</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.addressline">
+				<target>Adresszeile</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.addressline.placeholder">
+				<target>z.B. Musterstrasse 12</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.addressline2.placeholder">
+				<target>z.B. 2. Stock oder c/o Musterfirma AG</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.postalcode">
+				<target>PLZ</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.postalcode.placeholder">
+				<target>z.B. 3000</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.city">
+				<target>Ort</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.city.placeholder">
+				<target>z.B. Bern</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.country">
+				<target>Land</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.country.placeholder">
+				<target>z.B. Schweiz</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.phone">
+				<target>Mobile oder Telefon</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.phone.placeholder">
+				<target>z.B. +41 79 123 45 67</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.email">
+				<target>E-Mail</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.email.placeholder">
+				<target>z.B. maximilian.mustermann@musterfirma.ch</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.agb">
+				<target>Ich habe die AGB gelesen und stimme ihnen zu.</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.newsletter">
+				<target>Ich möchte den Newsletter erhalten.</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.conditions">
+				<target>Konditionen</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.conditions.12term">
+				<target>Die minimale Vertragslaufzeit beträgt 1 Monat.</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.conditions.30days">
+				<target>Die Kündigungsfrist beträgt 30 Tage auf Ende der Rechnungsperiode.</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.conditions.12billing">
+				<target>Die Rechnungsperiode beträgt 1 Monat.</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.message">
+				<target>Fragen oder Kommentare</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.discussorder">
+				<target>Bestellung besprechen</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.completeorder">
+				<target>Bestellung abschliessen</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.learnmore">
+				<target>Mehr erfahren</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.search">
+				<target>Suche</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.entersearch">
+				<target>Suchbegriff eingeben</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.producttopics">
+				<target>Produktthemen</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.topics">
+				<target>Themen</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.sections">
+				<target>Filter</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.products">
+				<target>Produkte</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.stories">
+				<target>Stories</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.showproducts">
+				<target>Produkte anzeigen</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.showstories">
+				<target>Stories anzeigen</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.resetfilter">
+				<target>Filter zurücksetzen</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.of">
+				<target>von</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.noproductsfound">
+				<target>Kein Eintrag gefunden</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.noresultsfound">
+				<target>Leider hat deine Suchanfrage zu keinem Ergebnis geführt.</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.continuesearch">
+				<target>Bitte setze deine Suche fort und benutze einen anderen Filter.</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.perpage">
+				<target>Pro Seite</target>
+			</trans-unit>
+        </body>
+    </file>
+</xliff>

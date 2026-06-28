@@ -66,6 +66,8 @@ class Product extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @var ObjectStorage<Content>
      */
     protected $feuser = null;
+    protected $contactlabel = "";
+    protected $contactlink = "";
 
     public function __construct()
     {
@@ -265,5 +267,25 @@ class Product extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function setFeuser(?ObjectStorage $feuser): void
     {
         $this->feuser = $feuser;
+    }
+
+    public function getContactlabel(): string
+    {
+        return $this->contactlabel;
+    }
+
+    public function setContactlabel(string $contactlabel): void
+    {
+        $this->contactlabel = $contactlabel;
+    }
+
+    public function getContactlink(): string
+    {
+        return $this->contactlink;
+    }
+
+    public function setContactlink(string $contactlink): void
+    {
+        $this->contactlink = $contactlink;
     }
 }

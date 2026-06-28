@@ -1,0 +1,30 @@
+<div class="relative ndz-carousel-offset">
+	<div class="swiper pb-20" data-slides-per-view="3">
+		<div class="swiper-wrapper">
+			<f:for each="{insights}" as="insight">
+				<div class="swiper-slide relative text-white space-y-2 xl:space-y-5">
+					<f:link.action action="show" arguments="{insight:insight}" class="absolute inset-0 z-10 mb-0"><span class="sr-only">Link</span></f:link.action>
+					<div class="relative bg-white h-0 pb-[65%]">
+						<f:if condition="{insight.falMediaCount}">
+							<f:then>
+								<f:image class="absolute size-full object-contain" image="{insight.falMedia.0}" />
+							</f:then>
+							<f:else>
+							</f:else>
+						</f:if>
+					</div>
+					<div class="flex-1 space-y-2 xl:space-y-3">
+						<p><f:format.date format="d.m.Y">{insight.datetime}</f:format.date>{f:if(condition: '{insight.categories.0.name} != NULL', then: ' | <span class="text-orange font-bold">{insight.categories.0.name}</span>' )}</p>
+						<h3 class="ndz-headline-small text-white">{insight.title}</h3>
+						<p>{insight.teaser -> f:format.crop(maxCharacters: 150)}</p>
+					</div>
+				</div>
+			</f:for>
+		</div>
+		<!-- If we need pagination -->
+		<div class="swiper-pagination"></div>
+	</div>
+	<!-- If we need navigation buttons -->
+	<div class="swiper-button-prev after:bg-white"></div>
+	<div class="swiper-button-next after:bg-white"></div>
+</div>

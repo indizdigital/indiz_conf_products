@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="EXT:machines/Resources/Private/Language/locallang.xlf" date="2022-06-28T15:35:15Z" product-name="machines">
+	<file source-language="en" datatype="plaintext" original="EXT:products/Resources/Private/Language/locallang.xlf" date="2022-06-28T15:35:15Z" product-name="products">
 		<header/>
 		<body>
 			<trans-unit id="tx_products_domain_model_product.pieces">
-				<source>Stück</source>
+				<source>Piece</source>
 			</trans-unit>
 			<trans-unit id="tx_products_domain_model_product.chf">
 				<source>CHF</source>
@@ -52,55 +52,199 @@
 				<source>Server</source>
 			</trans-unit>
 			<trans-unit id="tx_products_domain_model_product.discover_more_products_in_category">
-				<source>Entdecken sie weitere Produkte in dieser Kategorie</source>
+				<source>Related Products</source>
 			</trans-unit>
 			<trans-unit id="tx_products_domain_model_product.personalise">
-				<source>Personalisieren</source>
+				<source>Personalise</source>
 			</trans-unit>
 			<trans-unit id="tx_products_domain_model_product.config">
-				<source>Konfigurieren</source>
+				<source>Configure</source>
 			</trans-unit>
 			<trans-unit id="tx_products_domain_model_product.discuss_config">
-				<source>Konfiguration besprechen</source>
+				<source>Discuss configuration</source>
 			</trans-unit>
 			<trans-unit id="tx_products_domain_model_product.month">
-				<source>Monat</source>
+				<source>Month</source>
 			</trans-unit>
 			<trans-unit id="tx_products_domain_model_product.hour">
-				<source>Stunde</source>
+				<source>Hour</source>
 			</trans-unit>
 			<trans-unit id="tx_products_domain_model_product.factsheet">
 				<source>Factsheet</source>
 			</trans-unit>
 			<trans-unit id="tx_products_domain_model_product.offer_terms_and_conditions">
-				<source>Angebotsbedingungen</source>
+				<source>AGB</source>
 			</trans-unit>
 			<trans-unit id="tx_products_domain_model_product.price">
-				<source>Preis</source>
+				<source>Prize</source>
 			</trans-unit>
 			<trans-unit id="tx_products_domain_model_product.pricelist">
-				<source>Preisübersicht</source>
+				<source>Price list</source>
 			</trans-unit>
 			<trans-unit id="tx_products_domain_model_product.all_prices_excluding_vat">
-				<source>Alle Preise in CHF exkl. Mehrwertsteuer.</source>
+				<source>All prices are in CHF, excluding VAT.</source>
 			</trans-unit>
 			<trans-unit id="tx_products_domain_model_product.all_prices_mtok_excluding_vat">
-				<source>Alle Preise in CHF/MTok exkl. Mehrwertsteuer.</source>
+				<source>All prices are in CHF/MTok, excluding VAT.</source>
 			</trans-unit>
 			<trans-unit id="tx_products_domain_model_product.discuss_models">
-				<source>Modelle besprechen</source>
+				<source>Discuss models</source>
 			</trans-unit>
 			<trans-unit id="tx_products_domain_model_product.order">
-				<source>Bestellen</source>
+				<source>Order</source>
 			</trans-unit>
 			<trans-unit id="tx_products_domain_model_product.request">
-				<source>Produktanfrage</source>
+				<source>Order</source>
 			</trans-unit>
 			<trans-unit id="tx_products_domain_model_product.request_for">
-				<source>Produktanfrage für</source>
+				<source>Product enquiry</source>
 			</trans-unit>
 			<trans-unit id="tx_products_domain_model_product.faq">
-				<source>Häufig gestellte Fragen (FAQ)</source>
+				<source>Frequently Asked Questions (FAQ)</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.company">
+				<source>Company</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.company.placeholder">
+				<source>e.g. Musterfirma AG</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.gender">
+				<source>Anrede</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.gender.male">
+				<source>Mister</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.gender.female">
+				<source>Miss</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.gender.nonbinary">
+				<source>Divers</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.firstname">
+				<source>First name</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.firstname.placeholder">
+				<source>e.g. Maximilian</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.name">
+				<source>Surname</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.name.placeholder">
+				<source>e.g. Mustermann</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.addressline">
+				<source>Address bar</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.addressline.placeholder">
+				<source>e.g. Musterstrasse 12</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.addressline2.placeholder">
+				<source>e.g. 2. Stock oder c/o Musterfirma AG</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.postalcode">
+				<source>Postcode</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.postalcode.placeholder">
+				<source>e.g. 3000</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.city">
+				<source>Location</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.city.placeholder">
+				<source>e.g. Bern</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.country">
+				<source>Country</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.country.placeholder">
+				<source>e.g. Schweiz</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.phone">
+				<source>Mobile or telephone</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.phone.placeholder">
+				<source>e.g. +41 79 123 45 67</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.email">
+				<source>Email</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.email.placeholder">
+				<source>e.g. maximilian.mustermann@musterfirma.ch</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.agb">
+				<source> I have read the general terms and conditions and agree.</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.newsletter">
+				<source>I would like to receive the newsletter.</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.conditions">
+				<source>Conditions</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.conditions.12term">
+				<source>Minimal duration of contract is 1 month.</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.conditions.30days">
+				<source>Notice of cancellation is required 30 days before the end of the invoice period.</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.conditions.12billing">
+				<source>The invoice period is 1 month.</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.message">
+				<source>Questions or comments</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.discussorder">
+				<source>Disuss the order</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.completeorder">
+				<source>Complete your order</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.learnmore">
+				<source>More information</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.search">
+				<source>Search</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.entersearch">
+				<source>Enter search term eingeben</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.producttopics">
+				<source>Product topics</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.topics">
+				<source>Topics</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.sections">
+				<source>Filter</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.products">
+				<source>Products</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.stories">
+				<source>Stories</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.showproducts">
+				<source>View products</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.showstories">
+				<source>View stories</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.resetfilter">
+				<source>Reset filters</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.of">
+				<source>by</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.noproductsfound">
+				<source>No entry found</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.noresultsfound">
+				<source>Unfortunately, your search did not return any results.</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.continuesearch">
+				<source>Please continue your search and use a different filter.</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.perpage">
+				<source>Per page</source>
 			</trans-unit>
         </body>
     </file>

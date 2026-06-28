@@ -32,3 +32,17 @@ ExtensionUtility::registerPlugin(
   'Import',
   'Import Insights'
 );
+
+
+ExtensionUtility::registerPlugin(
+  'Insights',
+  'View',
+  'View Insights'
+);
+
+
+ExtensionUtility::registerPlugin(
+  'Insights',
+  'Tease',
+  'Tease Insights'
+);

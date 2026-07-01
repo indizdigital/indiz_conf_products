@@ -60,12 +60,18 @@ class Insight extends AbstractEntity
     #[Extbase\ORM\Cascade(['value' => 'remove'])]
     protected ObjectStorage $falRelatedFiles;
 
+    /**
+     * @var ObjectStorage<Content>
+     */
+    protected $feuser = null;
+
     public function __construct()
     {
         $this->categories = new ObjectStorage();
         $this->tags = new ObjectStorage();
         $this->falMedia = new ObjectStorage();
         $this->falRelatedFiles = new ObjectStorage();
+        $this->feuser = new ObjectStorage();
     }
 
     public function initializeObject(): void
@@ -161,5 +167,15 @@ class Insight extends AbstractEntity
             )
             ->executeQuery()->fetchOne();
         return date("Y-m-d",$datetime) . "/" . $params["slug"];
+    }
+
+    public function getFeuser(): ?ObjectStorage
+    {
+        return $this->feuser;
+    }
+
+    public function setFeuser(?ObjectStorage $feuser): void
+    {
+        $this->feuser = $feuser;
     }
 }

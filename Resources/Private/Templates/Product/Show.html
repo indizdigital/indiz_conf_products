@@ -7,7 +7,7 @@
 <f:asset.script identifier="swiper" src="EXT:indiz-digital-gmbh/stepping-stone-site-package/Resources/Public/JavaScript/ndz-swiper.js"/>
 
 <f:form action="order" id="orderForm" method="post" enctype="application/x-www-form-urlencoded" object="{order}" objectName="order">
-    <section class="bg-lightblue text-blue flex items-center gap-5 -mx-5 px-5 py-10 md:-mx-10 md:px-10 lg:-mx-20 lg:px-20 xl:gap-10">
+    <section class="bg-lightblue text-blue flex items-center gap-5 -mx-5 py-5 px-5 md:py-10 md:-mx-10 md:px-10 lg:-mx-20 lg:px-20 xl:gap-10">
         <div class="relative w-1/4 max-w-45 flex-none">
             <span class="relative h-0 pb-[100%] bg-white rounded-full flex items-center justify-center text-blue">
                 <f:if condition="{product.image}">
@@ -25,7 +25,7 @@
             </f:if>
         </div>
         <div>
-            <h1 class="font-extrabold text-3.5xl xl:text-5.5xl mb-3 xl:mb-5">{product.name}<span class="block text-sm font-normal -mt-1 xl:text-2xl xl:-mt-2">{product.subname}</span></h1>
+            <h1 class="ndz-headline-large mb-3 xl:mb-5">{product.name}<span class="block text-sm font-normal xl:text-2xl">{product.subname}</span></h1>
             <div class="font-extrabold xl:text-2.5xl">
                 <f:format.raw>{product.description}</f:format.raw>
             </div>
@@ -33,14 +33,14 @@
     </section>
     <f:if condition="{product.accordeon}">
         <section class="my-5 md:my-10 lg:my-20">
-            <div class="grid grid-cols-1 gap-12 sm:grid-cols-3">
+            <div class="grid grid-cols-1 gap-12 md:grid-cols-3">
                 <div class="space-y-10 <f:if condition='{product.feuser}'><f:then>col-span-2</f:then><f:else>col-span-3</f:else></f:if>">
                     <f:for each="{product.accordeon}" as="cont">
                         <f:cObject typoscriptObjectPath="lib.renderContentElement" data="{cont.uid}" />
                     </f:for>
                 </div>
                 <f:if condition="{product.feuser}">
-                    <div class="space-y-3 lg:space-y-5 xl:space-y-8">
+                    <div class="space-y-3 lg:space-y-5 xl:space-y-8 js-contactperson" data-label="{product.contactlabel}" data-url="<f:uri.typolink parameter='{product.contactlink}' />">
                         <f:for each="{product.feuser}" as="cont">
                             <f:cObject typoscriptObjectPath="lib.renderContentElement" data="{cont.uid}" />
                         </f:for>
@@ -61,7 +61,7 @@
                 <div class="swiper pb-12" data-slides-per-view="auto" data-space-between="0">
                     <div class="swiper-wrapper">
                         <f:for each="{product.referenceProducts}" as="referenceProduct" iteration="it">
-                            <div class="swiper-slide ndz-card ndz-card-lightblue min-h-full w-[49%] md:w-[23.5%]{f:if(condition: '!{it.isLast}', then: ' mr-[2%]')}">
+                            <div class="swiper-slide ndz-card ndz-card-lightblue h-auto w-[49%] md:w-[23.5%]{f:if(condition: '!{it.isLast}', then: ' mr-[2%]')}">
                                 <f:render partial="Product/ProductBox" arguments="{product:referenceProduct}" />
                             </div>
                         </f:for>
@@ -80,32 +80,32 @@
             <f:cObject typoscriptObjectPath="lib.renderContentElement" data="{cont.uid}" />
         </f:for>
     </f:if>
-    <f:if condition="{product.packages}">
+    <f:if condition="{product.packages} || {product.aiContent} || {product.packagetitle}">
         <section class="-mx-5 my-5 md:-mx-10 md:my-10 lg:-mx-20 lg:my-20">
             <div class="p-5 space-y-3 bg-lightblue md:p-10 lg:py-12 lg:px-20 lg:space-y-5 xl:space-y-12">
                 <f:if condition="{product.rendertype} == 'personalised'">
                     <f:then>
                         <f:form.textfield type="hidden" name="product_uid" value="{product.uid}" />
-                        <div class="space-y-3 lg:space-y-5 xl:space-y-12 js-package-box">
-                            <div class="flex items-center justify-between gap-5">
-                                <h2 class="ndz-headline-middle">{product.packagetitle}</h2>
-                                <div class="flex justify-center bg-slate-100">
+                        <div class="space-y-5 xl:space-y-12 js-package-box">
+                            <div class="space-y-3 sm:space-y-0 sm:flex sm:items-end sm:justify-between sm:gap-5">
+                                <h2 class="ndz-headline-middle flex-1">{product.packagetitle}</h2>
+                                <div class="flex justify-end bg-slate-100">
                                     <div class="relative inline-grid grid-cols-2 rounded-full bg-white js-calc-toggle" data-toggle>
                                         <!-- Slider -->
-                                        <div class="absolute left-2 top-2 bottom-2 w-[calc(50%-0.5rem)] rounded-full bg-blue transition-transform duration-500 ease-out-expo" data-toggle-slider></div>
+                                        <div class="absolute left-1 top-1 bottom-1 w-[calc(50%-0.25rem)] rounded-full bg-blue transition-transform duration-500 ease-out-expo sm:left-2 sm:top-2 sm:bottom-2 sm:w-[calc(50%-0.5rem)]" data-toggle-slider></div>
                                         <!-- Monat -->
-                                        <button type="button" class="relative z-10 px-8 py-5 font-extrabold transition-colors duration-500 text-white cursor-pointer" data-value="month">/<f:translate key="tx_products_domain_model_product.month" /></button>
+                                        <button type="button" class="relative px-4 py-2.5 z-10 font-extrabold transition-colors duration-500 text-white cursor-pointer sm:px-8 sm:py-5" data-value="month">/<f:translate key="tx_products_domain_model_product.month" /></button>
                                         <!-- Stunde -->
-                                        <button type="button" class="relative z-10 px-8 py-5 font-extrabold transition-colors duration-500 text-blue cursor-pointer" data-value="hour">/<f:translate key="tx_products_domain_model_product.hour" /></button>
+                                        <button type="button" class="relative px-4 py-2.5 z-10 font-extrabold transition-colors duration-500 text-blue cursor-pointer sm:px-8 sm:py-5" data-value="hour">/<f:translate key="tx_products_domain_model_product.hour" /></button>
                                     </div>
                                 </div>
                             </div>
-                            <div class="js-accordion col-span-2 space-y-5">
+                            <div class="js-accordion col-span-2 space-y-3 sm:space-y-5">
                                 <f:for each="{product.packages}" as="p_div">
                                     <div class="ndz-accordion-item js-accordion-item bg-white rounded-lg js-package-div">
-                                        <button type="button" class="js-accordion-header px-5 py-3 w-full flex items-center justify-between gap-5 text-blue text-left cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
-                                            <h3 class="text-2xl font-extrabold flex-1 xl:text-3.5xl">{p_div.name}</h3>
-                                            <span><span class="text-2xl font-extrabold xl:text-3.5xl js-subtotal-price">0.00</span> <f:translate key="tx_products_domain_model_product.chf" /><span class="js-calc-time">/<f:translate key="tx_products_domain_model_product.month" /></span></span>
+                                        <button type="button" class="js-accordion-header w-full p-3 flex items-center justify-between gap-3 text-blue text-left cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 sm:px-5 sm:py-3 sm:gap-5">
+                                            <h3 class="sm:text-2xl font-extrabold flex-1 xl:text-3.5xl">{p_div.name}</h3>
+                                            <span><span class="sm:text-2xl font-extrabold xl:text-3.5xl js-subtotal-price">0.00</span> <f:translate key="tx_products_domain_model_product.chf" /><span class="js-calc-time">/<f:translate key="tx_products_domain_model_product.month" /></span></span>
                                             <svg class="ndz-accordion-icon js-accordion-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                                             </svg>
@@ -142,12 +142,11 @@
                                 </f:for>
                             </div>
                             <div class="flex items-center justify-between gap-5">
-                                <div class="space-y-1">
+                                <div class="space-y-1 flex-1">
                                     <div class="font-extrabold text-blue"><f:translate key="tx_products_domain_model_product.all_prices_excluding_vat" /></div>
-                                    
                                 </div>
-                                <div class="text-blue mr-22">
-                                    <span class="text-3.5xl font-extrabold js-total-price js-package-price" data-total="190">190.00</span> <f:translate key="tx_products_domain_model_product.chf" /><span class="js-calc-time">/<f:translate key="tx_products_domain_model_product.month" /></span>
+                                <div class="text-blue sm:mr-18 lg:mr-22">
+                                    <span class="font-extrabold sm:text-2xl xl:text-3.5xl js-total-price js-package-price" data-total="190">190.00</span> <f:translate key="tx_products_domain_model_product.chf" /><span class="js-calc-time">/<f:translate key="tx_products_domain_model_product.month" /></span>
                                 </div>
                             </div>
                             <div class="flex flex-wrap items-center justify-end gap-2">
@@ -157,8 +156,8 @@
                                     </svg>
                                     <f:translate key="tx_products_domain_model_product.discuss_config" />
                                 </f:form.button>
-                                <f:form.button class="js-order-btn ndz-btn" name="selectedPackage"  data-ordertype="1" data-ordertitle="<f:translate key='tx_products_domain_model_product.request_for' />" data-product="{product.uid}" data-package="{product.packages.0.uid}" data-packagename="{product.name}">
-                                    <f:translate key="tx_products_domain_model_product.order" />
+                                <f:form.button class="js-order-btn ndz-btn" name="selectedPackage"  data-ordertype="1" data-ordertitle="<f:translate key='tx_products_domain_model_product.request' />" data-product="{product.uid}" data-package="{product.packages.0.uid}" data-packagename="{product.name}">
+                                    <f:translate key="tx_products_domain_model_product.request" />
                                 </f:form.button>
                             </div>
                         </div>
@@ -168,62 +167,73 @@
                         <div class="flex items-center justify-between gap-5">
                             <h2 class="ndz-headline-middle">{product.packagetitle}</h2>
                         </div>
-                        <div class="js-carousel mb-20 -mx-5 px-5 md:-mx-10 md:px-10 lg:-mx-20 lg:px-20">
-                            <f:for each="{product.packages}" as="package">
-                                <div class="js-carousel-cell ndz-card bg-white border-none min-h-full gap-5 w-[49%] mr-[2%] md:gap-10 md:w-[32%] js-package-box">
-                                    <h3 class="ndz-headline-middle text-blue">{package.name}</h3>
-                                    <f:if condition="{package.configurable}">
-                                        <f:then><f:variable name="package-total">{package.minTotal}</f:variable></f:then>
-                                        <f:else><f:variable name="package-total">{package.total}</f:variable></f:else>
-                                    </f:if>
-                                    <div class="pb-1 border-b-2 border-blue text-blue font-extrabold"><span class="text-4xl md:text-5xl js-package-price" data-total="{package-total}">
-                                        <f:format.number decimals="2">{package-total}</f:format.number>
-                                    </span> CHF/<f:translate key="tx_products_domain_model_product.month" /></div>
-                                    <!-- <i>Servicegebühr: {product.serviceFee}</i><br> -->
-                                    <div class="space-y-3 md:space-y-8">
-                                        <f:if condition="{package.desc}">
-                                            <f:then>
-                                                <div>
-                                                    <ndz:format.inlineText value="{package.desc}" />
-                                                    <f:for each="{package.packageelements}" as="packageelement">
-                                                        <f:form.textfield type="hidden" name="packageelements[{package.uid}][{packageelement.productelement.uniqid}]" value="{packageelement.amount}" />
-                                                    </f:for>
-                                                </div>
-                                            </f:then>
-                                            <f:else>
-                                                <ul>
-                                                    <f:for each="{package.packageelements}" as="packageelement">
-                                                        <li>
-                                                            <f:if condition="{package.configurable} && {packageelement.amount} == 0">
-                                                                <f:then>
-                                                                    <strong>{packageelement.min}-{packageelement.max}</strong> {packageelement.name}
-                                                                    <f:variable name="personalised_package" value="{package}"></f:variable>
-                                                                </f:then>
-                                                                <f:else>
-                                                                    <strong>{packageelement.amount}</strong> {packageelement.name}
-                                                                </f:else>
-                                                            </f:if>
-                                                            <!-- <i><f:format.currency currencySign="CHF">{packageelement.productelement.price}</f:format.currency></i> -->
-                                                            <f:form.textfield type="hidden" name="packageelements[{package.uid}][{packageelement.productelement.uniqid}]" value="{packageelement.amount}" />
-                                                        </li>
-                                                    </f:for>
-                                                </ul>
-                                            </f:else>
+                        <div class="relative ndz-carousel-offset">
+                            <div class="swiper pb-12" data-slides-per-view="auto" data-space-between="0">
+                                <div class="swiper-wrapper">
+                                    <f:for each="{product.packages}" as="package" iteration="it">
+
+                                        <f:if condition="{package.configurable}">
+                                            <f:variable name="personalised_package" value="{package}"></f:variable>
                                         </f:if>
-                                        
-                                        <f:form.button class="js-order-btn ndz-btn ndz-btn-outline <f:if condition='{package.configurable}'>js-personalise-btn</f:if>" data-ordertype="1" data-ordertitle="<f:translate key='tx_products_domain_model_product.request_for' />" name="selectedPackage" data-product="{product.uid}" data-package="{package.uid}" data-packagename="{product.name} {package.name}">
-                                            <f:if condition='{package.configurable}'>
-                                                <f:then>
-                                                    <f:translate key="tx_products_domain_model_product.config" />
-                                                </f:then>
-                                                <f:else>
-                                                    <f:translate key="tx_products_domain_model_product.order" />
-                                                </f:else>
+                                        <div class="swiper-slide ndz-card bg-white border-none min-h-full gap-5 h-auto w-[49%] md:gap-10 md:w-[32%]{f:if(condition: '!{it.isLast}', then: ' mr-[2%]')} js-package-box">
+                                            <h3 class="ndz-headline-middle text-blue">{package.name}</h3>
+                                            <f:if condition="{package.configurable}">
+                                                <f:then><f:variable name="package-total">{package.minTotal}</f:variable></f:then>
+                                                <f:else><f:variable name="package-total">{package.total}</f:variable></f:else>
                                             </f:if>
-                                        </f:form.button>
-                                    </div>
+                                            <div class="pb-1 border-b-2 border-blue text-blue font-extrabold"><span class="text-4xl md:text-5xl js-package-price" data-total="{package-total}">
+                                                <f:format.number decimals="2">{package-total}</f:format.number>
+                                            </span> CHF/<f:translate key="tx_products_domain_model_product.month" /></div>
+                                            <!-- <i>Servicegebühr: {product.serviceFee}</i><br> -->
+                                            <div class="space-y-3 md:space-y-8">
+                                                <f:if condition="{package.desc}">
+                                                    <f:then>
+                                                        <div>
+                                                            <ndz:format.inlineText value="{package.desc}" />
+                                                            <f:for each="{package.packageelements}" as="packageelement">
+                                                                <f:form.textfield type="hidden" name="packageelements[{package.uid}][{packageelement.productelement.uniqid}]" value="{packageelement.amount}" />
+                                                            </f:for>
+                                                        </div>
+                                                    </f:then>
+                                                    <f:else>
+                                                        <ul>
+                                                            <f:for each="{package.packageelements}" as="packageelement">
+                                                                <li>
+                                                                    <f:if condition="{package.configurable} && {packageelement.amount} == 0">
+                                                                        <f:then>
+                                                                            <strong>{packageelement.min}-{packageelement.max}</strong> {packageelement.name}
+                                                                        </f:then>
+                                                                        <f:else>
+                                                                            <strong>{packageelement.amount}</strong> {packageelement.name}
+                                                                        </f:else>
+                                                                    </f:if>
+                                                                    <!-- <i><f:format.currency currencySign="CHF">{packageelement.productelement.price}</f:format.currency></i> -->
+                                                                    <f:form.textfield type="hidden" name="packageelements[{package.uid}][{packageelement.productelement.uniqid}]" value="{packageelement.amount}" />
+                                                                </li>
+                                                            </f:for>
+                                                        </ul>
+                                                    </f:else>
+                                                </f:if>
+                                                <f:form.button class="js-order-btn ndz-btn ndz-btn-outline <f:if condition='{package.configurable}'>js-personalise-btn</f:if>" data-ordertype="1" data-ordertitle="<f:translate key='tx_products_domain_model_product.request' />" name="selectedPackage" data-product="{product.uid}" data-package="{package.uid}" data-packagename="{product.name} {package.name}">
+                                                    <f:if condition='{package.configurable}'>
+                                                        <f:then>
+                                                            <f:translate key="tx_products_domain_model_product.config" />
+                                                        </f:then>
+                                                        <f:else>
+                                                            <f:translate key="tx_products_domain_model_product.request" />
+                                                        </f:else>
+                                                    </f:if>
+                                                </f:form.button>
+                                            </div>
+                                        </div>
+                                    </f:for>
                                 </div>
-                            </f:for>
+                                <!-- If we need pagination -->
+                                <div class="swiper-pagination"></div>
+                            </div>
+                            <!-- Navigation buttons ausserhalb des Swipers (overflow:hidden-safe) -->
+                            <div class="swiper-button-prev after:bg-white"></div>
+                            <div class="swiper-button-next after:bg-white"></div>
                         </div>
 
                         <div id="panel-1" role="region" aria-labelledby="accordion-1" class="hidden js-personalise-container js-package-div js-package-box">
@@ -270,8 +280,8 @@
                                         </svg>
                                         <f:translate key="tx_products_domain_model_product.discuss_config" />
                                     </button>
-                                    <f:form.button class="js-order-btn ndz-btn js-personalise-keep" name="selectedPackage"  data-ordertype="1" data-ordertitle="<f:translate key='tx_products_domain_model_product.request_for' />" data-product="{product.uid}" data-package="0" data-packagename="{product.name} Personalised">
-                                        <f:translate key="tx_products_domain_model_product.order" />
+                                    <f:form.button class="js-order-btn ndz-btn js-personalise-keep" name="selectedPackage"  data-ordertype="1" data-ordertitle="<f:translate key='tx_products_domain_model_product.request' />" data-product="{product.uid}" data-package="0" data-packagename="{product.name} Personalised">
+                                        <f:translate key="tx_products_domain_model_product.request" />
                                     </f:form.button>
                                 </div>
                             </div>
@@ -279,11 +289,11 @@
                     </f:else>
                     <f:else if="{product.rendertype} == 'ai'">
                         <div class="space-y-3 lg:space-y-5 xl:space-y-12">
-                            <h2 class="text-3.5xl text-blue font-extrabold"><f:translate key="tx_products_domain_model_product.pricelist" /></h2>
-                            <div class="md:grid md:grid-cols-3 md:gap-x-7">
-                                <div class="js-accordion <f:if condition='{product.feuser}'><f:then>col-span-2</f:then><f:else>col-span-3</f:else></f:if> border-y border-white divide-y divide-white">
+                            <h2 class="text-3.5xl text-blue font-extrabold">{product.packagetitle}</h2>
+                            <f:if condition="{product.aiContent}">
+                                <div class="js-accordion border-y border-white divide-y divide-white">
                                     <f:for each="{product.aiContent}" as="cont">
-                                        <div class="ndz-accordion-item js-accordion-item">
+                                        <div class="ndz-accordion-item js-accordion-item {f:if(condition:'{cont.defaultopen}',then:'js-accordion-active')}">
                                             <h3 class="text-2xl text-blue font-extrabold xl:text-3.5xl">
                                                 <button type="button" class="js-accordion-header py-2 w-full flex items-center justify-between text-left cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
                                                     {cont.header}
@@ -300,31 +310,31 @@
                                         </div>
                                     </f:for>
                                 </div>
-                            </div>
-                            <div class="flex items-center justify-between gap-5">
-                                <div class="space-y-1">
-                                    <div class="font-extrabold text-blue"><f:translate key="tx_products_domain_model_product.all_prices_mtok_excluding_vat" /></div>
-                                    <div>
-                                        <a href="" class="ndz-btn ndz-btn-link ndz-btn-neutral">
-                                            <f:translate key="tx_products_domain_model_product.offer_terms_and_conditions" />
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                                                <path d="M8.51,10.72h1.57c.31,0,.57-.1.78-.31s.31-.46.31-.78v-1.57c0-.31-.1-.57-.31-.78s-.46-.31-.78-.31h-2.11c-.15,0-.28.04-.39.15-.1.1-.16.24-.16.39v5.31c0,.16.06.3.16.39.1.1.24.15.39.15s.28-.06.39-.16.15-.24.15-.39v-2.08h0ZM8.51,9.62v-1.57h1.57v1.57s-1.57,0-1.57,0ZM15.19,13.37c.31,0,.57-.1.78-.31.21-.21.31-.48.31-.78v-4.21c0-.31-.1-.57-.31-.78s-.48-.31-.78-.31h-2.05c-.15,0-.28.04-.39.15s-.16.24-.16.39v5.29c0,.16.06.3.16.4.1.1.24.16.39.16h2.05ZM13.67,12.26v-4.21h1.5v4.21h-1.5ZM18.96,10.72h1.17c.16,0,.28-.06.39-.16.1-.1.15-.24.15-.39s-.04-.28-.15-.39c-.1-.1-.22-.15-.39-.15h-1.17v-1.57h1.17c.16,0,.28-.06.39-.16s.15-.24.15-.39-.04-.28-.15-.39c-.1-.1-.22-.15-.39-.15h-1.71c-.15,0-.28.04-.39.15-.1.1-.16.24-.16.39v5.31c0,.16.06.3.16.39.1.1.24.15.39.15s.28-.06.39-.16c.1-.1.15-.24.15-.39v-2.08h0ZM5.94,20.09c-.55,0-1.03-.19-1.44-.6-.4-.4-.6-.87-.6-1.44V2.04c0-.55.19-1.03.6-1.44.4-.4.87-.6,1.44-.6h16.02c.55,0,1.03.19,1.44.6.4.4.6.87.6,1.44v16.02c0,.55-.19,1.03-.6,1.44-.4.4-.87.6-1.44.6H5.94ZM5.94,18.47h16.02c.1,0,.19-.04.27-.12.09-.09.12-.18.12-.27V2.04c0-.1-.04-.19-.12-.27-.09-.09-.18-.12-.27-.12H5.94c-.1,0-.19.04-.27.12-.09.09-.12.18-.12.27v16.02c0,.1.04.19.12.27s.18.12.27.12h0ZM2.02,24c-.55,0-1.03-.19-1.44-.6-.39-.39-.58-.87-.58-1.42V5.14c0-.22.07-.42.24-.58.15-.15.34-.24.58-.24s.42.07.58.24c.15.15.22.34.22.58v16.83c0,.1.04.19.12.27.09.09.18.12.27.12h16.83c.22,0,.42.07.58.24.15.15.24.34.24.58s-.07.42-.24.58c-.15.15-.34.22-.58.22H2.02ZM5.53,1.65v16.82V1.65Z"/>
-                                            </svg>
-                                        </a>
-                                    </div>
+                                <div class="flex items-center justify-between gap-5">
+                                    <div class="space-y-1">
+                                        <div class="font-extrabold text-blue"><f:translate key="tx_products_domain_model_product.all_prices_mtok_excluding_vat" /></div>
+                                        <!-- <div>
+                                            <a href="" class="ndz-btn ndz-btn-link ndz-btn-neutral">
+                                                <f:translate key="tx_products_domain_model_product.offer_terms_and_conditions" />
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                                    <path d="M8.51,10.72h1.57c.31,0,.57-.1.78-.31s.31-.46.31-.78v-1.57c0-.31-.1-.57-.31-.78s-.46-.31-.78-.31h-2.11c-.15,0-.28.04-.39.15-.1.1-.16.24-.16.39v5.31c0,.16.06.3.16.39.1.1.24.15.39.15s.28-.06.39-.16.15-.24.15-.39v-2.08h0ZM8.51,9.62v-1.57h1.57v1.57s-1.57,0-1.57,0ZM15.19,13.37c.31,0,.57-.1.78-.31.21-.21.31-.48.31-.78v-4.21c0-.31-.1-.57-.31-.78s-.48-.31-.78-.31h-2.05c-.15,0-.28.04-.39.15s-.16.24-.16.39v5.29c0,.16.06.3.16.4.1.1.24.16.39.16h2.05ZM13.67,12.26v-4.21h1.5v4.21h-1.5ZM18.96,10.72h1.17c.16,0,.28-.06.39-.16.1-.1.15-.24.15-.39s-.04-.28-.15-.39c-.1-.1-.22-.15-.39-.15h-1.17v-1.57h1.17c.16,0,.28-.06.39-.16s.15-.24.15-.39-.04-.28-.15-.39c-.1-.1-.22-.15-.39-.15h-1.71c-.15,0-.28.04-.39.15-.1.1-.16.24-.16.39v5.31c0,.16.06.3.16.39.1.1.24.15.39.15s.28-.06.39-.16c.1-.1.15-.24.15-.39v-2.08h0ZM5.94,20.09c-.55,0-1.03-.19-1.44-.6-.4-.4-.6-.87-.6-1.44V2.04c0-.55.19-1.03.6-1.44.4-.4.87-.6,1.44-.6h16.02c.55,0,1.03.19,1.44.6.4.4.6.87.6,1.44v16.02c0,.55-.19,1.03-.6,1.44-.4.4-.87.6-1.44.6H5.94ZM5.94,18.47h16.02c.1,0,.19-.04.27-.12.09-.09.12-.18.12-.27V2.04c0-.1-.04-.19-.12-.27-.09-.09-.18-.12-.27-.12H5.94c-.1,0-.19.04-.27.12-.09.09-.12.18-.12.27v16.02c0,.1.04.19.12.27s.18.12.27.12h0ZM2.02,24c-.55,0-1.03-.19-1.44-.6-.39-.39-.58-.87-.58-1.42V5.14c0-.22.07-.42.24-.58.15-.15.34-.24.58-.24s.42.07.58.24c.15.15.22.34.22.58v16.83c0,.1.04.19.12.27.09.09.18.12.27.12h16.83c.22,0,.42.07.58.24.15.15.24.34.24.58s-.07.42-.24.58c-.15.15-.34.22-.58.22H2.02ZM5.53,1.65v16.82V1.65Z"/>
+                                                </svg>
+                                            </a>
+                                        </div>
+                                    </div> -->
                                 </div>
-                            </div>
-                            <div class="flex flex-wrap items-center justify-end gap-2">
-                                <button class="js-order-btn ndz-btn ndz-btn-outline" type="button" name="" data-product="{product.uid}" data-package="0" data-ordertype="0" data-packagename="{product.name}" data-ordertitle="<f:translate key='tx_products_domain_model_product.discuss_models' />">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-current" width="17.12" height="16.13" viewBox="0 0 17.12 16.13">
-                                        <path d="M16.42,16.13c-.09,0-.18-.02-.26-.05-.09-.03-.17-.09-.25-.16l-2.14-2.14H4.91c-.4,0-.73-.14-1.01-.42-.28-.28-.42-.61-.42-1.01v-1.67h9.11c.39,0,.73-.14,1-.41.28-.28.42-.61.42-1.01V3.49h1.67c.4,0,.73.14,1.01.42.28.28.42.61.42,1.01v10.5c0,.22-.07.4-.23.52-.15.13-.31.19-.48.19M1.43,9.4l1.39-1.39h8.53V1.43H1.43v7.97ZM.71,11.83c-.17,0-.33-.06-.49-.19-.15-.13-.22-.3-.22-.52V1.43c0-.4.14-.73.42-1.01.28-.28.61-.42,1.01-.42h9.92c.39,0,.73.14,1,.42.28.28.42.61.42,1.01v6.58c0,.39-.14.73-.42,1.01-.28.28-.61.42-1,.42H3.4l-2.19,2.18c-.08.08-.16.14-.25.17-.09.03-.17.05-.25.05M1.43,8.01V1.43v6.58Z"></path>
-                                    </svg>
-                                    <f:translate key="tx_products_domain_model_product.discuss_models" />
-                                </button>
-                                <f:form.button class="js-order-btn ndz-btn" name="selectedPackage" data-product="{product.uid}" data-package="0" data-packagename="{product.name}" data-ordertype="1"  data-ordertitle="<f:translate key='tx_products_domain_model_product.request_for' />">
-                                    <f:translate key="tx_products_domain_model_product.request" />
-                                </f:form.button>
-                            </div>
+                                <div class="flex flex-wrap items-center justify-end gap-2">
+                                    <button class="js-order-btn ndz-btn ndz-btn-outline" type="button" name="" data-product="{product.uid}" data-package="0" data-ordertype="0" data-packagename="{product.name} {product.subname}" data-ordertitle="<f:translate key='tx_products_domain_model_product.discuss_models' />">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="fill-current" width="17.12" height="16.13" viewBox="0 0 17.12 16.13">
+                                            <path d="M16.42,16.13c-.09,0-.18-.02-.26-.05-.09-.03-.17-.09-.25-.16l-2.14-2.14H4.91c-.4,0-.73-.14-1.01-.42-.28-.28-.42-.61-.42-1.01v-1.67h9.11c.39,0,.73-.14,1-.41.28-.28.42-.61.42-1.01V3.49h1.67c.4,0,.73.14,1.01.42.28.28.42.61.42,1.01v10.5c0,.22-.07.4-.23.52-.15.13-.31.19-.48.19M1.43,9.4l1.39-1.39h8.53V1.43H1.43v7.97ZM.71,11.83c-.17,0-.33-.06-.49-.19-.15-.13-.22-.3-.22-.52V1.43c0-.4.14-.73.42-1.01.28-.28.61-.42,1.01-.42h9.92c.39,0,.73.14,1,.42.28.28.42.61.42,1.01v6.58c0,.39-.14.73-.42,1.01-.28.28-.61.42-1,.42H3.4l-2.19,2.18c-.08.08-.16.14-.25.17-.09.03-.17.05-.25.05M1.43,8.01V1.43v6.58Z"></path>
+                                        </svg>
+                                        <f:translate key="tx_products_domain_model_product.discuss_models" />
+                                    </button>
+                                    <f:form.button class="js-order-btn ndz-btn" name="selectedPackage" data-product="{product.uid}" data-package="0" data-packagename="{product.name} {product.subname}" data-ordertype="1"  data-ordertitle="<f:translate key='tx_products_domain_model_product.request' />">
+                                        <f:translate key="tx_products_domain_model_product.request" />
+                                    </f:form.button>
+                                </div>
+                            </f:if>
                         </div>
                     </f:else>
                 </f:if>
@@ -332,13 +342,13 @@
         </section>
         <section class="hidden js-order-form">
             <div class="hidden js-config-form"></div>
-            <f:render partial="Product/OrderForm" arguments="{product: product,order:order}" />
+            <f:render partial="Product/OrderForm" arguments="{product: product,order:order,honey:honey}" />
         </section>
     </f:if>
     <f:if condition="{product.faq}">
         <section class="my-10 md:my-10 lg:my-20">
-            <div class="md:grid md:grid-cols-4 md:items-start md:gap-x-7">
-                <h2 class="text-base text-blue font-extrabold md:text-xl lg:text-2xl xl:text-4xl"><f:translate key="tx_products_domain_model_product.faq" /></h2>
+            <div class="space-y-3 md:space-y-0 md:grid md:grid-cols-4 md:items-start md:gap-x-7">
+                <h2 class="ndz-headline-middle"><f:translate key="tx_products_domain_model_product.faq" /></h2>
                 <div class="js-accordion col-span-3 border-y border-gray-200 divide-y divide-gray-200">
                     <f:for each="{product.faq}" as="q">
                         <div class="ndz-accordion-item js-accordion-item">
@@ -361,11 +371,22 @@
                 <div></div>
             </div>
         </section>
-</f:if>
+    </f:if>
 </f:form>
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
+
+    if(document.querySelector(".js-overwrite-contacturl")){
+        if(document.querySelector(".js-contactperson").dataset.url.length){
+            document.querySelector(".js-overwrite-contacturl").href = document.querySelector(".js-contactperson").dataset.url;
+        } 
+    }
+    if(document.querySelector(".js-overwrite-contactlabel")){
+        if(document.querySelector(".js-contactperson").dataset.label.length){
+        document.querySelector(".js-overwrite-contactlabel").innerHTML = document.querySelector(".js-contactperson").dataset.label; 
+        }
+    }
     document.querySelectorAll('.js-order-btn').forEach(function (button) {
         button.addEventListener('click', function (event) {
                 if(!button.classList.contains("js-personalise-keep")){
@@ -378,10 +399,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 document.querySelector('.js-order-form').classList.remove('hidden');
                 if(button.dataset.ordertitle){
                     document.querySelector('.js-orderform-title').innerHTML = button.dataset.ordertitle
+                    document.querySelector('.js-final-order-btn').value = button.dataset.ordertitle
                 }
                 document.querySelector(".js-order-type").value = button.dataset.ordertype;
-                
-                document.querySelector(".js-order-total").value = button.closest(".js-package-box").querySelector(".js-package-price").dataset.total;
+                if(button.closest(".js-package-box")){
+                    document.querySelector(".js-order-total").value = button.closest(".js-package-box").querySelector(".js-package-price").dataset.total;
+                }else{
+                    document.querySelector(".js-order-total").value = 0;
+                }
                 
                 scrollToElement(document.querySelector('.js-order-form'));
                 document.querySelector('.js-order-package').value = event.currentTarget.dataset.package;

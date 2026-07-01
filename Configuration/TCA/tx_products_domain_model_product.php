@@ -275,7 +275,6 @@ return [
         ],
         'feuser' => [
             'label' => 'Beratung',
-            'l10n_mode' => 'exclude',
             'config' => [
                 'type' => 'inline',
                 'foreign_table' => 'tt_content',

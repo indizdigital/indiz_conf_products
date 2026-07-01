@@ -46,3 +46,14 @@ ExtensionUtility::registerPlugin(
   'Tease',
   'Tease Insights'
 );
+
+$GLOBALS['TCA']['tt_content']['palettes']['frames']["showitem"] = $GLOBALS['TCA']['tt_content']['palettes']['frames']["showitem"] . ',--linebreak--,defaultopen';
+
+$GLOBALS['TCA']['tt_content']['columns']['defaultopen'] = [
+  "exclude" => 1,
+  "label" => "Default open",
+   "config" => [
+    "type"=>"check",
+    "renderType" => "checkboxToggle"
+   ]
+];

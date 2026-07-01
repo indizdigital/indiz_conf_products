@@ -1,3 +1,9 @@
+
+<div class="mt-5 space-y-3 md:grid md:grid-cols-3 md:gap-x-12 lg:mt-20 lg:space-y-5">
+    <div class="col-span-2 xl:space-y-3">
+        <f:cObject typoscriptObjectPath="lib.renderInsightHeaderElement" />
+    </div>
+</div>
 <section class="space-y-10 lg:space-y-16">
 	<f:form id="filter-form" class="space-y-5 js-filter-products" action="filter" method="post">
 		<div class="ndz-product-search ndz-input-field relative py-3">
@@ -7,7 +13,7 @@
 			</svg>
 			<f:form.textfield id="search" placeholder="<f:translate key='tx_products_domain_model_product.entersearch' extensionName='products' />" name="searchquery" value="{searchquery}" class="pl-8" />
 		</div>
-		<div class="flex items-center flex-wrap gap-3">
+		<div class="space-y-3 sm:space-y-0 sm:flex sm:items-center sm:flex-wrap gap-3">
 			<div class="ndz-multiselect" data-multiselect>
 				<button type="button" class="ndz-btn rounded-full js-multiselect-trigger ndz-multiselect-trigger" aria-expanded="false" aria-haspopup="listbox" aria-controls="multiselect-list">
 					<span class="js-multiselect-label"><f:translate key="tx_products_domain_model_product.topics" extensionName="products"/></span>
@@ -88,7 +94,7 @@
 					</f:if>
 				</f:for>
 			</f:if>
-			<f:link.page class="ndz-btn ndz-btn-link" pageUid="3"><f:translate key="tx_products_domain_model_product.resetfilter" extensionName="products" /></f:link.page>
+			<f:link.page class="ndz-btn ndz-btn-link" pageUid="7"><f:translate key="tx_products_domain_model_product.resetfilter" extensionName="products" /></f:link.page>
 		</div>
 		<f:form.textfield class="js-page" type="hidden" name="page" value="{currentpage}" />
 		<f:form.textfield class="js-pagesize" type="hidden" name="pagesize" value="{pagesize}" />
@@ -96,7 +102,7 @@
 	<div aria-label="Suchresultate" class="space-y-5">
 		<div class="flex items-center justify-between gap-5">
 			<h2 class="font-bold"><span class="text-darkgrey">{insightscount}</span> <f:translate key="tx_products_domain_model_product.of" extensionName="products" /> {insightsallcount} <f:translate key="tx_products_domain_model_product.stories" extensionName="products" /></h2>
-			<ul class="flex items-center gap-x-2">
+			<!-- <ul class="flex items-center gap-x-2">
 				<li>
 					<button type="submit" class="ndz-btn ndz-btn-primary ndz-btn-circle" form="filter-form" name="sort">
 						<svg xmlns="http://www.w3.org/2000/svg" class="fill-current" height="24px" viewBox="0 -960 960 960" width="24px"><path d="m196-376-23 70q-4 11-14 18.5t-22 7.5q-20 0-32.5-16.5T100-333l120-321q5-12 15-19t23-7h30q13 0 23 7t15 19l121 323q7 19-4.5 35T411-280q-12 0-22-7.5T375-306l-25-70H196Zm24-68h104l-48-150h-6l-50 150Zm418 92h166q15 0 25.5 10.5T840-316q0 15-10.5 25.5T804-280H572q-10 0-17-7t-7-17v-38q0-7 2-13.5t7-11.5l193-241H592q-15 0-25.5-10.5T556-644q0-15 10.5-25.5T592-680h222q10 0 17 7t7 17v38q0 7-2 13.5t-7 11.5L638-352ZM384-760q-7 0-9.5-6t2.5-11l89-89q6-6 14-6t14 6l89 89q5 5 2.5 11t-9.5 6H384Zm82 666-89-89q-5-5-2.5-11t9.5-6h192q7 0 9.5 6t-2.5 11l-89 89q-6 6-14 6t-14-6Z"/></svg>
@@ -112,11 +118,11 @@
 						<svg xmlns="http://www.w3.org/2000/svg" class="fill-current" height="24px" viewBox="0 -960 960 960" width="24px"><path d="M200-520q-33 0-56.5-23.5T120-600v-160q0-33 23.5-56.5T200-840h160q33 0 56.5 23.5T440-760v160q0 33-23.5 56.5T360-520H200Zm0 400q-33 0-56.5-23.5T120-200v-160q0-33 23.5-56.5T200-440h160q33 0 56.5 23.5T440-360v160q0 33-23.5 56.5T360-120H200Zm400-400q-33 0-56.5-23.5T520-600v-160q0-33 23.5-56.5T600-840h160q33 0 56.5 23.5T840-760v160q0 33-23.5 56.5T760-520H600Zm0 400q-33 0-56.5-23.5T520-200v-160q0-33 23.5-56.5T600-440h160q33 0 56.5 23.5T840-360v160q0 33-23.5 56.5T760-120H600ZM200-600h160v-160H200v160Zm400 0h160v-160H600v160Zm0 400h160v-160H600v160Zm-400 0h160v-160H200v160Zm400-400Zm0 240Zm-240 0Zm0-240Z"/></svg>
 					</button>
 				</li>
-			</ul>
+			</ul> -->
 		</div>
 		<f:if condition="{insights}">
 			<f:then>
-				<div class="grid gap-x-3 gap-y-5 grid-cols-2 md:grid-cols-3 xl:gap-x-8 xl:gap-y-10">
+				<div class="grid gap-x-3 gap-y-10 sm:grid-cols-2 xl:grid-cols-3 xl:gap-x-8 xl:gap-y-10">
 					<f:for each="{insights}" as="insight">
 						<f:render partial="Insight/List" arguments="{insight:insight}" />
 					</f:for>
@@ -132,9 +138,26 @@
 							<label for="pages" class="whitespace-nowrap"><f:translate key="tx_products_domain_model_product.perpage" extensionName="products" /></label>
 						</div>
 						<ul class="flex items-center gap-2">
-							<f:for each="{pages}" key="pagenum" as="page">
-								<li><a class="{f:if(condition:'{pagenum} == {currentpage}',then:'ndz-btn-active',else:'js-goto-page')} ndz-btn ndz-btn-circle ndz-btn-primary font-normal " data-page="{pagenum}">{pagenum + 1}</a></li>
+							<li>
+								<a class="{f:if(condition:'{currentpage} == 0',then:'pointer-events-none opacity-40',else:'js-goto-page')} ndz-btn ndz-btn-circle ndz-btn-primary font-normal" data-page="{currentpage - 1}" aria-label="Previous">
+									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/></svg>
+								</a>
+							</li>
+							<f:for each="{paginationItems}" as="item">
+								<f:if condition="{item} == -1">
+									<f:then>
+										<li class="font-normal pointer-events-none">…</li>
+									</f:then>
+									<f:else>
+										<li><a class="{f:if(condition:'{item} == {currentpage}',then:'ndz-btn-active',else:'js-goto-page')} ndz-btn ndz-btn-circle ndz-btn-primary font-normal" data-page="{item}">{item + 1}</a></li>
+									</f:else>
+								</f:if>
 							</f:for>
+							<li>
+								<a class="{f:if(condition:'{currentpage} == {lastPage}',then:'pointer-events-none opacity-40',else:'js-goto-page')} ndz-btn ndz-btn-circle ndz-btn-primary font-normal" data-page="{currentpage + 1}" aria-label="Next">
+									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/></svg>
+								</a>
+							</li>
 						</ul>
 						<div class="flex-1"></div>
 					</div>

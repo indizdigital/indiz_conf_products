@@ -51,13 +51,13 @@
         </div>
         <div class="ndz-input-field">
             <label for="email" class="text-blue block"><f:translate key="tx_products_domain_model_product.form.email" />*</label>
-            <f:form.textfield id="email" property="email" placeholder="<f:translate key='tx_products_domain_model_product.form.email.placeholder' />" />
+            <f:form.textfield id="email" property="email" aria-required="true" required="required" placeholder="<f:translate key='tx_products_domain_model_product.form.email.placeholder' />" />
         </div>
         <div class="p-3 space-y-5">
             <div>
                 <div class="flex items-center gap-2">
-                    <f:form.checkbox id="agb" property="agb" value="1" />
-                    <label for="agb"><f:translate key="tx_products_domain_model_product.form.agb" /></label>
+                    <f:form.checkbox id="agb" property="agb" value="1" aria-required="true" required="required" />
+                    <label for="agb"><f:format.raw><f:translate key="tx_products_domain_model_product.form.agb" /></f:format.raw></label>
                 </div>
                 <div class="flex items-center gap-2">
                     <f:form.checkbox id="newsletter" property="newsletter" value="1" />
@@ -76,16 +76,11 @@
         <div class="ndz-input-field flex flex-col">
             <label for="message" class="text-blue block"><f:translate key="tx_products_domain_model_product.form.message" /></label>
             <f:form.textarea id="message" class="flex-1 resize-none" name="message" />
+            <f:form.textfield style="position:absolute; margin:0 0 0 -999em;" name="{honey}" />
         </div>
     </div>
     <div class="flex flex-wrap items-center justify-end gap-2">
-        <button class="ndz-btn ndz-btn-outline" type="button" name="" value="">
-            <svg xmlns="http://www.w3.org/2000/svg" class="fill-current" width="17.12" height="16.13" viewBox="0 0 17.12 16.13">
-                <path d="M16.42,16.13c-.09,0-.18-.02-.26-.05-.09-.03-.17-.09-.25-.16l-2.14-2.14H4.91c-.4,0-.73-.14-1.01-.42-.28-.28-.42-.61-.42-1.01v-1.67h9.11c.39,0,.73-.14,1-.41.28-.28.42-.61.42-1.01V3.49h1.67c.4,0,.73.14,1.01.42.28.28.42.61.42,1.01v10.5c0,.22-.07.4-.23.52-.15.13-.31.19-.48.19M1.43,9.4l1.39-1.39h8.53V1.43H1.43v7.97ZM.71,11.83c-.17,0-.33-.06-.49-.19-.15-.13-.22-.3-.22-.52V1.43c0-.4.14-.73.42-1.01.28-.28.61-.42,1.01-.42h9.92c.39,0,.73.14,1,.42.28.28.42.61.42,1.01v6.58c0,.39-.14.73-.42,1.01-.28.28-.61.42-1,.42H3.4l-2.19,2.18c-.08.08-.16.14-.25.17-.09.03-.17.05-.25.05M1.43,8.01V1.43v6.58Z"></path>
-            </svg>
-            <f:translate key="tx_products_domain_model_product.form.discussorder" />
-        </button>
-        <f:form.submit class="ndz-btn" value="<f:translate key='tx_products_domain_model_product.form.completeorder' />" />
+        <f:form.submit class="ndz-btn js-final-order-btn" value="<f:translate key='tx_products_domain_model_product.form.completeorder' />" />
     </div>
 
 </div>

@@ -6,6 +6,8 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use Indiz\Products\Domain\Model\Category;
 use Indiz\Products\Domain\Model\Content;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class Product extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {
@@ -56,6 +58,7 @@ class Product extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @var ObjectStorage<Content>
      */
     protected $altcontent;
+    protected $altcontent_sorted = false;
 
     /**
      * @var ObjectStorage<Faq>
@@ -201,9 +204,39 @@ class Product extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     }
     
 
-    public function getAltcontent(): ?ObjectStorage
+    public function getAltcontent(): ?array
     {
-        return $this->altcontent;
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('tx_products_domain_model_product');
+
+        $rows = $queryBuilder
+            ->select('altcontent')
+            ->from('tx_products_domain_model_product')
+            ->where(
+                $queryBuilder->expr()->in('uid', $queryBuilder->createNamedParameter($this->uid))
+            )
+            ->executeQuery()
+            ->fetchOne();
+
+            
+        $sorted = [];
+        if($rows && strlen($rows)){
+            $altcontent_uids = explode(",",$rows);
+            foreach($this->altcontent as $altc){
+                $pos = array_search($altc->getUid(),$altcontent_uids);
+                $sorted[$pos] = $altc;
+                /*if($this->uid == 28){
+                    echo "pos".$pos.":".$altc->getUid()."<br>";
+                }*/
+            } 
+        }else{
+            return [];
+        }
+        ksort($sorted);
+        $this->altcontent_sorted = true; 
+        return ($sorted);
+
+
     }
 
     public function setAltcontent(ObjectStorage $altcontent): void
@@ -234,9 +267,9 @@ class Product extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
             return $this->categories;
         }
 
-    public function setCategories($categories):  void
+    public function setCategories($category):  void
     {
-        $this->categories = $cateories;
+        $this->category = $cateory;
     } 
 
     public function getReferenceProducts(): ?ObjectStorage

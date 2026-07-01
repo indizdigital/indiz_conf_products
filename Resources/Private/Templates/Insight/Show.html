@@ -4,27 +4,38 @@
 >
 <f:asset.script identifier="swiperjs" src="EXT:indiz-digital-gmbh/stepping-stone-site-package/Resources/Public/JavaScript/swiper-bundle.min.js" />
 <f:asset.script identifier="swiper" src="EXT:indiz-digital-gmbh/stepping-stone-site-package/Resources/Public/JavaScript/ndz-swiper.js"/>
+<f:asset.script identifier="photoswipe-umd" src="EXT:indiz-digital-gmbh/stepping-stone-site-package/Resources/Public/JavaScript/photoswipe.umd.min.js" />
+<f:asset.script identifier="photoswipe-lightbox-umd" src="EXT:indiz-digital-gmbh/stepping-stone-site-package/Resources/Public/JavaScript/photoswipe-lightbox.umd.min.js" />
+<f:asset.script identifier="ndz-gallery" src="EXT:indiz-digital-gmbh/stepping-stone-site-package/Resources/Public/JavaScript/ndz-gallery.js" />
 
 <section class="my-5 md:my-10 lg:my-20">
     <div class="grid grid-cols-1 gap-12 sm:grid-cols-3">
         <div class="space-y-3 lg:space-y-5{f:if(condition: insight.feuser, then: ' col-span-2', else: ' col-span-3')}">
             <h1 class="ndz-headline-large">{insight.title}</h1>
-            <p><span class="text-blue"><f:format.date format="d.m.Y">{insight.datetime}</f:format.date></span>{f:if(condition: '{insight.categories.0.name} != NULL', then: ' | <span class="text-orange font-bold">{insight.categories.0.name}</span>' )}{f:if(condition: insight.author, then: ' | {insight.author}' )}</p>
+            <p><span class="text-blue"><f:format.date format="d.m.Y">{insight.datetime}</f:format.date></span>{f:if(condition: '{insight.categories.0.name}', then: ' | <span class="text-orange font-bold">{insight.categories.0.name}</span>')}{f:if(condition: insight.author, then: ' | {insight.author}' )}</p>
             <f:if condition="{insight.falMedia}">
-                <div class="swiper w-full pb-10">
+                <div class="swiper w-full pb-10 pswp-gallery" id="gallery-carousel-{data.uid}">
                     <div class="swiper-wrapper">
                         <f:for each="{insight.falMedia}" as="image">
                             <div class="swiper-slide w-auto">
-                                <f:image
-                                    image="{image}"
-                                    height="300c"
-                                    srcset="
-                                        {f:uri.image(image:image, height:'300c')} 200h,
-                                    "
-                                    sizes="(max-width: 768px) 100vw, 1200px"
-                                    loading="lazy"
-                                    alt="{image.alternative}"
-                                />
+                                <ndz:processedImageDimensions image="{image}" maxWidth="1440" maxHeight="1440" as="dim">
+                                    <a href="{f:uri.image(image: image, maxWidth: '1440', maxHeight: '1440', fileExtension: 'webp')}"
+                                        data-pswp-width="{dim.width}"
+                                        data-pswp-height="{dim.height}"
+                                        class="block">
+                                        <f:image
+                                            image="{image}"
+                                            height="300c"
+                                            fileExtension="webp"
+                                            srcset="
+                                                {f:uri.image(image: image, height: '300c', fileExtension: 'webp')} 1x,
+                                                {f:uri.image(image: image, height: '600c', fileExtension: 'webp')} 2x
+                                            "
+                                            loading="lazy"
+                                            alt="{image.alternative}"
+                                        />
+                                    </a>
+                                </ndz:processedImageDimensions>
                             </div>
                         </f:for>
                     </div>
@@ -36,7 +47,9 @@
                     <div class="swiper-button-next -mt-10"></div>
                 </div>
             </f:if>
-            <f:format.html>{insight.bodytext}</f:format.html>
+            <div class="ndz-rte">
+                <f:format.html>{insight.bodytext}</f:format.html>
+            </div>
         </div>
         <f:if condition="{insight.feuser}">
             <div class="space-y-3 lg:space-y-5 xl:space-y-8">
@@ -47,39 +60,49 @@
         </f:if>
     </div>
     <div class="bg-lightblue mt-10 -mx-5 md:-mx-10 lg:-mx-20 lg:mt-20">
-        <div class="p-5 space-y-3 bg-lightblue md:p-10 lg:py-12 lg:px-20 lg:space-y-5 xl:space-y-12">
-            <h2 class="ndz-headline-middle">Titel</h2>
-            <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-                <div class="relative text-blue space-y-2 xl:space-y-5">
-                    <div class="relative bg-grey-200 h-0 pb-[65%]">
-                        
+        <div class="p-5 space-y-3 bg-lightblue md:p-10 lg:py-12 lg:px-20 lg:space-y-5 xl:space-y-12 ">
+            <h2 class="ndz-headline-middle"><f:translate key="tx_products_domain_model_product.more" extensionName="products" /> {insight.categories.0.name}</h2>
+            <div class="relative ndz-carousel-offset">
+                <div class="swiper pb-12" data-slides-per-view="auto">
+                    <div class="swiper-wrapper">
+                        <f:for each="{insights}" as="insight">
+                            <div class="swiper-slide relative text-blue space-y-2 w-full sm:w-[49%] lg:w-[32%] xl:space-y-5">
+                                <f:link.action action="show" arguments="{insight:insight}" class="absolute inset-0 z-10 mb-0"><span class="sr-only">Link</span></f:link.action>
+                                <div class="relative bg-grey-200 h-0 pb-[65%]">
+                                    <f:if condition="{insight.falMediaCount}">
+                                        <f:then>
+                                            <f:image
+                                                class="absolute size-full object-contain"
+                                                image="{insight.falMedia.0}"
+                                                width="800c"
+                                                fileExtension="webp"
+                                                srcset="
+                                                    {f:uri.image(image:insight.falMedia.0, width:'400c', fileExtension: 'webp')} 400w,
+                                                    {f:uri.image(image:insight.falMedia.0, width:'800c', fileExtension: 'webp')} 800w
+                                                "
+                                                sizes="(max-width:639px) 100vw, (max-width:1023px) 50vw, (max-width:1439px) 30vw, 410px"
+                                                loading="lazy"
+                                                alt="{insight.falMedia.0.alternative}"
+                                            />
+                                        </f:then>
+                                        <f:else>
+                                            <f:image class="absolute size-full object-cover" src="EXT:products/Resources/Public/Images/stepping_umzugkarte_neutral.svg" />
+                                        </f:else>
+                                    </f:if>
+                                </div>
+                                <div class="flex-1 space-y-2 xl:space-y-3">
+                                    <p><f:format.date format="d.m.Y">{insight.datetime}</f:format.date>{f:if(condition: '{insight.categories.0.name}', then: ' | <span class="text-orange font-bold">{insight.categories.0.name}</span>')}</p>
+                                    <h3 class="ndz-headline-small">{insight.title}</h3>
+                                    <p>{insight.teaser -> f:format.crop(maxCharacters: 150)}</p>
+                                </div>
+                            </div>
+                        </f:for>
                     </div>
-                    <div class="flex-1 space-y-2 xl:space-y-3">
-                        <p><f:format.date format="d.m.Y">{insight.datetime}</f:format.date>{f:if(condition: '{insight.categories.0.name} != NULL', then: ' | <span class="text-orange font-bold">{insight.categories.0.name}</span>' )}</p>
-                        <h2 class="ndz-headline-small">{insight.title}</h2>
-                        <p>{insight.teaser -> f:format.crop(maxCharacters: 150)}</p>
-                    </div>
+                    <div class="swiper-pagination"></div>
                 </div>
-                <div class="relative text-blue space-y-2 xl:space-y-5">
-                    <div class="relative bg-grey-200 h-0 pb-[65%]">
-                        
-                    </div>
-                    <div class="flex-1 space-y-2 xl:space-y-3">
-                        <p><f:format.date format="d.m.Y">{insight.datetime}</f:format.date>{f:if(condition: '{insight.categories.0.name} != NULL', then: ' | <span class="text-orange font-bold">{insight.categories.0.name}</span>' )}</p>
-                        <h2 class="ndz-headline-small">{insight.title}</h2>
-                        <p>{insight.teaser -> f:format.crop(maxCharacters: 150)}</p>
-                    </div>
-                </div>
-                <div class="relative text-blue space-y-2 xl:space-y-5">
-                    <div class="relative bg-grey-200 h-0 pb-[65%]">
-                        
-                    </div>
-                    <div class="flex-1 space-y-2 xl:space-y-3">
-                        <p><f:format.date format="d.m.Y">{insight.datetime}</f:format.date>{f:if(condition: '{insight.categories.0.name} != NULL', then: ' | <span class="text-orange font-bold">{insight.categories.0.name}</span>' )}</p>
-                        <h2 class="ndz-headline-small">{insight.title}</h2>
-                        <p>{insight.teaser -> f:format.crop(maxCharacters: 150)}</p>
-                    </div>
-                </div>
+                <!-- If we need navigation buttons -->
+                <div class="swiper-button-prev after:bg-white"></div>
+                <div class="swiper-button-next after:bg-white"></div>
             </div>
         </div>
     </div>

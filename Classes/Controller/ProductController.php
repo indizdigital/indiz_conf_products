@@ -28,13 +28,14 @@ class ProductController extends ActionController
 
     public function filterAction(): \Psr\Http\Message\ResponseInterface
     {
-        $allowed = ['categories', 'tags', 'searchquery', 'pagesize', 'page'];
+        $allowed = ['categories', 'tags', 'searchquery', 'pagesize', 'page','view','sorting'];
         $filter = [];
         foreach ($allowed as $key) {
             if ($this->request->hasArgument($key)) {
                 $filter[$key] = $this->request->getArgument($key);
             }
         }
+        
         $feUser = $this->request->getAttribute('frontend.user');
         $feUser->setKey('ses', 'productFilter', $filter);
         $feUser->storeSessionData();
@@ -65,6 +66,11 @@ class ProductController extends ActionController
         $searchquery = $getArg('searchquery', '');
         $categories  = $getArg('categories', []);
         $tags        = $getArg('tags', []);
+        $sorting        = $getArg('sorting', 'ASC');
+        $view        = $getArg('view', "box");
+
+        $this->view->assign("view",$view);
+        $this->view->assign("sorting",$sorting);
 
         if ($searchquery) {
             $this->view->assign('searchquery', $searchquery);
@@ -79,7 +85,7 @@ class ProductController extends ActionController
             $this->setCategoryMeta($this->request->getArgument("category"));
             $categories = [(int)$this->request->getArgument("category")];
             $this->view->assign("selectedCategories", array_flip($categories));
-            $this->view->assign('products', $this->productRepository->findByAttributes($categories, [], $searchquery, $page, $pagesize));
+            $this->view->assign('products', $this->productRepository->findByAttributes($categories, [], $searchquery, $page, $pagesize,$sorting));
             $this->view->assign('productscount', $this->productRepository->findByAttributes($categories, [], $searchquery));
             return $this->htmlResponse();
         }
@@ -87,22 +93,23 @@ class ProductController extends ActionController
         if (!empty($categories) || !empty($tags)) {
             if (!empty($categories)) {
                 $this->view->assign("selectedCategories", array_flip((array)$categories));
+
+                if(count($categories)){
+                    $this->setCategoryMeta($categories[0]);
+                }
             }
             if (!empty($tags)) {
                 $this->view->assign("selectedTags", array_flip((array)$tags));
             }
 
-            if(count($categories)){
-                $this->setCategoryMeta($categories[0]);
-            }
-            $this->view->assign('products', $this->productRepository->findByAttributes($categories, $tags, $searchquery, $page, $pagesize));
+            $this->view->assign('products', $this->productRepository->findByAttributes($categories, $tags, $searchquery, $page, $pagesize,$sorting));
             $productscount = $this->productRepository->findByAttributes($categories, $tags, $searchquery);
         } elseif ($searchquery) {
-            $this->view->assign('products', $this->productRepository->findByAttributes([], [], $searchquery, $page, $pagesize));
+            $this->view->assign('products', $this->productRepository->findByAttributes([], [], $searchquery, $page, $pagesize,$sorting));
             $this->view->assign("selectedCategories", []);
             $productscount = $this->productRepository->findByAttributes([], [], $searchquery);
         } else {
-            $this->view->assign('products', $this->productRepository->findByAttributes([], [], "", $page, $pagesize));
+            $this->view->assign('products', $this->productRepository->findByAttributes([], [], "", $page, $pagesize,$sorting));
             $this->view->assign("selectedCategories", []);
             $productscount = $this->productRepository->findByAttributes([], [], "");
         }
@@ -135,6 +142,11 @@ class ProductController extends ActionController
                 ->getManagerForProperty('description');
             $manager->addProperty('description', strip_tags($description), [], true);
         }
+
+        $honey = md5("honeypot4evasecure".time())   ;
+        $this->view->assign("honey",$honey);
+        $feUser = $this->request->getAttribute('frontend.user');
+        $feUser->setKey('ses', 'product_honey', $honey);
 
         $this->view->assign('product', $product);
         return $this->htmlResponse();
@@ -184,10 +196,22 @@ class ProductController extends ActionController
      */
     public function orderAction(Order $order): \Psr\Http\Message\ResponseInterface
     {
-        $receiver = "tech@indiz.digital";
+        $receiver = $order->getEmail();
         $order->setPid($this->settings["orderpid"]);
+
+        $feUser = $this->request->getAttribute('frontend.user');
+        $honey = $feUser->getKey('ses', 'product_honey');
+        $feUser->setKey('ses', 'product_honey',"");
+
+        if(!$this->request->hasArgument($honey)){
+            return $this->redirect("index");
+            if(strlen($this->request->getArgument($honey))){
+            return $this->redirect("index");
+            }
+        }
         
-        $cc = $receiver;
+        $cc = "support@stepping-stone.ch";
+        $bcc = "tech@indiz.digital";
         $packageelements = $this->request->hasArgument("packageelements")?$this->request->getArgument("packageelements"):[];
 
         if ($order->getProductUid()) {
@@ -207,7 +231,7 @@ class ProductController extends ActionController
                 
                 $subject = ($order->getOrdertype()?"Order for ":"Config check for ") . $order->getOrdername();
                 $template = "Order";
-                $this->mailer->send($receiver,$cc,$subject,$template, $vars);
+                $this->mailer->send($receiver,$cc,$bcc,$subject,$template, $vars);
                 
                 $message = 'Mail sent successfully.';
             } else {
@@ -216,7 +240,6 @@ class ProductController extends ActionController
         } else {
             $message =  'No package selected.';
         }
-        echo $message;exit;
         
         return $this->redirect("finish",NULL,NULL,["order"=>$order->getUid(),"message"=>urlencode($message)]);
     }

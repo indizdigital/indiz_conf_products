@@ -19,6 +19,8 @@ class Formula
         //if amount == 0 keep it as string for further calculations
         if($amount){
             $formula = str_replace('{amount}',$amount, $formula);
+        }else{
+           // return 0;
         }
         preg_match_all('/\{([^}]+)\}/', $formula, $matches);
 

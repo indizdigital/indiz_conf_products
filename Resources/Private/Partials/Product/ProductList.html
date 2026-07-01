@@ -1,5 +1,5 @@
 <html xmlns:ndz="http://typo3.org/ns/IndizDigitalGmbh/SteppingStoneSitePackage/ViewHelpers">
-    <f:link.action action="show" arguments="{product:product}" class="absolute inset-0 z-10 mb-0"><span class="sr-only">Link</span></f:link.action>
+    <f:link.action action="show" arguments="{product:product,maincat:product.categories.0}" class="absolute inset-0 z-10 mb-0"><span class="sr-only">Link</span></f:link.action>
     <div class="relative w-[25%] md:w-[15%] max-w-32">
         <span class="relative h-0 pb-[100%] bg-white rounded-full flex items-center justify-center text-blue">
             <f:if condition="{product.image}">

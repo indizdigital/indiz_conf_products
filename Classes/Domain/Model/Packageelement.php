@@ -104,6 +104,7 @@ class Packageelement extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         }else{
             $price = $this->getProductelement()->getPrice() * $this->getAmount();
         }
+        
         return $price;
     }
 

@@ -18,8 +18,14 @@
 			<trans-unit id="tx_products_domain_model_product.unit_cpu">
 				<source>vCPUs</source>
 			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.single_unit_cpu">
+				<source>vCPU</source>
+			</trans-unit>
 			<trans-unit id="tx_products_domain_model_product.unit_gpu">
 				<source>GPUs</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.single_unit_gpu">
+				<source>GPU</source>
 			</trans-unit>
 			<trans-unit id="tx_products_domain_model_product.unit_gb">
 				<source>Gigabyte</source>
@@ -92,6 +98,9 @@
 			</trans-unit>
 			<trans-unit id="tx_products_domain_model_product.order">
 				<source>Order</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.order_for">
+				<source>Order for</source>
 			</trans-unit>
 			<trans-unit id="tx_products_domain_model_product.request">
 				<source>Order</source>
@@ -172,7 +181,7 @@
 				<source>e.g. maximilian.mustermann@musterfirma.ch</source>
 			</trans-unit>
 			<trans-unit id="tx_products_domain_model_product.form.agb">
-				<source> I have read the general terms and conditions and agree.</source>
+				<source><![CDATA[I have read the <a href="/en/terms-and-conditions" class="text-blue hover:underline" target="_blank" rel="noopener">general terms and conditions</a> and agree.]]></source>
 			</trans-unit>
 			<trans-unit id="tx_products_domain_model_product.form.newsletter">
 				<source>I would like to receive the newsletter.</source>
@@ -245,6 +254,18 @@
 			</trans-unit>
 			<trans-unit id="tx_products_domain_model_product.perpage">
 				<source>Per page</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.more">
+				<source>More</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.order_confirmation.thank_you">
+				<source>Thank you very much for your order!</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.order_confirmation.message">
+				<source><![CDATA[<p>We have successfully received your enquiry and will process it as soon as possible.</p><p>Our team will usually get back to you within 1–2 working days. If you have any further questions in the meantime, please feel free to contact us by telephone or email at any time.</p><p>We look forward to hearing from you.</p>]]></source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.order_confirmation.to_startpage">
+				<source>To Startpage</source>
 			</trans-unit>
         </body>
     </file>

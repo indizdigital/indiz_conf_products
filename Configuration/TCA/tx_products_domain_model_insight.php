@@ -54,6 +54,7 @@ return [
                     --palette--;;urls,
                     istopnews,
                     notes,
+                --div--;Supporter,feuser,
                 --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:language,
                     --palette--;;language,
                 --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
@@ -405,6 +406,14 @@ return [
                     'showSynchronizationLink'         => true,
                 ],
             ],
+        ],
+        'feuser' => [
+            'label' => 'Supporter',
+            'config' => [
+                'type' => 'inline',
+                'foreign_table' => 'tt_content',
+                'maxitems' => 1,
+            ]
         ],
 
     ],

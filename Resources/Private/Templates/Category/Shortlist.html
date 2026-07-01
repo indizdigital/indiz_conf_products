@@ -14,11 +14,9 @@
                 </h3>
                 <div id="panel-1" role="region" aria-labelledby="accordion-1" class="ndz-accordion-content js-accordion-content">
                     <div class="ndz-accordion-content-inner">
-                        <p><f:format.nl2br>
-                            <f:if condition="{category.shortdesc}">
-                                <f:then>{category.shortdesc}</f:then>
-                                <f:else>{category.description}</f:else>
-                            </f:if></f:format.nl2br></p>
+                        <p>
+                            <f:format.nl2br>{f:if(condition: category.shortdesc, then: category.shortdesc, else: category.description)}</f:format.nl2br>
+                        </p>
                         <p class="my-5">
                             <f:link.action pageUid="3" class="ndz-btn ndz-btn-link ndz-btn-secondary" action="index" controller="Product" pluginName="Index" arguments="{category: category}">
                                 <f:if condition="{category.shortbtn}">

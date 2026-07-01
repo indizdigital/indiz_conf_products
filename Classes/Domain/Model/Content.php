@@ -7,6 +7,7 @@ class Content extends AbstractEntity
 {
     protected string $bodytext = '';
     protected string $header = '';
+    protected int $defaultopen = 0;
 
     public function getBodytext(): string
     {
@@ -26,5 +27,15 @@ class Content extends AbstractEntity
     public function setHeader(string $header): void
     {
         $this->header = $header;
+    }
+
+    public function getDefaultopen(): int
+    {
+        return $this->defaultopen;
+    }
+
+    public function setDefaultopen(int $defaultopen): void
+    {
+        $this->defaultopen = $defaultopen;
     }
 }

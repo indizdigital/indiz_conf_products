@@ -41,10 +41,347 @@ class InsightController extends ActionController
             }
         }
         $feUser = $this->request->getAttribute('frontend.user');
-        $feUser->setKey('ses', 'productFilter', $filter);
+        $feUser->setKey('ses', 'insightFilter', $filter);
         $feUser->storeSessionData();
 
         return $this->redirect('index');
+    }
+
+    public function copyImages(): array
+    {
+        $conn = GeneralUtility::makeInstance(ConnectionPool::class);
+
+        // Load all language-1 records that have a default-language parent
+        $qb = $conn->getQueryBuilderForTable('tx_products_domain_model_insight');
+        $qb->getRestrictions()->removeAll();
+        $translations = $qb
+            ->select('uid', 'l10n_parent')
+            ->from('tx_products_domain_model_insight')
+            ->where(
+                $qb->expr()->eq('sys_language_uid', $qb->createNamedParameter(1)),
+                $qb->expr()->gt('l10n_parent', $qb->createNamedParameter(0)),
+                $qb->expr()->eq('deleted', $qb->createNamedParameter(0))
+            )
+            ->executeQuery()
+            ->fetchAllAssociative();
+
+        $stats = ['copied' => 0, 'skipped' => 0, 'errors' => []];
+
+        foreach ($translations as $translation) {
+            $sourceUid = (int)$translation['uid'];
+            $targetUid = (int)$translation['l10n_parent'];
+
+            // Load all file references from the language-1 record
+            $qbRef = $conn->getQueryBuilderForTable('sys_file_reference');
+            $qbRef->getRestrictions()->removeAll();
+            $references = $qbRef
+                ->select('uid', 'uid_local', 'fieldname', 'pid', 'sorting_foreign', 'title', 'description', 'alternative')
+                ->from('sys_file_reference')
+                ->where(
+                    $qbRef->expr()->eq('uid_foreign', $qbRef->createNamedParameter($sourceUid)),
+                    $qbRef->expr()->eq('tablenames', $qbRef->createNamedParameter('tx_products_domain_model_insight')),
+                    $qbRef->expr()->eq('deleted', $qbRef->createNamedParameter(0))
+                )
+                ->executeQuery()
+                ->fetchAllAssociative();
+
+            if (empty($references)) {
+                continue;
+            }
+
+            // Collect already-existing references on the default-language record to avoid duplicates
+            $qbExist = $conn->getQueryBuilderForTable('sys_file_reference');
+            $qbExist->getRestrictions()->removeAll();
+            $existing = $qbExist
+                ->select('uid_local', 'fieldname')
+                ->from('sys_file_reference')
+                ->where(
+                    $qbExist->expr()->eq('uid_foreign', $qbExist->createNamedParameter($targetUid)),
+                    $qbExist->expr()->eq('tablenames', $qbExist->createNamedParameter('tx_products_domain_model_insight')),
+                    $qbExist->expr()->eq('deleted', $qbExist->createNamedParameter(0))
+                )
+                ->executeQuery()
+                ->fetchAllAssociative();
+
+            $existingKeys = [];
+            foreach ($existing as $e) {
+                $existingKeys[$e['fieldname'] . '_' . $e['uid_local']] = true;
+            }
+
+            $fieldCounts = [];
+            foreach ($references as $ref) {
+                $key = $ref['fieldname'] . '_' . $ref['uid_local'];
+                if (isset($existingKeys[$key])) {
+                    $stats['skipped']++;
+                    continue;
+                }
+
+                try {
+                    $conn->getConnectionForTable('sys_file_reference')->insert('sys_file_reference', [
+                        'tstamp'           => time(),
+                        'crdate'           => time(),
+                        'uid_local'        => (int)$ref['uid_local'],
+                        'uid_foreign'      => $targetUid,
+                        'tablenames'       => 'tx_products_domain_model_insight',
+                        'fieldname'        => $ref['fieldname'],
+                        'pid'              => (int)$ref['pid'],
+                        'l10n_parent'      => 0,
+                        'sys_language_uid' => 0,
+                        'sorting_foreign'  => (int)$ref['sorting_foreign'],
+                        'title'            => $ref['title'] ?? '',
+                        'description'      => $ref['description'] ?? '',
+                        'alternative'      => $ref['alternative'] ?? '',
+                    ]);
+                    $fieldCounts[$ref['fieldname']] = ($fieldCounts[$ref['fieldname']] ?? 0) + 1;
+                    $stats['copied']++;
+                } catch (\Throwable $e) {
+                    $stats['errors'][] = "source={$sourceUid} target={$targetUid} uid_local={$ref['uid_local']}: " . $e->getMessage();
+                }
+            }
+
+            // Keep the FAL count columns on the default-language record in sync
+            foreach ($fieldCounts as $fieldName => $count) {
+                $conn->getConnectionForTable('tx_products_domain_model_insight')->update(
+                    'tx_products_domain_model_insight',
+                    [$fieldName => $count],
+                    ['uid' => $targetUid]
+                );
+            }
+
+            // Copy MM relations (categories + tags) from source to target
+            foreach ([
+                'tx_products_domain_model_insight_insightcategory_mm',
+                'tx_products_domain_model_insight_insighttag_mm',
+            ] as $mmTable) {
+                $this->copyMmRelations($conn, $mmTable, $sourceUid, $targetUid, $stats);
+            }
+        }
+        
+        return $stats;
+    }
+
+    public function syncCategories(): array
+    {
+        $conn = GeneralUtility::makeInstance(ConnectionPool::class);
+        $mmTable = 'tx_products_domain_model_insight_insightcategory_mm';
+        $stats = ['created' => 0, 'skipped' => 0, 'errors' => []];
+
+        // Load all language-1 insighttag records that have a default-language parent
+        $qb = $conn->getQueryBuilderForTable('tx_products_domain_model_insight');
+        $qb->getRestrictions()->removeAll();
+        $tags = $qb
+            ->select('uid', 'l10n_parent')
+            ->from('tx_products_domain_model_insight')
+            ->where(
+                $qb->expr()->eq('sys_language_uid', $qb->createNamedParameter(1)),
+                $qb->expr()->gt('l10n_parent', $qb->createNamedParameter(0)),
+                $qb->expr()->eq('deleted', $qb->createNamedParameter(0))
+            )
+            ->executeQuery()
+            ->fetchAllAssociative();
+
+        foreach ($tags as $tag) {
+            $tagUid       = (int)$tag['uid'];
+            $parentUid    = (int)$tag['l10n_parent'];
+
+            // Check if MM rows exist for the translated record (uid_local = tag uid)
+            $qbMm = $conn->getQueryBuilderForTable($mmTable);
+            $mmRows = $qbMm
+                ->select('uid_local', 'uid_foreign', 'sorting', 'sorting_foreign')
+                ->from($mmTable)
+                ->where($qbMm->expr()->eq('uid_local', $qbMm->createNamedParameter($tagUid)))
+                ->executeQuery()
+                ->fetchAllAssociative();
+
+            if (empty($mmRows)) {
+                continue;
+            }
+
+            // Collect already-existing uid_foreign values for the parent (uid_local = l10n_parent)
+            $qbExist = $conn->getQueryBuilderForTable($mmTable);
+            $existingForeign = $qbExist
+                ->select('uid_foreign')
+                ->from($mmTable)
+                ->where($qbExist->expr()->eq('uid_local', $qbExist->createNamedParameter($parentUid)))
+                ->executeQuery()
+                ->fetchFirstColumn();
+
+            $existingSet = array_flip($existingForeign);
+
+            foreach ($mmRows as $mmRow) {
+                $uidForeign = (int)$mmRow['uid_foreign'];
+
+                if (isset($existingSet[$uidForeign])) {
+                    $stats['skipped']++;
+                    continue;
+                }
+
+                try {
+                    $conn->getConnectionForTable($mmTable)->insert($mmTable, [
+                        'uid_local'       => $parentUid,
+                        'uid_foreign'     => $uidForeign,
+                        'sorting'         => (int)$mmRow['sorting'],
+                        'sorting_foreign' => (int)($mmRow['sorting_foreign'] ?? 0),
+                    ]);
+                    $stats['created']++;
+                } catch (\Throwable $e) {
+                    $stats['errors'][] = "tag={$tagUid} parent={$parentUid} uid_foreign={$uidForeign}: " . $e->getMessage();
+                }
+            }
+        }
+
+        return $stats;
+    }
+
+    public function syncTags(): array
+    {
+        $conn = GeneralUtility::makeInstance(ConnectionPool::class);
+        $mmTable = 'tx_products_domain_model_insight_insighttag_mm';
+        $stats = ['created' => 0, 'skipped' => 0, 'errors' => []];
+
+        // Load all language-1 insighttag records that have a default-language parent
+        $qb = $conn->getQueryBuilderForTable('tx_products_domain_model_insight');
+        $qb->getRestrictions()->removeAll();
+        $tags = $qb
+            ->select('uid', 'l10n_parent')
+            ->from('tx_products_domain_model_insight')
+            ->where(
+                $qb->expr()->eq('sys_language_uid', $qb->createNamedParameter(1)),
+                $qb->expr()->gt('l10n_parent', $qb->createNamedParameter(0)),
+                $qb->expr()->eq('deleted', $qb->createNamedParameter(0))
+            )
+            ->executeQuery()
+            ->fetchAllAssociative();
+
+        foreach ($tags as $tag) {
+            $tagUid       = (int)$tag['uid'];
+            $parentUid    = (int)$tag['l10n_parent'];
+
+            // Check if MM rows exist for the translated record (uid_local = tag uid)
+            $qbMm = $conn->getQueryBuilderForTable($mmTable);
+            $mmRows = $qbMm
+                ->select('uid_local', 'uid_foreign', 'sorting', 'sorting_foreign')
+                ->from($mmTable)
+                ->where($qbMm->expr()->eq('uid_local', $qbMm->createNamedParameter($tagUid)))
+                ->executeQuery()
+                ->fetchAllAssociative();
+
+            if (empty($mmRows)) {
+                continue;
+            }
+
+            // Collect already-existing uid_foreign values for the parent (uid_local = l10n_parent)
+            $qbExist = $conn->getQueryBuilderForTable($mmTable);
+            $existingForeign = $qbExist
+                ->select('uid_foreign')
+                ->from($mmTable)
+                ->where($qbExist->expr()->eq('uid_local', $qbExist->createNamedParameter($parentUid)))
+                ->executeQuery()
+                ->fetchFirstColumn();
+
+            $existingSet = array_flip($existingForeign);
+
+            foreach ($mmRows as $mmRow) {
+                $uidForeign = (int)$mmRow['uid_foreign'];
+
+                if (isset($existingSet[$uidForeign])) {
+                    $stats['skipped']++;
+                    continue;
+                }
+
+                try {
+                    $conn->getConnectionForTable($mmTable)->insert($mmTable, [
+                        'uid_local'       => $parentUid,
+                        'uid_foreign'     => $uidForeign,
+                        'sorting'         => (int)$mmRow['sorting'],
+                        'sorting_foreign' => (int)($mmRow['sorting_foreign'] ?? 0),
+                    ]);
+                    $stats['created']++;
+                } catch (\Throwable $e) {
+                    $stats['errors'][] = "tag={$tagUid} parent={$parentUid} uid_foreign={$uidForeign}: " . $e->getMessage();
+                }
+            }
+        }
+
+        return $stats;
+    }
+
+    private function copyMmRelations(
+        \TYPO3\CMS\Core\Database\ConnectionPool $conn,
+        string $mmTable,
+        int $sourceUid,
+        int $targetUid,
+        array &$stats
+    ): void {
+
+    
+        // Load MM rows where uid_local = source (language-1 record)
+        $qb = $conn->getQueryBuilderForTable($mmTable);
+        $rows = $qb
+            ->select('uid_local', 'uid_foreign', 'sorting', 'sorting_foreign')
+            ->from($mmTable)
+            ->where($qb->expr()->eq('uid_local', $qb->createNamedParameter($sourceUid)))
+            ->executeQuery()
+            ->fetchAllAssociative();
+
+        if (empty($rows)) {
+            return;
+        }
+
+        // Collect already-existing target MM rows to avoid duplicates
+        $qbExist = $conn->getQueryBuilderForTable($mmTable);
+        $existingForeign = $qbExist
+            ->select('uid_foreign')
+            ->from($mmTable)
+            ->where($qbExist->expr()->eq('uid_local', $qbExist->createNamedParameter($targetUid)))
+            ->executeQuery()
+            ->fetchFirstColumn();
+
+        $existingSet = array_flip($existingForeign);
+
+        foreach ($rows as $row) {
+            $uidForeign = (int)$row['uid_foreign'];
+            if (isset($existingSet[$uidForeign])) {
+                $stats['skipped']++;
+                continue;
+            }
+
+            try {
+                $conn->getConnectionForTable($mmTable)->insert($mmTable, [
+                    'uid_local'       => $targetUid,
+                    'uid_foreign'     => $uidForeign,
+                    'sorting'         => (int)$row['sorting'],
+                    'sorting_foreign' => (int)($row['sorting_foreign'] ?? 0),
+                ]);
+                
+                $stats['copied']++;
+            } catch (\Throwable $e) {
+                $stats['errors'][] = "{$mmTable} source={$sourceUid} target={$targetUid} uid_foreign={$uidForeign}: " . $e->getMessage();
+            }
+        }
+    }
+
+    private function buildPaginationItems(int $current, int $total): array
+    {
+        if ($total <= 1) {
+            return [];
+        }
+        $show = [];
+        for ($i = 0; $i < $total; $i++) {
+            if ($i === 0 || $i === $total - 1 || abs($i - $current) <= 1) {
+                $show[] = $i;
+            }
+        }
+        $items = [];
+        $prev = -2;
+        foreach ($show as $pagenum) {
+            if ($prev !== -2 && $pagenum > $prev + 1) {
+                $items[] = -1; // dots sentinel
+            }
+            $items[] = $pagenum;
+            $prev = $pagenum;
+        }
+        return $items;
     }
 
     public function indexAction(): \Psr\Http\Message\ResponseInterface
@@ -54,7 +391,8 @@ class InsightController extends ActionController
         $this->view->assign("categories",$this->insightcategoryRepository->findAll());
 
         // Merge session filter as base; direct request arguments override
-        $sessionFilter = $this->request->getAttribute('frontend.user')->getKey('ses', 'productFilter') ?? [];
+        $sessionFilter = $this->request->getAttribute('frontend.user')->getKey('ses', 'insightFilter') ?? [];
+        $this->request->getAttribute('frontend.user')->setKey('ses', 'insightFilter',[]);
         $getArg = function (string $key, mixed $default = null) use ($sessionFilter) {
             if ($this->request->hasArgument($key)) {
                 return $this->request->getArgument($key);
@@ -78,14 +416,7 @@ class InsightController extends ActionController
         $this->view->assign('insightsallcount', $insightsallcount);
         $this->view->assign('currentpage', $page);
 
-        // Singular 'category' comes from the URL route enhancer; normalise into the array used everywhere else
-        if ($this->request->hasArgument("category") && !empty($this->request->getArgument("category"))) {
-            $categories = [(int)$this->request->getArgument("category")];
-            $this->view->assign("selectedCategories", array_flip($categories));
-            $this->view->assign('insights', $this->insightRepository->findByAttributes($categories, [], $searchquery, $page, $pagesize));
-            $this->view->assign('insightscount', $this->insightRepository->findByAttributes($categories, [], $searchquery));
-            return $this->htmlResponse();
-        }
+        
 
         if (!empty($categories) || !empty($tags)) {
             if (!empty($categories)) {
@@ -106,11 +437,13 @@ class InsightController extends ActionController
             $insightscount = $this->insightRepository->findByAttributes([], [], "");
         }
        
-        $this->view->assign('pages', array_fill(0, (int) ceil($insightscount / $pagesize), 1));
+        $totalPages = (int)ceil($insightscount / $pagesize);
+        $this->view->assign('pages', array_fill(0, $totalPages, 1));
         $this->view->assign('insightscount', $insightscount);
         $this->view->assign('pagesize', $pagesize);
+        $this->view->assign('paginationItems', $this->buildPaginationItems($page, $totalPages));
+        $this->view->assign('lastPage', max(0, $totalPages - 1));
 
-        
         return $this->htmlResponse();
     }
 
@@ -120,6 +453,8 @@ class InsightController extends ActionController
     public function showAction(\Indiz\Products\Domain\Model\Insight $insight): \Psr\Http\Message\ResponseInterface
     {
         $this->view->assign('insight',$insight);
+        $insights = $this->insightRepository->findByAttributes([], [], "",0,6);
+        $this->view->assign('insights',$insights);
         return $this->htmlResponse();
     }
 
@@ -134,7 +469,10 @@ class InsightController extends ActionController
 
     public function importAction(): \Psr\Http\Message\ResponseInterface
     {
-
+        //$this->syncCategories();
+     //  $this->relinkDocuments();
+        //    print_r($st);exit;
+    exit;
           
         $stats = ['created' => 0, 'errors' => []];
 
@@ -149,10 +487,141 @@ class InsightController extends ActionController
                 
             }
         }
+        $this->copyImages();
+
+        $this->syncCategories();
+        $this->syncTags();
 
         $this->view->assign('stats', $stats);
         return $this->htmlResponse();
     }
+
+    private function relinkDocuments()
+    {
+        $conn = GeneralUtility::makeInstance(ConnectionPool::class);
+        $stats = ['updated' => 0, 'skipped' => 0, 'errors' => []];
+
+        // Direct PDO connection to the source database
+        $sourcePdo = new \PDO(
+            'mysql:host=localhost;dbname=sst_typo3;charset=utf8mb4',
+            'idi-all',
+            'choshieju1ooN5ie',
+            [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]
+        );
+
+        // Load bodytext from the source database
+        $stmt = $sourcePdo->prepare(
+            'SELECT uid, bodytext,title FROM tx_news_domain_model_news WHERE bodytext LIKE ? AND deleted = 0'
+        );
+        $stmt->execute(['%<link file:%']);
+        $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+        foreach ($rows as $row) {
+            $newsUid  = (int)$row['uid'];
+            $original = $row['bodytext'];
+                                            echo $row["title"];
+
+            // Pattern: <link file:UID TARGET CLASS TITLE>link text</link>
+            $updated = preg_replace_callback(
+                '/<link file:(\d+)([^>]*)>(.*?)<\/link>/is',
+                function (array $matches) use ($conn, $sourcePdo, &$stats): string {
+                    $oldFileUid = (int)$matches[1];
+                    $attrs      = trim($matches[2]);
+                    $text       = $matches[3];
+
+                    // Look up identifier in source database
+                    $fileStmt = $sourcePdo->prepare('SELECT identifier FROM sys_file WHERE uid = ?');
+                    $fileStmt->execute([$oldFileUid]);
+                    $sourceFile = $fileStmt->fetch(\PDO::FETCH_ASSOC);
+
+                    if (!$sourceFile) {
+                        $stats['errors'][] = "sst_typo3 sys_file uid={$oldFileUid} not found — link left unchanged";
+                        return $matches[0];
+                    }
+
+                    // Find the same file in the current DB by identifier (UIDs may differ)
+                     
+
+
+
+                                            $filearray = explode("/",$sourceFile['identifier']);
+                                            $f_name = $filearray[array_key_last($filearray)];
+                                        $dir = $filearray[array_key_last($filearray)-1];
+                                        $dir2 = substr($dir,0,4);
+
+                                            $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
+                                            $storage = $resourceFactory->getStorageObject(1); // storage UID
+                                            
+                                            $folder_found = true;
+                                            try {
+                                                $folder  = $storage->getFolder("www.stepping-stone.ch/insights/" . $dir2 . "/" . $dir);
+                                            } catch (FolderDoesNotExistException $e) {
+                                                $folder_found = false;
+                                                //$errors['errors'][] = "Folder not found: " . $filename;
+                                            }
+                                            if(!$folder_found){
+                                                try {
+                                                    $folder  = $storage->getFolder("www.stepping-stone.ch/insights/archive/");
+                                                } catch (FolderDoesNotExistException $e) {
+                                                    // $errors["filesmissing"][] = "scp /var/www/typo3/app-001/fileadmin_old" . $filename . " /var/www/typo3/app-001/htdocs/public/fileadmin/www.stepping-stone.ch/insights/".$f_name;
+                                                    $errors["filesmissing"][] = $filename ;
+                                                return false;
+                                                }
+                                            }
+                                            echo "<br>";
+                                            echo "searching file ".$f_name." in ".$dir2 ."/".$dir." orig".$sourceFile['identifier'];
+                                            
+                                            try {
+                                                $file = $folder->getFile($f_name);
+                                                if(!$file){
+                                                    return  $matches[0];
+                                                }
+                                                $fileUid = $file->getUid();
+                                                echo "has found it";
+                                            } catch (Throwable $e) {
+                                                echo "has not found it";
+                                                //$stats['errors'][] = "sys_file identifier={$sourceFile['identifier']} not found in current DB — link left unchanged";
+                                                return $matches[0];
+                                            }
+
+                    if (!$fileUid) {
+                        $stats['errors'][] = "sys_file identifier={$sourceFile['identifier']} not found in current DB — link left unchanged";
+                        return $matches[0];
+                    }
+
+                    // First token after uid is the target (_blank etc.), '-' means none
+                    $attrParts  = preg_split('/\s+/', $attrs, -1, PREG_SPLIT_NO_EMPTY);
+                    $targetAttr = '';
+                    if (!empty($attrParts[0]) && $attrParts[0] !== '-') {
+                        $targetAttr = ' target="' . htmlspecialchars($attrParts[0], ENT_QUOTES) . '"';
+                    }
+
+                    return '<a href="t3://file?uid=' . $fileUid . '"' . $targetAttr . '>' . $text . '</a>';
+                },
+                $original
+            );
+
+            if ($updated === $original) {
+                $stats['skipped']++;
+                continue;
+            }
+
+            // Write updated bodytext to the current insight record (matched by uid)
+            try {
+                $conn->getConnectionForTable('tx_products_domain_model_insight')->update(
+                    'tx_products_domain_model_insight',
+                    ['bodytext' => $updated],
+                    ['uid' => $newsUid]
+                );
+                $stats['updated']++;
+            } catch (\Throwable $e) {
+                $stats['errors'][] = "insight uid={$newsUid}: " . $e->getMessage();
+            }
+        }
+
+        return $stats;
+    }
+    
 
     private function swapLanguages(){
         $insights = $this->insightRepository->findAll();
@@ -288,24 +757,94 @@ class InsightController extends ActionController
             
 
         }
-        
-        
+
+        $old_cat = [["Artificial Intelligence","Events"],
+                ["AI","Technical article"],
+                ["Workshop","Events"],
+                ["openDesk","Technical article"],
+                ["stoney office","Technical article"],
+                ["stepping stone Team","Team"],
+                ["OpenSSH","Technical article"],
+                ["Terraform","Events"],
+                ["Data center","Technical article"],
+                ["Anniversary","Events"],
+                ["Backup as a Service","Technical article"],
+                ["CH Open","Events"],
+                ["stoney cloud","Technical article"],
+                ["Kubernetes","Technical article"],
+                ["stoney backup","Technical article"],
+                ["Infrastructure","Technical article"],
+                ["CI/CD","Technical article"],
+                ["stoney wiki","Technical article"],
+                ["Container as a Service","Technical article"],
+                ["PaaS","Technical article"],
+                ["Platform as a Service","Technical article"],
+                ["Software as a Service","Technical article"],
+                ["Open source","Technical article"],
+                ["SaaS","Technical article"],
+                ["ISO/IEC 27001","Technical article"],
+                ["Information Security","Technical article"],
+                ["Jobs","Team"],
+                ["Planned maintenance work","Maintenance Window"],
+                ["Disruption","Maintenance Window"],
+                ["Maintenance work","Maintenance Window"],
+                ["Events","Events"],
+                ["Retrospection","Events"],
+                ["CEPH","Technical article"],
+                ["Cloud computing","Technical article"],
+                ["Gallery","Events"],
+                ["GlusterFS","Events"],
+                ["High availabitity","Events"],
+                ["IaaS","Technical article"],
+                ["Infrastructure as a Service","Technical article"],
+                ["Open Cloud Day","Events"],
+                ["Open Source Study","Technical article"],
+                ["OpenSSL","Technical article"],
+                ["OpenStack","Technical article"],
+                ["Partner","Events"],
+                ["Products","Technical article"],
+                ["Publications","News"],
+                ["Customer event","Events"],
+                ["Security","Technical article"],
+                ["Sponsoring","Events"],
+                ["Swiss IT Magazine","News"],
+                ["Announcements","News"],
+                ["Video","Events"],
+                ["Presentation","Events"]];
+         
         foreach($insights as $data){
+           
+            
             $lineNumber++;
             
 
             try {
                 $insight = $this->createInsightFromRow($data, $storagePid);
 
-                if (!empty($data['catnames'])) {
-                    foreach ($this->resolveOrCreateByName($data['catnames'], $this->insightcategoryRepository, \Indiz\Products\Domain\Model\Insightcategory::class, $storagePid) as $cat) {
+                /*if (!empty($data['catnames'])) {
+                    $objects = $this->resolveOrCreateByName($data['catnames'], $this->insightcategoryRepository, \Indiz\Products\Domain\Model\Insightcategory::class, $storagePid);
+                    foreach ($tagobjects as $cat) {
                         $insight->getCategories()->attach($cat);
                     }
-                }
+                }*/
+                //$cats["Artificial Intelligence"]
 
+                $newcats = [];
                 if (!empty($data['tagnames'])) {
-                    foreach ($this->resolveOrCreateByName($data['tagnames'], $this->insighttagRepository, \Indiz\Products\Domain\Model\Insighttag::class, $storagePid) as $tag) {
+                    $tagobjects = $this->resolveOrCreateByName($data['tagnames'], $this->insighttagRepository, \Indiz\Products\Domain\Model\Insighttag::class, $storagePid);
+                    foreach ($tagobjects as $tag) {
                         $insight->getTags()->attach($tag);
+                        foreach($old_cat as $oldcat){
+                            if($oldcat[0] == $tag->getName()){
+                                $newcats[] = $oldcat[1];
+                            }
+                        }
+                    }
+                }
+                if (!empty($newcats)) {
+                    $objects = $this->resolveOrCreateByName($newcats, $this->insightcategoryRepository, \Indiz\Products\Domain\Model\Insightcategory::class, $storagePid);
+                    foreach ($objects as $cat) {
+                        $insight->getCategories()->attach($cat);
                     }
                 }
 
@@ -314,10 +853,7 @@ class InsightController extends ActionController
                 //echo $lineNumber . ":" . $insight->getTitle()."<br>";
                 $uid = $insight->getUid();
 
-                // Track by title so translated records can resolve l10n_parent by title
-                if (!empty($data['title'])) {
-                    $uidMap[$uid] = $data['title'];
-                }
+                
 
                 $this->updateNativeFields($uid, $data, $uidMap);
 
@@ -409,7 +945,7 @@ class InsightController extends ActionController
         return $insight;
     }
 
-    private function updateNativeFields(int $uid, array $data, array $uidMap = []): void
+    private function updateNativeFields(int &$uid, array $data, array $uidMap = []): void
     {
         $fields = [];
 
@@ -440,11 +976,13 @@ class InsightController extends ActionController
                 ->getConnectionForTable('tx_products_domain_model_insight')
                 ->update('tx_products_domain_model_insight', $fields, ['uid' => $uid]);
         }
+        $uid = (int)$data["uid"];
     }
 
     private function attachFalReference(string $filename, int $recordUid, string $fieldName, int $pid,array &$errors): bool
     {
         $filename = trim($filename);
+        
         
         if ($filename === '') {
             return false;
@@ -488,7 +1026,6 @@ class InsightController extends ActionController
             $errors['errors'][] = "file not found: " . $filename;
         }
 
-        
         $refConnection = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionForTable('sys_file_reference');
 
@@ -503,6 +1040,10 @@ class InsightController extends ActionController
             'l10n_parent'     => 0,
             'sorting_foreign' => 0,
         ]);
+
+        
+
+            //$errors['errors'][] = "file found: " . $filename;
 
        
 

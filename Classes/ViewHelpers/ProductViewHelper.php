@@ -49,14 +49,13 @@ class ProductViewHelper extends AbstractViewHelper{
 
         $uid  = (int)$this->arguments['uid'];
         $attr = $this->arguments['attr'];
-        
         $product = $this->getProductByTeamMemberUid($uid);
         
         if ($product === null) {
             return '';
         }
 
-        return $product[$attr] ?? '';
+        return ($product[$attr] ?? '').$uid;
 
 	}
 
@@ -88,6 +87,7 @@ class ProductViewHelper extends AbstractViewHelper{
         if (!$ttContentRow) {
             return null;
         }
+        
 
         $contentUid = (int)$ttContentRow['uid'];
         

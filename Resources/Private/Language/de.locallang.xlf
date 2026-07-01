@@ -18,8 +18,14 @@
 			<trans-unit id="tx_products_domain_model_product.unit_cpu">
 				<target>vCPUs</target>
 			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.single_unit_cpu">
+				<target>vCPU</target>
+			</trans-unit>
 			<trans-unit id="tx_products_domain_model_product.unit_gpu">
 				<target>GPUs</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.single_unit_gpu">
+				<target>GPU</target>
 			</trans-unit>
 			<trans-unit id="tx_products_domain_model_product.unit_gb">
 				<target>Gigabyte</target>
@@ -92,6 +98,9 @@
 			</trans-unit>
 			<trans-unit id="tx_products_domain_model_product.order">
 				<target>Bestellen</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.order_for">
+				<target>Bestellung für</target>
 			</trans-unit>
 			<trans-unit id="tx_products_domain_model_product.request">
 				<target>Bestellen</target>
@@ -172,7 +181,7 @@
 				<target>z.B. maximilian.mustermann@musterfirma.ch</target>
 			</trans-unit>
 			<trans-unit id="tx_products_domain_model_product.form.agb">
-				<target>Ich habe die AGB gelesen und stimme ihnen zu.</target>
+				<target><![CDATA[Ich habe die <a href="/de/allgemeine-geschaeftsbedingungen" class="text-blue hover:underline" target="_blank" rel="noopener">AGB</a> gelesen und stimme ihnen zu.]]></target>
 			</trans-unit>
 			<trans-unit id="tx_products_domain_model_product.form.newsletter">
 				<target>Ich möchte den Newsletter erhalten.</target>
@@ -245,6 +254,18 @@
 			</trans-unit>
 			<trans-unit id="tx_products_domain_model_product.perpage">
 				<target>Pro Seite</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.more">
+				<target>Mehr</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.order_confirmation.thank_you">
+				<target>Vielen Dank für Ihre Bestellung!</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.order_confirmation.message">
+				<target><![CDATA[<p>Wir haben Ihre Anfrage erfolgreich erhalten und werden diese so schnell wie möglich bearbeiten.</p><p>Unser Team meldet sich in der Regel innert 1–2 Arbeitstagen bei Ihnen. Sollten Sie in der Zwischenzeit weitere Fragen haben, können Sie uns jederzeit telefonisch oder per E-Mail kontaktieren.</p><p>Wir freuen uns auf den Austausch mit Ihnen.</p>]]></target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.order_confirmation.to_startpage">
+				<target>Zur Startseite</target>
 			</trans-unit>
         </body>
     </file>

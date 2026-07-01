@@ -12,45 +12,55 @@
                     
                 </div>
                 <div class="text-blue mr-17">
-                    <span class="text-3.5xl font-extrabold js-range-price" data-formula="{formula}" data-price="{price}" data-total="{price}"><f:format.number decimals="2">{price}</f:format.number></span> <f:translate key="tx_products_domain_model_product.chf" /><span class="js-calc-time">/<f:translate key="tx_products_domain_model_product.month" /></span>
+                    <span class="sm:text-3.5xl font-extrabold js-range-price" data-formula="{formula}" data-price="{price}" data-total="{price}"><f:format.number decimals="2">{price}</f:format.number></span> <f:translate key="tx_products_domain_model_product.chf" /><span class="js-calc-time">/<f:translate key="tx_products_domain_model_product.month" /></span>
                 </div>
             </div>   
         </f:then>
         <f:else>
-            <div class="js-range-wrapper py-3 flex items-stretch justfify-between gap-10 js-price-line">
-                <div class="flex flex-col justify-between gap-2 w-32">
-                    <label class="block font-extrabold text-blue" for="">{label}</label>
-                    <f:form.textfield type="number" name="{name}[amount]" value="{min}" min="{min}" max="{max}" class="ndz-input-number py-2 px-3 font-extrabold text-blue rounded-md outline-2 outline-grey-300 -outline-offset-2 focus:outline-blue js-range-value" />
-                    <f:form.textfield type="hidden" name="{name}[price]" value="{price}" />
-                    <f:form.textfield type="hidden" class="js-range-price-total" name="{name}[total]" value="{amount * price}" />
-                </div>
-                <div class="flex-1 flex flex-col justify-between gap-2 pb-4">
-                    <label class="flex items-center text-grey-300 gap-2" for="">
-                        <f:if condition="{subname}">
-                            <f:then>
-                                <span><ndz:format.inlineText value="{subname}" /></span>
-                            </f:then>
-                            <f:else>
-                                <span><strong>{min} – <f:format.number decimals="0" thousandsSeparator="'">{max}</f:format.number> <f:translate key="tx_products_domain_model_product.{unit}" /></strong> (<f:format.number decimals="2">{price}</f:format.number> <f:translate key="tx_products_domain_model_product.chf" />/<f:translate key="tx_products_domain_model_product.{unit}" />)</span>
-                            </f:else>
-                        </f:if>
-                        
-                        <f:if condition="{desc}">
-                            <div class="group relative inline-flex">
-                                <button type="button" aria-describedby="tooltip-example" class="rounded-full size-6 bg-blue p-1 text-white bg-[url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%201.87%208.93%22%3E%3Cpath%20d%3D%22M.93%2C1.75c-.26%2C0-.48-.09-.66-.26-.18-.17-.27-.38-.27-.62S.09.43.27.26c.18-.17.4-.26.66-.26s.48.09.66.26.28.38.28.62-.09.45-.28.62-.4.26-.66.26ZM.08%2C8.93V2.58h1.7v6.35H.08Z%22%20style%3D%22fill%3A%23fff%3B%22%2F%3E%3C%2Fsvg%3E)] bg-no-repeat bg-center bg-size-[12px_12px]">
-                                    <span class="sr-only"></span>
-                                </button>
-                                <div id="tooltip-example" role="tooltip" class="pointer-events-none absolute top-full left-1/2 z-10 mt-3 w-max max-w-xs -translate-x-1/2 rounded-lg bg-blue px-3 py-2 text-sm text-white opacity-0 shadow-lg transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100">
-                                    <ndz:format.inlineText value="{desc}" />
-                                    <div class="absolute bottom-full left-1/2 h-3 w-3 -translate-x-1/2 translate-y-1/2 rotate-45 bg-blue" aria-hidden="true"></div>
+            <div class="js-range-wrapper py-3 sm:pr-14 lg:pr-0 lg:flex lg:items-stretch lg:justfify-between lg:gap-10 js-price-line">
+                <div class="flex-1 space-y-2">
+                    <div>
+                        <label class="block font-extrabold text-blue" for="">{label}</label>
+                        <label class="flex items-center text-grey-300 gap-2" for="">
+                            <f:if condition="{subname}">
+                                <f:then>
+                                    <span><ndz:format.inlineText value="{subname}" /></span>
+                                </f:then>
+                                <f:else>
+                                    <f:variable name="singleunit" value="<f:translate key='tx_products_domain_model_product.{unit}' />" />
+                                    <f:if condition="<f:translate key='tx_products_domain_model_product.single_{unit}' />">
+                                        <f:variable name="singleunit" value="<f:translate key='tx_products_domain_model_product.single_{unit}' />" />
+                                    </f:if>
+                                    <span><strong>{min} – <f:format.number decimals="0" thousandsSeparator="'">{max}</f:format.number> <f:translate key="tx_products_domain_model_product.{unit}" /></strong> (<f:format.number decimals="2">{price}</f:format.number> <f:translate key="tx_products_domain_model_product.chf" />/{singleunit})</span>
+                                </f:else>
+                            </f:if>
+                            
+                            <f:if condition="{desc}">
+                                <div class="group relative inline-flex">
+                                    <button type="button" aria-describedby="tooltip-example" class="rounded-full size-6 bg-blue p-1 text-white bg-[url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%201.87%208.93%22%3E%3Cpath%20d%3D%22M.93%2C1.75c-.26%2C0-.48-.09-.66-.26-.18-.17-.27-.38-.27-.62S.09.43.27.26c.18-.17.4-.26.66-.26s.48.09.66.26.28.38.28.62-.09.45-.28.62-.4.26-.66.26ZM.08%2C8.93V2.58h1.7v6.35H.08Z%22%20style%3D%22fill%3A%23fff%3B%22%2F%3E%3C%2Fsvg%3E)] bg-no-repeat bg-center bg-size-[12px_12px]">
+                                        <span class="sr-only"></span>
+                                    </button>
+                                    <div id="tooltip-example" role="tooltip" class="pointer-events-none absolute top-full left-1/2 z-10 mt-3 w-max max-w-xs -translate-x-1/2 rounded-lg bg-blue px-3 py-2 text-sm text-white opacity-0 shadow-lg transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100">
+                                        <ndz:format.inlineText value="{desc}" />
+                                        <div class="absolute bottom-full left-1/2 h-3 w-3 -translate-x-1/2 translate-y-1/2 rotate-45 bg-blue" aria-hidden="true"></div>
+                                    </div>
                                 </div>
-                            </div>
-                        </f:if>
-                    </label>
-                    <input type="range" min="{min}" max="{max}" value="0" class="ndz-range js-range" />
+                            </f:if>
+                        </label>
+                    </div>
+                    <div class="flex items-center gap-5 sm:gap-10">
+                        <div>
+                            <f:form.textfield id="" type="number" name="{name}[amount]" value="{min}" min="{min}" max="{max}" style="min-width:110px" class="ndz-input-number py-2 px-3 font-extrabold text-blue rounded-md outline-2 outline-grey-300 -outline-offset-2 focus:outline-blue js-range-value" />
+                            <f:form.textfield type="hidden" name="{name}[price]" value="{price}" />
+                            <f:form.textfield type="hidden" class="js-range-price-total" name="{name}[total]" value="{amount * price}" />
+                        </div>
+                        <div class="flex-1">
+                            <input type="range" min="{min}" max="{max}" value="0" class="ndz-range js-range" />
+                        </div>
+                    </div>
                 </div>
-                <div class="text-blue mr-17 self-center text-right w-64">
-                    <span class="text-3.5xl font-extrabold js-range-price" data-price="{price}" data-formula="{formula}" data-total="0">0.00</span> <f:translate key="tx_products_domain_model_product.chf" /><span class="js-calc-time">/<f:translate key="tx_products_domain_model_product.month" /></span>
+                <div class="text-blue text-right lg:mr-17 lg:self-center lg:w-64">
+                    <span class="font-extrabold sm:text-2xl xl:text-3.5xl js-range-price" data-price="{price}" data-formula="{formula}" data-total="0">0.00</span> <f:translate key="tx_products_domain_model_product.chf" /><span class="js-calc-time">/<f:translate key="tx_products_domain_model_product.month" /></span>
                 </div>
             </div>   
         </f:else>

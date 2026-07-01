@@ -31,3 +31,10 @@ lib.renderHeaderElement {
     source = 163
     dontCheckPid = 1
 }
+
+lib.renderInsightHeaderElement = RECORDS
+lib.renderInsightHeaderElement {
+    tables = tt_content
+    source = 402
+    dontCheckPid = 1
+}

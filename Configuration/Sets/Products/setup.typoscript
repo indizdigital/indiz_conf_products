@@ -1,4 +1,4 @@
-config.contentObjectExceptionHandler = 0
+#config.contentObjectExceptionHandler = 0
 
 plugin.tx_products_index {
   view {

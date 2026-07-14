@@ -160,6 +160,118 @@ class InsightController extends ActionController
         return $stats;
     }
 
+
+    /**
+     * Finds sys_file_reference rows on tx_products_domain_model_insight that correspond to
+     * fal_media references which were deleted/hidden on tx_news_domain_model_news in the old
+     * system, but got copied into the new system anyway. Matches files by trailing filename
+     * since storage paths changed between systems; uid_foreign is assumed preserved by
+     * updateNativeFields() forcing the migrated record's uid to the old CSV uid.
+     *
+     * Defaults to dry-run: nothing is deleted until called with $dryRun = false.
+     */
+    public function rmImages(bool $dryRun = true): array
+    {
+        // Direct PDO connection to the source database
+        $sourcePdo = new \PDO(
+            'mysql:host=localhost;dbname=sst_typo3;charset=utf8mb4',
+            'idi-all',
+            'choshieju1ooN5ie',
+            [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]
+        );
+
+        // Load deleted/hidden fal_media references from the source database
+        $stmt = $sourcePdo->prepare(
+            'SELECT tx_news_domain_model_news.title,sys_file_reference.uid_local,sys_file_reference.uid_foreign,sys_file.identifier FROM sys_file_reference LEFT JOIN sys_file ON uid_local = sys_file.uid LEFT JOIN tx_news_domain_model_news ON uid_foreign = tx_news_domain_model_news.uid WHERE tablenames = "tx_news_domain_model_news" AND fieldname = "fal_media" AND (sys_file_reference.deleted = 1 OR sys_file_reference.hidden = 1)'
+        );
+        $stmt->execute();
+        $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        
+        print_r($rows);exit;
+
+        $manual = [];
+        $toDelete = [];
+        $conn = GeneralUtility::makeInstance(ConnectionPool::class);
+
+        foreach ($rows as $row) {
+            $newFileUid = $this->findImage($row['identifier'], $manual);
+            if ($newFileUid === null) {
+                continue; // ambiguous/missing match, already logged to $manual
+            }
+
+            $qbRef = $conn->getQueryBuilderForTable('sys_file_reference');
+            $qbRef->getRestrictions()->removeAll();
+            $refs = $qbRef
+                ->select('uid')
+                ->from('sys_file_reference')
+                ->where(
+                    $qbRef->expr()->eq('tablenames', $qbRef->createNamedParameter('tx_products_domain_model_insight')),
+                    $qbRef->expr()->eq('fieldname', $qbRef->createNamedParameter('fal_media')),
+                    $qbRef->expr()->eq('uid_local', $qbRef->createNamedParameter($newFileUid)),
+                    $qbRef->expr()->eq('uid_foreign', $qbRef->createNamedParameter((int)$row['uid_foreign'])),
+                    $qbRef->expr()->eq('deleted', $qbRef->createNamedParameter(0))
+                )
+                ->executeQuery()
+                ->fetchAllAssociative();
+
+            if (count($refs) !== 1) {
+                $manual[] = ['source_row' => $row, 'new_file_uid' => $newFileUid, 'candidates' => $refs];
+                continue;
+            }
+
+            $toDelete[] = (int)$refs[0]['uid'];
+        }
+
+        if (!$dryRun && $toDelete) {
+            $cmdmap = [];
+            foreach ($toDelete as $refUid) {
+                $cmdmap['sys_file_reference'][$refUid]['delete'] = 1;
+            }
+            $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+            $dataHandler->start([], $cmdmap);
+            $dataHandler->process_cmdmap();
+        }
+
+        return [
+            'dryRun'   => $dryRun,
+            'toDelete' => $toDelete,
+            'deleted'  => $dryRun ? 0 : count($toDelete),
+            'manual'   => $manual,
+        ];
+    }
+
+    /**
+     * Resolves an old-system sys_file.identifier to the corresponding sys_file.uid in the
+     * current system by matching the trailing filename (storage paths differ between systems).
+     * Returns null and logs to $manual when the match isn't exactly one file.
+     */
+    public function findImage(string $identifier, array &$manual): ?int
+    {
+        $filearray = explode('/', $identifier);
+        $f_name = $filearray[array_key_last($filearray)];
+
+        $conn = GeneralUtility::makeInstance(ConnectionPool::class);
+        $qb = $conn->getQueryBuilderForTable('sys_file');
+        $im = $qb
+            ->select('uid', 'identifier')
+            ->from('sys_file')
+            ->where(
+                $qb->expr()->like(
+                    'identifier',
+                    $qb->createNamedParameter('%/' . $qb->escapeLikeWildcards($f_name))
+                )
+            )
+            ->executeQuery()
+            ->fetchAllAssociative();
+
+        if (count($im) === 1) {
+            return (int)$im[0]['uid'];
+        }
+
+        $manual[] = ['identifier' => $identifier, 'candidates' => $im];
+        return null;
+    }
+
     public function syncCategories(): array
     {
         $conn = GeneralUtility::makeInstance(ConnectionPool::class);
@@ -469,6 +581,7 @@ class InsightController extends ActionController
 
     public function importAction(): \Psr\Http\Message\ResponseInterface
     {
+        $this->rmImages();
         //$this->syncCategories();
      //  $this->relinkDocuments();
         //    print_r($st);exit;
@@ -487,10 +600,12 @@ class InsightController extends ActionController
                 
             }
         }
+       
+        /*
         $this->copyImages();
 
         $this->syncCategories();
-        $this->syncTags();
+        $this->syncTags();*/
 
         $this->view->assign('stats', $stats);
         return $this->htmlResponse();
@@ -812,6 +927,7 @@ class InsightController extends ActionController
                 ["Video","Events"],
                 ["Presentation","Events"]];
          
+                print_r($insights);exit;
         foreach($insights as $data){
            
             

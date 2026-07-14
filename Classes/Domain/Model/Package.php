@@ -127,11 +127,9 @@ class Package extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         $formulaservice = GeneralUtility::makeInstance(Formula::class);
         $total = 0.0;
         foreach ($this->getPackageelements() as $packageelement) {
-            $price = $packageelement->getPrice();
-            
             $amount = $packageelement->getAmount()?:$packageelement->getMin();
             if($amount){
-                $total += $amount * $price;
+                $total += $packageelement->getCalcedPrice($amount);
             }
         }
         return $total;

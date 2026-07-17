@@ -160,13 +160,18 @@ class Insight extends AbstractEntity
     public function removeFalRelatedFile(FileReference $fileReference): void { $this->falRelatedFiles->detach($fileReference); }
 
     public function modifySlug($params){
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_products_domain_model_insight');
-        $datetime = $queryBuilder->select("datetime")->from('tx_products_domain_model_insight')
-            ->where(
-                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($params["record"]["uid"])),
-            )
-            ->executeQuery()->fetchOne();
-        return date("Y-m-d",$datetime) . "/" . $params["slug"];
+        $datetime = time();
+        if(isset($params["record"]["uid"])){
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_products_domain_model_insight');
+            $datetime = $queryBuilder->select("datetime")->from('tx_products_domain_model_insight')
+                ->where(
+                    $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($params["record"]["uid"])),
+                )
+                ->executeQuery()->fetchOne();
+        }elseif(isset($params["record"]["datetime"])){
+            $datetime = $params["record"]["datetime"];
+        }
+        return date("Y-m-d",(int) $datetime) . "/" . $params["slug"];
     }
 
     public function getFeuser(): ?ObjectStorage

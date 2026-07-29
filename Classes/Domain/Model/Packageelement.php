@@ -96,6 +96,18 @@ class Packageelement extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         return $price;
     }
 
+    public function getTotalPrice(){
+        $price = 0.0;
+        if($this->getFormula()){
+            $formulaservice = GeneralUtility::makeInstance(Formula::class);
+            $price = $formulaservice->calc($this->getFormula(),$this->getAmount());
+        }else{
+            $price = $this->getProductelement()->getPrice() * $this->getAmount();
+        }
+        
+        return $price;
+    }
+
     public function getCalcedPrice($amount){
         $price = 0.0;
         if($this->getFormula()){

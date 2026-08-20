@@ -1,7 +1,7 @@
 <?php
 return [
     'ctrl' => [
-        'title' => 'Package',
+        'title' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_package',
         'label' => 'name',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
@@ -71,7 +71,7 @@ return [
             ],
         ],
         'name' => [
-            'label' => 'Name',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_package.name',
             'config' => [
                 'type' => 'input',
                 'behaviour' => [
@@ -80,7 +80,7 @@ return [
             ]
         ],
         'desc' => [
-            'label' => 'Summary',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_package.desc',
             'config' => [
                 'type' => 'text',
                 'behaviour' => [
@@ -89,7 +89,7 @@ return [
             ]
         ],
         'configurable' => [
-            'label' => 'Configurable',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_package.configurable',
             'config' => [
                 'type' => 'check',
                 'behaviour' => [
@@ -98,7 +98,7 @@ return [
             ]
         ],
         'packageelements' => [
-            'label' => 'Elementgruppierung',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_package.packageelements',
             'config' => [
                 'type' => 'inline',
                 'foreign_table' => 'tx_products_domain_model_packageelement',

@@ -1,7 +1,7 @@
 <?php
 return [
     'ctrl' => [
-        'title' => 'Order',
+        'title' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_order',
         'label' => 'ordername',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
@@ -41,81 +41,81 @@ return [
             ],
         ],
         'ordername' => [
-            'label' => 'Bestellname',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_order.ordername',
             'config' => ['type' => 'input']
         ],
         'ordertype' => [
-            'label' => 'Order Type',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_order.order_type',
             'config' => [
                 'type' => 'check'
             ]
         ],
         'firstname' => [
-            'label' => 'Vorname',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_order.firstname',
             'config' => ['type' => 'input']
         ],
         'name' => [
-            'label' => 'Name',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_order.name',
             'config' => ['type' => 'input']
         ],
         'gender' => [
-            'label' => 'Gender',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_order.gender',
             'config' => ['type' => 'input']
         ],
         'email' => [
-            'label' => 'Email',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_order.email',
             'config' => ['type' => 'input']
         ],
         'addressline' => [
-            'label' => 'Addressline',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_order.addressline',
             'config' => ['type' => 'input']
         ],
         'addressline2' => [
-            'label' => 'Addressline2',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_order.addressline2',
             'config' => ['type' => 'input']
         ],
         'postalcode' => [
-            'label' => 'PLZ',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_order.plz',
             'config' => ['type' => 'input']
         ],
         'phone' => [
-            'label' => 'Phone',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_order.phone',
             'config' => ['type' => 'input']
         ],
         'city' => [
-            'label' => 'Stadt',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_order.city',
             'config' => ['type' => 'input']
         ],
         'country' => [
-            'label' => 'Land',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_order.country',
             'config' => ['type' => 'input']
         ],
         'company' => [
-            'label' => 'Firma',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_order.company',
             'config' => ['type' => 'input']
         ],
         'package_uid' => [
-            'label' => 'Paket UID',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_order.package_uid',
             'config' => ['type' => 'input', 'eval' => 'int']
         ],
         'product_uid' => [
-            'label' => 'Produkt UID',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_order.product_uid',
             'config' => ['type' => 'input', 'eval' => 'int']   
         ],
         'data' => [
-            'label' => 'Data',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_order.data',
             'config' => ['type' => 'text']   
         ],
         'total' => [
-            'label' => 'Total',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_order.total',
             'config' => ['type' => 'input']   
         ],
         'agb' => [
-            'label' => 'AGB',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_order.agb',
             'config' => ['type' => 'check']   
         ],
         'newsletter' => [
-            'label' => 'Newsletter',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_order.newsletter',
             'config' => ['type' => 'check']   
         ],
        

@@ -1,7 +1,7 @@
 <?php
 return [
     'ctrl' => [
-        'title' => 'Price',
+        'title' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_productelement',
         'label' => 'name',
         'altLabel' => 'unit',
         'forceAltLabel' => true,
@@ -75,15 +75,15 @@ return [
             ],
         ],
         'name' => [
-            'label' => 'Name',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_productelement.name',
             'config' => ['type' => 'input']
         ],
         'price' => [
-            'label' => 'Price',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_productelement.price',
             'config' => ['type' => 'input', 'eval' => 'double2']
         ],
         'uniqid' => [
-            'label' => 'Human readable Id',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_productelement.uniqid',
             'config' => [
                 'type' => 'slug', 
                 'eval' => 'uniqueInSite',
@@ -93,7 +93,7 @@ return [
             ]
         ],
         'elementtype' => [
-            'label' => 'Typ',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_productelement.type',
             'config' => [
                 'type' => 'select',
                 'renderType'=>'selectSingle',
@@ -104,7 +104,7 @@ return [
             ]
         ],
         'unit' => [
-            'label' => 'Unit',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_productelement.unit',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
@@ -125,11 +125,11 @@ return [
             ],
         ],
         'min' => [
-            'label' => 'Min',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_productelement.min',
             'config' => ['type' => 'input', 'eval' => 'int']
         ],
         'max' => [
-            'label' => 'Max',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_productelement.max',
             'config' => ['type' => 'input', 'eval' => 'int']
         ],
     ],

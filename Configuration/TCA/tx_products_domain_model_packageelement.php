@@ -1,7 +1,7 @@
 <?php
 return [
     'ctrl' => [
-        'title' => 'Package Element',
+        'title' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_packageelement',
         'label' => 'name',
         'sortby' => 'sorting',
         'tstamp' => 'tstamp',
@@ -80,21 +80,21 @@ return [
             ],
         ],
         'name' => [
-            'label' => 'Label',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_packageelement.name',
             'config' => [
                 'type' => 'input',
                 'behaviour' => ['allowLanguageSynchronization' => true],
             ]
         ],
         'subname' => [
-            'label' => 'Sublabel (Price)',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_packageelement.subname',
             'config' => [
                 'type' => 'input',
                 'behaviour' => ['allowLanguageSynchronization' => true],
             ]
         ],
         'amount' => [
-            'label' => 'Amount',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_packageelement.amount',
             'config' => [
                 'type' => 'input',
                 'eval' => 'int',
@@ -103,7 +103,7 @@ return [
             ]
         ],
         'min' => [
-            'label' => 'Min',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_packageelement.min',
             'config' => [
                 'type' => 'input',
                 'eval' => 'int',
@@ -112,7 +112,7 @@ return [
             ]
         ],
         'max' => [
-            'label' => 'Max',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_packageelement.max',
             'config' => [
                 'type' => 'input',
                 'eval' => 'int',
@@ -121,14 +121,14 @@ return [
             ]
         ],
         'desc' => [
-            'label' => 'Description',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_packageelement.desc',
             'config' => [
                 'type' => 'text',
                 'behaviour' => ['allowLanguageSynchronization' => true],
             ]
         ],
         'productelement' => [
-            'label' => 'Productelement',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_packageelement.productelement',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
@@ -137,7 +137,7 @@ return [
             ]
         ],
         'formula' => [
-            'label' => 'Price Formula',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_packageelement.formula',
             'config' => [
                 'type' => 'input',
                 'eval' => 'trim',

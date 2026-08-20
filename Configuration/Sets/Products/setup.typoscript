@@ -38,3 +38,18 @@ lib.renderInsightHeaderElement {
     source = 402
     dontCheckPid = 1
 }
+
+# Ensure legacy TYPO3 <link ...>text</link> tags in bodytext fields
+# (e.g. Insight.bodytext) are resolved to real <a> tags via typolink.
+lib.parseFunc_RTE {
+    makelinks = 1
+    makelinks {
+        http.keep = path
+        mailto.keep = path
+    }
+    tags.link = TEXT
+    tags.link {
+        current = 1
+        typolink.parameter.data = parameters : allParams
+    }
+}

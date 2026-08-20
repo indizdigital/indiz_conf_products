@@ -1,7 +1,7 @@
 <?php
 return [
     'ctrl' => [
-        'title' => 'FAQ',
+        'title' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_faq',
         'label' => 'name',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
@@ -103,11 +103,11 @@ return [
             ],
         ],
         'name' => [
-            'label' => 'Name',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_faq.name',
             'config' => ['type' => 'input']
         ],
         'description' => [
-            'label' => 'Beschreibung',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_faq.description',
             'config' => [
                 'type' => 'text',
                 'enableRichtext' => true,

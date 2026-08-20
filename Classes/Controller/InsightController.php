@@ -187,7 +187,6 @@ class InsightController extends ActionController
         $stmt->execute();
         $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         
-        print_r($rows);exit;
 
         $manual = [];
         $toDelete = [];
@@ -225,12 +224,26 @@ class InsightController extends ActionController
         if (!$dryRun && $toDelete) {
             $cmdmap = [];
             foreach ($toDelete as $refUid) {
-                $cmdmap['sys_file_reference'][$refUid]['delete'] = 1;
+                $qbRef = $conn->getQueryBuilderForTable('sys_file_reference');
+                $qbRef->getRestrictions()->removeAll();
+                $qbRef
+                    ->update('sys_file_reference')
+                    ->set('deleted',1)
+                    ->where(
+                        $qbRef->expr()->eq('uid', $qbRef->createNamedParameter($refUid))
+                    )
+                    ->executeStatement();
             }
-            $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+            /*$dataHandler = GeneralUtility::makeInstance(DataHandler::class);
             $dataHandler->start([], $cmdmap);
-            $dataHandler->process_cmdmap();
+            $dataHandler->process_cmdmap();*/
+            
+
         }
+        echo "DELETED";
+        print_r($toDelete);
+        
+        exit;
 
         return [
             'dryRun'   => $dryRun,
@@ -581,7 +594,9 @@ class InsightController extends ActionController
 
     public function importAction(): \Psr\Http\Message\ResponseInterface
     {
-        $this->rmImages();
+        //$this->rmImages();
+        //$this->relinkExternalLinks(false);
+        $this->stripUnresolvableLinks(false);
         //$this->syncCategories();
      //  $this->relinkDocuments();
         //    print_r($st);exit;
@@ -737,6 +752,151 @@ class InsightController extends ActionController
         return $stats;
     }
     
+
+    /**
+     * Converts old-style TYPO3 <link http://...> / <link mailto:...> tags (plain external
+     * URLs, as opposed to file: or page-id links) into real <a href> tags. Unlike
+     * relinkDocuments(), no old-DB lookup is needed since an external URL carries no
+     * internal reference to remap — it operates directly on tx_products_domain_model_insight.
+     *
+     * Defaults to dry-run: nothing is written until called with $dryRun = false.
+     */
+    private function relinkExternalLinks(bool $dryRun = true): array
+    {
+        $conn = GeneralUtility::makeInstance(ConnectionPool::class);
+        $stats = ['updated' => 0, 'skipped' => 0, 'errors' => []];
+
+        $qb = $conn->getQueryBuilderForTable('tx_products_domain_model_insight');
+        $qb->getRestrictions()->removeAll();
+        $rows = $qb
+            ->select('uid', 'bodytext')
+            ->from('tx_products_domain_model_insight')
+            ->where(
+                $qb->expr()->or(
+                    $qb->expr()->like('bodytext', $qb->createNamedParameter('%<link http%')),
+                    $qb->expr()->like('bodytext', $qb->createNamedParameter('%<link mailto:%'))
+                ),
+                $qb->expr()->eq('deleted', $qb->createNamedParameter(0))
+            )
+            ->executeQuery()
+            ->fetchAllAssociative();
+
+        foreach ($rows as $row) {
+            $uid      = (int)$row['uid'];
+            $original = $row['bodytext'];
+
+            // Pattern: <link http(s)://... TARGET>link text</link> or <link mailto:... TARGET>text</link>
+            $updated = preg_replace_callback(
+                '/<link\s+(https?:\/\/[^\s>]+|mailto:[^\s>]+)([^>]*)>(.*?)<\/link>/is',
+                function (array $matches): string {
+                    $href  = $matches[1];
+                    $attrs = trim($matches[2]);
+                    $text  = $matches[3];
+
+                    // First token after the URL is the target (_blank etc.), '-' means none
+                    $attrParts  = preg_split('/\s+/', $attrs, -1, PREG_SPLIT_NO_EMPTY);
+                    $targetAttr = '';
+                    if (!empty($attrParts[0]) && $attrParts[0] !== '-') {
+                        $targetAttr = ' target="' . htmlspecialchars($attrParts[0], ENT_QUOTES) . '"';
+                    }
+
+                    return '<a href="' . htmlspecialchars($href, ENT_QUOTES) . '"' . $targetAttr . '>' . $text . '</a>';
+                },
+                $original
+            );
+
+            if ($updated === $original) {
+                $stats['skipped']++;
+                continue;
+            }
+
+            if (!$dryRun) {
+                try {
+                    $conn->getConnectionForTable('tx_products_domain_model_insight')->update(
+                        'tx_products_domain_model_insight',
+                        ['bodytext' => $updated],
+                        ['uid' => $uid]
+                    );
+                } catch (\Throwable $e) {
+                    $stats['errors'][] = "insight uid={$uid}: " . $e->getMessage();
+                    continue;
+                }
+            }
+            $stats['updated']++;
+        }
+
+        return $stats;
+    }
+
+    /**
+     * Strips old-style TYPO3 internal page links entirely, keeping only the inner text.
+     * Stored as e.g. <link 513 - internal-link "Opens internal link in current window">text</link>
+     * — parameter is the old page uid, "internal-link" is TYPO3's auto-applied CSS class (not
+     * a placeholder), and the title is auto-generated. The referenced pages no longer exist in
+     * the new system (confirmed for uid 513) and there's no uid mapping to resolve them through,
+     * so unlike relinkDocuments()/relinkExternalLinks() there's no href to reconstruct — just
+     * the tag to remove. Also drops bare unclosed occurrences with no matching </link>.
+     *
+     * Defaults to dry-run: nothing is written until called with $dryRun = false.
+     */
+    private function stripUnresolvableLinks(bool $dryRun = true): array
+    {
+        $conn = GeneralUtility::makeInstance(ConnectionPool::class);
+        $stats = ['updated' => 0, 'skipped' => 0, 'errors' => []];
+
+        $qb = $conn->getQueryBuilderForTable('tx_products_domain_model_insight');
+        $qb->getRestrictions()->removeAll();
+        $rows = $qb
+            ->select('uid', 'bodytext')
+            ->from('tx_products_domain_model_insight')
+            ->where(
+                $qb->expr()->like('bodytext', $qb->createNamedParameter('%internal-link%')),
+                $qb->expr()->eq('deleted', $qb->createNamedParameter(0))
+            )
+            ->executeQuery()
+            ->fetchAllAssociative();
+
+        foreach ($rows as $row) {
+            $uid      = (int)$row['uid'];
+            $original = $row['bodytext'];
+
+            // Pattern: <link {pageUid} {target} internal-link "{title}">text</link> -> text
+            $updated = preg_replace(
+                '/<link\s+\d+[^>]*\binternal-link\b[^>]*>(.*?)<\/link>/is',
+                '$1',
+                $original
+            );
+
+            // Leftover unclosed tags, e.g. <link 513 - internal-link "...">
+            // with no matching </link> anywhere -> drop just the opening tag
+            $updated = preg_replace(
+                '/<link\s+\d+[^>]*\binternal-link\b[^>]*>/is',
+                '',
+                $updated
+            );
+
+            if ($updated === $original) {
+                $stats['skipped']++;
+                continue;
+            }
+
+            if (!$dryRun) {
+                try {
+                    $conn->getConnectionForTable('tx_products_domain_model_insight')->update(
+                        'tx_products_domain_model_insight',
+                        ['bodytext' => $updated],
+                        ['uid' => $uid]
+                    );
+                } catch (\Throwable $e) {
+                    $stats['errors'][] = "insight uid={$uid}: " . $e->getMessage();
+                    continue;
+                }
+            }
+            $stats['updated']++;
+        }
+
+        return $stats;
+    }
 
     private function swapLanguages(){
         $insights = $this->insightRepository->findAll();

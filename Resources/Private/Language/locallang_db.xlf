@@ -3,6 +3,9 @@
 	<file source-language="en" datatype="plaintext" original="EXT:products/Resources/Private/Language/locallang.xlf" date="2022-06-28T15:35:15Z" product-name="products">
 		<header/>
 		<body>
+			<trans-unit id="tx_products_domain_model_insight">
+				<source>Insight</source>
+			</trans-unit>
 			<trans-unit id="tx_products_domain_model_insight.title">
 				<source>Title</source>
 			</trans-unit>
@@ -59,6 +62,270 @@
 			</trans-unit>
 			<trans-unit id="tx_products_domain_model_insight.fal_media">
 				<source>Images</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_category">
+				<source>Product Category</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_category.name">
+				<source>Name</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_category.description">
+				<source>Description</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_category.short_description">
+				<source>Short Description</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_category.short_button_label">
+				<source>Short Button Label</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_category.image">
+				<source>Image</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_category.slug">
+				<source>Slug</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_faq">
+				<source>FAQ</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_faq.name">
+				<source>Name</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_faq.description">
+				<source>Description</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_insightcategory">
+				<source>Insight Category</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_insightcategory.name">
+				<source>Name</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_insightcategory.show_in_menu">
+				<source>Show in Menu</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_insightcategory.description">
+				<source>Description</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_insightcategory.image">
+				<source>Image</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_insighttag">
+				<source>Insight Tag</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_insighttag.name">
+				<source>Name</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_order">
+				<source>Order</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_order.ordername">
+				<source>Order name</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_order.newsletter">
+				<source>Newsletter</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_order.ordername">
+				<source>Order name</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_order.order_type">
+				<source>Order type</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_order.firstname">
+				<source>Firstname</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_order.name">
+				<source>Name</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_order.newslgenderetter">
+				<source>Gender</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_order.email">
+				<source>Email</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_order.addressline">
+				<source>Addressline</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_order.addressline2">
+				<source>Addressline2</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_order.plz">
+				<source>PLZ</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_order.phone">
+				<source>Phone</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_order.city">
+				<source>City</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_order.country">
+				<source>Country</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_order.company">
+				<source>Company</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_order.package_uid">
+				<source>Package Uid</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_order.product_uid">
+				<source>Product Uid</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_order.data">
+				<source>Data</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_order.agb">
+				<source>Agb</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_order.newsletter">
+				<source>Newsletter</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_package">
+				<source>Package</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_package.name">
+				<source>Name</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_package.desc">
+				<source>Description</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_package.configurable">
+				<source>Configurable</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_package.packageelements">
+				<source>Packageelements</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_packageelement">
+				<source>Packageelement</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_packageelement.name">
+				<source>Name</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_packageelement.subname">
+				<source><![CDATA[Sublabel (Price)]]></source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_packageelement.amount">
+				<source>Amount</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_packageelement.min">
+				<source>Min</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_packageelement.max">
+				<source>Max</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_packageelement.desc">
+				<source>Description</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_packageelement.productelement">
+				<source>Productelement</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_packageelement.formula">
+				<source>Price formula</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product">
+				<source>Product</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.filter">
+				<source>Filter</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.consultant">
+				<source><![CDATA[Consultant / Accordeon]]></source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.carousel">
+				<source>Carousel</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.packages">
+				<source>Packages</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.aicontent">
+				<source>AI Content</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.faq">
+				<source>FAQ</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.slug">
+				<source>Slug</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.name">
+				<source>Title</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.subname">
+				<source>Subtitle</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.rendertype">
+				<source>Rendertype</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.shortdescription">
+				<source>Short description</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.description">
+				<source>Description</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.accordeon">
+				<source>Accordeon</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.altcontent">
+				<source>Scope of services</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.categories">
+				<source>Categories</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.tags">
+				<source>Tags</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.reference_products">
+				<source>Reference products</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.image">
+				<source>Image</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.subimage">
+				<source>Icon</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.screenshots">
+				<source>Screenshots</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.packagetitle">
+				<source>Package title</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.contactlabel">
+				<source>Contact button label</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.contactlink">
+				<source>Contact button link</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.packages">
+				<source>Packages</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.feuser">
+				<source>Consultant</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_productelement">
+				<source>Price</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_productelement.name">
+				<source>Name</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_productelement.price">
+				<source>Price</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_productelement.uniqid">
+				<source>Human readable Id</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_productelement.type">
+				<source>Type</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_productelement.unit">
+				<source>Unit</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_productelement.min">
+				<source>Min</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_productelement.max">
+				<source>Max</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_tag">
+				<source>Tag</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_tag.name">
+				<source>Name</source>
 			</trans-unit>
         </body>
     </file>

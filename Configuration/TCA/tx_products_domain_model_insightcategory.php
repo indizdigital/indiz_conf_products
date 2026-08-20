@@ -1,7 +1,7 @@
 <?php
 return [
     'ctrl' => [
-        'title' => 'Insight Category',
+        'title' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_insightcategory',
         'label' => 'name',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
@@ -115,21 +115,21 @@ return [
             ],
 	],
     'show_in_menu' => [
-        'label' => 'Show in Menu',
+        'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_insightcategory.show_in_menu',
         'config' => [
             'type' => 'check',
         ]
     ],
 	'name' => [
-		'label' => 'name',
+		'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_insightcategory.name',
 		'config' => ['type' => 'input']
 	],
 	'description' => [
-		'label' => 'Beschreibung',
+		'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_insightcategory.description',
             'config' => ['type' => 'text']
         ],
 	'image' => [
-		'label' => 'Bild',
+		'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_insightcategory.image',
             'config' => [
                 'type' => 'file',
                 'maxitems' => 1

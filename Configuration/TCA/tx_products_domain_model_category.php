@@ -1,7 +1,7 @@
 <?php
 return [
     'ctrl' => [
-        'title' => 'Product category',
+        'title' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_category',
         'label' => 'name',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
@@ -77,7 +77,7 @@ return [
             ],
         ],
         'slug' => [
-            'label' => 'Slug',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_category.slug',
             'config' => [
                 'type' => 'slug', 
                 'eval' => 'uniqueInSite',
@@ -116,23 +116,23 @@ return [
             ],
 	],
 	'name' => [
-		'label' => 'name',
+		'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_category.name',
 		'config' => ['type' => 'input']
 	],
 	'description' => [
-		'label' => 'Description',
+		'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_category.description',
             'config' => ['type' => 'text']
         ],
 	'shortdesc' => [
-		'label' => 'Short Description',
+		'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_category.short_description',
             'config' => ['type' => 'text']
         ],
 	'shortbtn' => [
-		'label' => 'Short Button Label',
+		'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_category.short_button_label',
             'config' => ['type' => 'input']
         ],
 	'image' => [
-		'label' => 'Image',
+		'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_category.image',
             'config' => [
                 'type' => 'file',
                 'maxitems' => 1

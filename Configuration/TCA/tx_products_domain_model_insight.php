@@ -6,9 +6,8 @@ defined('TYPO3') or die();
 
 return [
     'ctrl' => [
-        'title'                    => 'Insight',
+        'title'                    => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_insight',
         'label'                    => 'title',
-        'sortby'                   => 'datetime',
         'default_sortby'           => 'datetime DESC',
         'crdate'                   => 'crdate',
         'tstamp'                   => 'tstamp',
@@ -295,7 +294,7 @@ return [
             'label'   => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_insight.externalurl',
             'config'  => [
                 'type'         => 'link',
-                'allowedTypes' => ['url'],
+                'allowedTypes' => ['page', 'url', 'record'],
                 'size'         => 50,
             ],
         ],
@@ -383,9 +382,6 @@ return [
                 'allowed' => 'common-image-types',
                 'appearance' => [
                     'createNewRelationLinkTitle' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:images.addFileReference',
-                    'showPossibleLocalizationRecords' => true,
-                    'showAllLocalizationLink'         => true,
-                    'showSynchronizationLink'         => true,
                 ],
                 'overrideChildTca' => [
                     'types' => [
@@ -404,9 +400,6 @@ return [
                 'type'    => 'file',
                 'appearance' => [
                     'createNewRelationLinkTitle' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.addFileReference',
-                    'showPossibleLocalizationRecords' => true,
-                    'showAllLocalizationLink'         => true,
-                    'showSynchronizationLink'         => true,
                 ],
             ],
         ],

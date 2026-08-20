@@ -48,7 +48,7 @@
                 </div>
             </f:if>
             <div class="ndz-rte">
-                <f:format.html>{insight.bodytext}</f:format.html>
+                <f:format.html parseFuncTSPath="lib.parseFunc_RTE">{insight.bodytext}</f:format.html>
             </div>
         </div>
         <f:if condition="{insight.feuser}">

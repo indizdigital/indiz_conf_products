@@ -284,8 +284,36 @@ class Product extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     public function getFaq(): ?ObjectStorage
     {
-        return $this->faq;
-    }   
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('tx_products_domain_model_product');
+
+        $row = $queryBuilder
+            ->select('faq')
+            ->from('tx_products_domain_model_product')
+            ->where(
+                $queryBuilder->expr()->in('uid', $queryBuilder->createNamedParameter($this->uid))
+            )
+            ->executeQuery()
+            ->fetchOne();
+
+        if (!$row || !strlen($row)) {
+            return $this->faq;
+        }
+
+        $faq_uids = explode(",", $row);
+        $sorted = [];
+        foreach ($this->faq as $faqItem) {
+            $pos = array_search($faqItem->getUid(), $faq_uids);
+            $sorted[$pos] = $faqItem;
+        }
+        ksort($sorted);
+
+        $result = new ObjectStorage();
+        foreach ($sorted as $faqItem) {
+            $result->attach($faqItem);
+        }
+        return $result;
+    }
 
     public function setFaq(ObjectStorage $faq): void
     {

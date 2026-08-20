@@ -1,7 +1,7 @@
 <?php
 return [
     'ctrl' => [
-        'title' => 'Product',
+        'title' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_product',
         'label' => 'name',
         'label_alt' => 'subname',
         'label_alt_force' => true,
@@ -23,7 +23,7 @@ return [
         ],
     ],
     'types' => [
-        '1' => ['showitem' => '--palette--;;titleline,--palette--;;subtit,--palette--;;render,shortdescription,description,--div--;Filter,categories,tags,--div--;Akkordeon/Berater,accordeon,feuser,contactlabel,contactlink,--div--;Karuselle,altcontent,reference_products,screenshots,--div--;Pakete,packagetitle,packages,--div--;AI Inhalt,ai_content,--div--;FAQ,faq,  --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access, hidden, starttime, endtime'],
+        '1' => ['showitem' => '--palette--;;titleline,--palette--;;subtit,--palette--;;render,shortdescription,description,--div--;LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_product.filter,categories,tags,--div--;LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_product.consultant,accordeon,feuser,contactlabel,contactlink,--div--;LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_product.carousel,altcontent,reference_products,screenshots,--div--;LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_product.packages,packagetitle,packages,--div--;LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_product.aicontent,ai_content,--div--;LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_product.faq,faq,  --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access, hidden, starttime, endtime'],
     ],
     'palettes' => [
         'render' => ['showitem' => 'rendertype,sys_language_uid,slug'],
@@ -78,7 +78,7 @@ return [
             ],
         ],
         'slug' => [
-            'label' => 'Slug',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_product.slug',
             'config' => [
                 'type' => 'slug', 
                 'eval' => 'uniqueInSite',
@@ -118,15 +118,15 @@ return [
             ],
         ],
         'name' => [
-            'label' => 'Titel',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_product.name',
             'config' => ['type' => 'input']
         ],
         'subname' => [
-            'label' => 'Untertitel',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_product.subname',
             'config' => ['type' => 'input']
         ],
         'rendertype' => [
-            'label' => 'Rendertype',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_product.rendertype',
             'onChange' => 'reload',
             'config' => [
                 'type' => 'select',
@@ -139,18 +139,18 @@ return [
             ]
         ],
         'shortdescription' => [
-            'label' => 'Kurzbeschreibung',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_product.shortdescription',
             'config' => ['type' => 'text']
         ],
         'description' => [
-            'label' => 'Beschreibung',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_product.description',
             'config' => [
                 'type' => 'text',
                 'enableRichtext' => true,
             ]
         ],
         'accordeon' => [
-            'label' => 'Akkordeon',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_product.accordeon',
                 'config' => [
                     'type' => 'inline',
                     'foreign_table' => 'tt_content',
@@ -158,7 +158,7 @@ return [
                 ]
         ],
         'altcontent' => [
-            'label' => 'Leistungsumfang',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_product.altcontent',
                 'config' => [
                     'type' => 'inline',
                     'foreign_table' => 'tt_content',
@@ -166,7 +166,7 @@ return [
                 ]
         ],
         'ai_content' => [
-            'label' => 'AI Inhalt',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_product.aicontent',
             'displayCond' => 'FIELD:rendertype:=:ai',
             'config' => [
                 'type' => 'inline',
@@ -174,7 +174,7 @@ return [
             ]
         ],
         'categories' => [
-            'label' => 'Kategorie',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_product.categories',
             'l10n_mode' => 'exclude',
             'config' => [
                 'type' => 'select',
@@ -186,7 +186,7 @@ return [
             ]
         ],
         'tags' => [
-            'label' => 'Tags',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_product.tags',
             'l10n_mode' => 'exclude',
             'config' => [
                 'type' => 'select',
@@ -198,7 +198,7 @@ return [
             ]
         ],
         'reference_products' => [
-            'label' => 'Referenzprodukte',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_product.reference_products',
             'l10n_mode' => 'exclude',
             'config' => [
                 'type' => 'select',
@@ -208,7 +208,7 @@ return [
         ],
         
         'image' => [
-            'label' => 'Bild',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_product.image',
             'l10n_mode' => 'exclude',
             'config' => [
                 'type' => 'file',
@@ -216,7 +216,7 @@ return [
             ]
         ],
         'subimage' => [
-            'label' => 'Icon',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_product.subimage',
             'l10n_mode' => 'exclude',
             'config' => [
                 'type' => 'file',
@@ -224,7 +224,7 @@ return [
             ]
         ],
         'screenshots' => [
-            'label' => 'Screenshots',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_product.screenshots',
             'exclude' => true,
             'config' => [
                     'type' => 'inline',
@@ -236,25 +236,25 @@ return [
             ]
         ],
         'packagetitle' => [
-            'label' => 'Package title',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_product.packagetitle',
             'config' => [
                 'type' => 'input',
             ]
         ],
         'contactlabel' => [
-            'label' => 'Contact Button Label',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_product.contactlabel',
             'config' => [
                 'type' => 'input',
             ]
         ],
         'contactlink' => [
-            'label' => 'Contact Button Label',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_product.contactlink',
             'config' => [
                 'type' => 'link',
             ]
         ],
         'packages' => [
-            'label' => 'Pakete',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_product.packages',
             'exclude' => true,
             'displayCond' => 'FIELD:rendertype:!=:ai',
             'config' => [
@@ -264,7 +264,7 @@ return [
         ],
         #reload element on change
         'faq' => [
-            'label' => 'Pakete',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_product.faq',
             'l10n_mode' => 'exclude',
             'config' => [
                 'type' => 'select',
@@ -274,7 +274,7 @@ return [
             ]
         ],
         'feuser' => [
-            'label' => 'Beratung',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_product.feuser',
             'config' => [
                 'type' => 'inline',
                 'foreign_table' => 'tt_content',

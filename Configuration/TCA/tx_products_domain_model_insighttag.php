@@ -100,7 +100,7 @@ return [
             ],
         ],
         'name' => [
-            'label' => 'Name',
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_insighttag.name',
             'config' => ['type' => 'input']
         ],
     ],

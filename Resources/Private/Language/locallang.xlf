@@ -240,6 +240,15 @@
 			<trans-unit id="tx_products_domain_model_product.resetfilter">
 				<source>Reset filters</source>
 			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.changesorting">
+				<source>Change sorting</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.listview">
+				<source>List view</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.boxview">
+				<source>Grid view</source>
+			</trans-unit>
 			<trans-unit id="tx_products_domain_model_product.of">
 				<source>by</source>
 			</trans-unit>

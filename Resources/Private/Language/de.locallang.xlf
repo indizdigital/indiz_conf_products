@@ -240,6 +240,15 @@
 			<trans-unit id="tx_products_domain_model_product.resetfilter">
 				<target>Filter zurücksetzen</target>
 			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.changesorting">
+				<target>Sortierung ändern</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.listview">
+				<target>Listenansicht</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.boxview">
+				<target>Rasteransicht</target>
+			</trans-unit>
 			<trans-unit id="tx_products_domain_model_product.of">
 				<target>von</target>
 			</trans-unit>

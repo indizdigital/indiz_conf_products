@@ -139,9 +139,9 @@
 						</div>
 						<ul class="flex items-center gap-2">
 							<li>
-								<a class="{f:if(condition:'{currentpage} == 0',then:'pointer-events-none opacity-40',else:'js-goto-page')} ndz-btn ndz-btn-circle ndz-btn-primary font-normal" data-page="{currentpage - 1}" aria-label="Previous">
+								<button type="button" class="{f:if(condition:'{currentpage} == 0',then:'pointer-events-none opacity-40',else:'js-goto-page')} ndz-btn ndz-btn-circle ndz-btn-primary font-normal" data-page="{currentpage - 1}" aria-label="Previous">
 									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/></svg>
-								</a>
+								</button>
 							</li>
 							<f:for each="{paginationItems}" as="item">
 								<f:if condition="{item} == -1">
@@ -149,14 +149,14 @@
 										<li class="font-normal pointer-events-none">…</li>
 									</f:then>
 									<f:else>
-										<li><a class="{f:if(condition:'{item} == {currentpage}',then:'ndz-btn-active',else:'js-goto-page')} ndz-btn ndz-btn-circle ndz-btn-primary font-normal" data-page="{item}">{item + 1}</a></li>
+										<li><button type="button" class="{f:if(condition:'{item} == {currentpage}',then:'ndz-btn-active',else:'js-goto-page')} ndz-btn ndz-btn-circle ndz-btn-primary font-normal" data-page="{item}">{item + 1}</button></li>
 									</f:else>
 								</f:if>
 							</f:for>
 							<li>
-								<a class="{f:if(condition:'{currentpage} == {lastPage}',then:'pointer-events-none opacity-40',else:'js-goto-page')} ndz-btn ndz-btn-circle ndz-btn-primary font-normal" data-page="{currentpage + 1}" aria-label="Next">
+								<button type="button" class="{f:if(condition:'{currentpage} == {lastPage}',then:'pointer-events-none opacity-40',else:'js-goto-page')} ndz-btn ndz-btn-circle ndz-btn-primary font-normal" data-page="{currentpage + 1}" aria-label="Next">
 									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/></svg>
-								</a>
+								</button>
 							</li>
 						</ul>
 						<div class="flex-1"></div>
@@ -306,7 +306,7 @@
     updateLabel();
 
 	
-    document.querySelectorAll("a.js-goto-page").forEach(function(link) {
+    document.querySelectorAll(".js-goto-page").forEach(function(link) {
         link.addEventListener("click", function(e) {
             e.preventDefault();
             document.querySelector(".js-page").value = this.dataset.page;

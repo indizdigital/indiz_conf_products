@@ -67,7 +67,7 @@
                     <div class="swiper-wrapper">
                         <f:for each="{insights}" as="insight">
                             <div class="swiper-slide relative text-blue space-y-2 w-full sm:w-[49%] lg:w-[32%] xl:space-y-5">
-                                <f:link.action action="show" arguments="{insight:insight}" class="absolute inset-0 z-10 mb-0"><span class="sr-only">Link</span></f:link.action>
+                                <f:link.action action="show" arguments="{insight:insight}" class="absolute inset-0 z-10 mb-0"><span class="sr-only"><f:translate key="showmore" extensionName="SteppingStoneSitePackage" /></span></f:link.action>
                                 <div class="relative bg-grey-200 h-0 pb-[65%]">
                                     <f:if condition="{insight.falMediaCount}">
                                         <f:then>

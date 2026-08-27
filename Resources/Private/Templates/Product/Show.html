@@ -1,7 +1,7 @@
 <html 
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:ndz="http://typo3.org/ns/IndizDigitalGmbh/SteppingStoneSitePackage/ViewHelpers"
->
+    data-namespace-typo3-fluid="true">
 <f:asset.script identifier="swiperjs" src="EXT:indiz-digital-gmbh/stepping-stone-site-package/Resources/Public/JavaScript/swiper-bundle.min.js" />
 <f:asset.script identifier="accordion" src="EXT:indiz-digital-gmbh/stepping-stone-site-package/Resources/Public/JavaScript/ndz-accordion.js"/>
 <f:asset.script identifier="swiper" src="EXT:indiz-digital-gmbh/stepping-stone-site-package/Resources/Public/JavaScript/ndz-swiper.js"/>
@@ -103,13 +103,15 @@
                             <div class="js-accordion col-span-2 space-y-3 sm:space-y-5">
                                 <f:for each="{product.packages}" as="p_div">
                                     <div class="ndz-accordion-item js-accordion-item bg-white rounded-lg js-package-div">
-                                        <button type="button" class="js-accordion-header w-full p-3 flex items-center justify-between gap-3 text-blue text-left cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 sm:px-5 sm:py-3 sm:gap-5">
-                                            <h3 class="sm:text-2xl font-extrabold flex-1 xl:text-3.5xl">{p_div.name}</h3>
-                                            <span><span class="sm:text-2xl font-extrabold xl:text-3.5xl js-subtotal-price">0.00</span> <f:translate key="tx_products_domain_model_product.chf" /><span class="js-calc-time">/<f:translate key="tx_products_domain_model_product.month" /></span></span>
-                                            <svg class="ndz-accordion-icon js-accordion-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                                            </svg>
-                                        </button>
+                                        <h3>
+                                            <button type="button" class="js-accordion-header w-full p-3 flex items-center justify-between gap-3 text-blue text-left cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 sm:px-5 sm:py-3 sm:gap-5">
+                                                <span class="sm:text-2xl font-extrabold flex-1 xl:text-3.5xl">{p_div.name}</span>
+                                                <span><span class="sm:text-2xl font-extrabold xl:text-3.5xl js-subtotal-price">0.00</span> <f:translate key="tx_products_domain_model_product.chf" /><span class="js-calc-time">/<f:translate key="tx_products_domain_model_product.month" /></span></span>
+                                                <svg class="ndz-accordion-icon js-accordion-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                                </svg>
+                                            </button>
+                                        </h3>
                                         <div id="panel-1" role="region" aria-labelledby="accordion-1" class="ndz-accordion-content px-5 js-accordion-content">
                                             <div class="ndz-accordion-content-inner border-t-2 border-lightblue divide-y-2 divide-lightblue">
                                                 <f:if condition="{p_div.packageelements}">
@@ -150,12 +152,12 @@
                                 </div>
                             </div>
                             <div class="flex flex-wrap items-center justify-end gap-2">
-                                <f:form.button type="button" class="ndz-btn ndz-btn-outline js-order-btn"  data-ordertype="0" data-ordertitle="<f:translate key='tx_products_domain_model_product.discuss_config' />" data-product="{product.uid}" data-package="{product.packages.0.uid}" data-packagename="{product.name}">
+                                <button type="button" class="ndz-btn ndz-btn-outline js-order-btn"  data-ordertype="0" data-ordertitle="<f:translate key='tx_products_domain_model_product.discuss_config' />" data-product="{product.uid}" data-package="{product.packages.0.uid}" data-packagename="{product.name}">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="fill-current" width="17.12" height="16.13" viewBox="0 0 17.12 16.13">
                                         <path d="M16.42,16.13c-.09,0-.18-.02-.26-.05-.09-.03-.17-.09-.25-.16l-2.14-2.14H4.91c-.4,0-.73-.14-1.01-.42-.28-.28-.42-.61-.42-1.01v-1.67h9.11c.39,0,.73-.14,1-.41.28-.28.42-.61.42-1.01V3.49h1.67c.4,0,.73.14,1.01.42.28.28.42.61.42,1.01v10.5c0,.22-.07.4-.23.52-.15.13-.31.19-.48.19M1.43,9.4l1.39-1.39h8.53V1.43H1.43v7.97ZM.71,11.83c-.17,0-.33-.06-.49-.19-.15-.13-.22-.3-.22-.52V1.43c0-.4.14-.73.42-1.01.28-.28.61-.42,1.01-.42h9.92c.39,0,.73.14,1,.42.28.28.42.61.42,1.01v6.58c0,.39-.14.73-.42,1.01-.28.28-.61.42-1,.42H3.4l-2.19,2.18c-.08.08-.16.14-.25.17-.09.03-.17.05-.25.05M1.43,8.01V1.43v6.58Z" />
                                     </svg>
                                     <f:translate key="tx_products_domain_model_product.discuss_config" />
-                                </f:form.button>
+                                </button>
                                 <f:form.button class="js-order-btn ndz-btn" name="selectedPackage"  data-ordertype="1" data-ordertitle="<f:translate key='tx_products_domain_model_product.request' />" data-product="{product.uid}" data-package="{product.packages.0.uid}" data-packagename="{product.name}">
                                     <f:translate key="tx_products_domain_model_product.request" />
                                 </f:form.button>
@@ -274,13 +276,13 @@
                                     </div>
                                 </div>
                                 <div class="flex flex-wrap items-center justify-end gap-2">
-                                    <button class="js-order-btn ndz-btn ndz-btn-outline js-personalise-keep" type="button" name="" value=""  data-ordertype="0" data-ordertitle="<f:translate key='tx_products_domain_model_product.discuss_config' />" data-product="{product.uid}" data-package="0" data-packagename="{product.name} Personalised">
+                                    <button class="js-order-btn ndz-btn ndz-btn-outline js-personalise-keep" type="button"  data-ordertype="0" data-ordertitle="<f:translate key='tx_products_domain_model_product.discuss_config' />" data-product="{product.uid}" data-package="0" data-packagename="{product.name} Personalised">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="fill-current" width="17.12" height="16.13" viewBox="0 0 17.12 16.13">
                                             <path d="M16.42,16.13c-.09,0-.18-.02-.26-.05-.09-.03-.17-.09-.25-.16l-2.14-2.14H4.91c-.4,0-.73-.14-1.01-.42-.28-.28-.42-.61-.42-1.01v-1.67h9.11c.39,0,.73-.14,1-.41.28-.28.42-.61.42-1.01V3.49h1.67c.4,0,.73.14,1.01.42.28.28.42.61.42,1.01v10.5c0,.22-.07.4-.23.52-.15.13-.31.19-.48.19M1.43,9.4l1.39-1.39h8.53V1.43H1.43v7.97ZM.71,11.83c-.17,0-.33-.06-.49-.19-.15-.13-.22-.3-.22-.52V1.43c0-.4.14-.73.42-1.01.28-.28.61-.42,1.01-.42h9.92c.39,0,.73.14,1,.42.28.28.42.61.42,1.01v6.58c0,.39-.14.73-.42,1.01-.28.28-.61.42-1,.42H3.4l-2.19,2.18c-.08.08-.16.14-.25.17-.09.03-.17.05-.25.05M1.43,8.01V1.43v6.58Z"></path>
                                         </svg>
                                         <f:translate key="tx_products_domain_model_product.discuss_config" />
                                     </button>
-                                    <f:form.button class="js-order-btn ndz-btn js-personalise-keep" name="selectedPackage"  data-ordertype="1" data-ordertitle="<f:translate key='tx_products_domain_model_product.request' />" data-product="{product.uid}" data-package="0" data-packagename="{product.name} Personalised">
+                                    <f:form.button class="js-order-btn ndz-btn js-personalise-keep" name="selectedPackage" data-ordertype="1" data-ordertitle="<f:translate key='tx_products_domain_model_product.request' />" data-product="{product.uid}" data-package="0" data-packagename="{product.name} Personalised">
                                         <f:translate key="tx_products_domain_model_product.request" />
                                     </f:form.button>
                                 </div>
@@ -324,7 +326,7 @@
                                     </div> -->
                                 </div>
                                 <div class="flex flex-wrap items-center justify-end gap-2">
-                                    <button class="js-order-btn ndz-btn ndz-btn-outline" type="button" name="" data-product="{product.uid}" data-package="0" data-ordertype="0" data-packagename="{product.name} {product.subname}" data-ordertitle="<f:translate key='tx_products_domain_model_product.discuss_models' />">
+                                    <button class="js-order-btn ndz-btn ndz-btn-outline" type="button" data-product="{product.uid}" data-package="0" data-ordertype="0" data-packagename="{product.name} {product.subname}" data-ordertitle="<f:translate key='tx_products_domain_model_product.discuss_models' />">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="fill-current" width="17.12" height="16.13" viewBox="0 0 17.12 16.13">
                                             <path d="M16.42,16.13c-.09,0-.18-.02-.26-.05-.09-.03-.17-.09-.25-.16l-2.14-2.14H4.91c-.4,0-.73-.14-1.01-.42-.28-.28-.42-.61-.42-1.01v-1.67h9.11c.39,0,.73-.14,1-.41.28-.28.42-.61.42-1.01V3.49h1.67c.4,0,.73.14,1.01.42.28.28.42.61.42,1.01v10.5c0,.22-.07.4-.23.52-.15.13-.31.19-.48.19M1.43,9.4l1.39-1.39h8.53V1.43H1.43v7.97ZM.71,11.83c-.17,0-.33-.06-.49-.19-.15-.13-.22-.3-.22-.52V1.43c0-.4.14-.73.42-1.01.28-.28.61-.42,1.01-.42h9.92c.39,0,.73.14,1,.42.28.28.42.61.42,1.01v6.58c0,.39-.14.73-.42,1.01-.28.28-.61.42-1,.42H3.4l-2.19,2.18c-.08.08-.16.14-.25.17-.09.03-.17.05-.25.05M1.43,8.01V1.43v6.58Z"></path>
                                         </svg>

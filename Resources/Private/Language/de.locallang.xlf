@@ -201,6 +201,9 @@
 			<trans-unit id="tx_products_domain_model_product.form.message">
 				<target>Fragen oder Kommentare</target>
 			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.pleaseleaveblank">
+				<target>Bitte dieses Feld leer lassen</target>
+			</trans-unit>
 			<trans-unit id="tx_products_domain_model_product.form.discussorder">
 				<target>Bestellung besprechen</target>
 			</trans-unit>
@@ -212,6 +215,9 @@
 			</trans-unit>
 			<trans-unit id="tx_products_domain_model_product.search">
 				<target>Suche</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.searchresults">
+				<target>Suchresultate</target>
 			</trans-unit>
 			<trans-unit id="tx_products_domain_model_product.entersearch">
 				<target>Suchbegriff eingeben</target>

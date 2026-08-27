@@ -1,9 +1,11 @@
-<html xmlns:ndz="http://typo3.org/ns/IndizDigitalGmbh/SteppingStoneSitePackage/ViewHelpers">
+<html
+    xmlns:ndz="http://typo3.org/ns/IndizDigitalGmbh/SteppingStoneSitePackage/ViewHelpers"
+    data-namespace-typo3-fluid="true">
     <f:if condition="{amount}">
         <f:then>
             <div class="py-3 flex items-center justfify-between gap-10 js-fixed-range js-price-line">
                 <div>
-                    <label class="block font-extrabold text-blue" for="">{amount} x {label}</label>
+                    <label class="block font-extrabold text-blue">{amount} x {label}</label>
                     <f:form.textfield type="hidden" name="{name}[amount]" value="{amount}" class="js-range js-range-value" />
                     <f:form.textfield type="hidden" name="{name}[price]" value="{price}" />
                     <f:form.textfield type="hidden" class="js-range-price-total" name="{name}[total]" value="{amount * price}" />
@@ -20,8 +22,8 @@
             <div class="js-range-wrapper py-3 sm:pr-14 lg:pr-0 lg:flex lg:items-stretch lg:justfify-between lg:gap-10 js-price-line">
                 <div class="flex-1 space-y-2">
                     <div>
-                        <label class="block font-extrabold text-blue" for="">{label}</label>
-                        <label class="flex items-center text-grey-300 gap-2" for="">
+                        <h4 class="block font-extrabold text-blue">{label}</h4>
+                        <label class="flex items-center text-grey-300 gap-2" for="{name}">
                             <f:if condition="{subname}">
                                 <f:then>
                                     <span><ndz:format.inlineText value="{subname}" /></span>
@@ -50,12 +52,12 @@
                     </div>
                     <div class="flex items-center gap-5 sm:gap-10">
                         <div>
-                            <f:form.textfield id="" type="number" name="{name}[amount]" value="{min}" min="{min}" max="{max}" style="min-width:110px" class="ndz-input-number py-2 px-3 font-extrabold text-blue rounded-md outline-2 outline-grey-300 -outline-offset-2 focus:outline-blue js-range-value" />
+                            <f:form.textfield id="{name}" type="number" name="{name}[amount]" value="{min}" min="{min}" max="{max}" style="min-width:110px" class="ndz-input-number py-2 px-3 font-extrabold text-blue rounded-md outline-2 outline-grey-300 -outline-offset-2 focus:outline-blue js-range-value" />
                             <f:form.textfield type="hidden" name="{name}[price]" value="{price}" />
                             <f:form.textfield type="hidden" class="js-range-price-total" name="{name}[total]" value="{amount * price}" />
                         </div>
                         <div class="flex-1">
-                            <input type="range" min="{min}" max="{max}" value="0" class="ndz-range js-range" />
+                            <input type="range" min="{min}" max="{max}" value="0" class="ndz-range js-range" aria-label="{label}" />
                         </div>
                     </div>
                 </div>

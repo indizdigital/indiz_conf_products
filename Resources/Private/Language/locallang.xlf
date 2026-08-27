@@ -201,6 +201,9 @@
 			<trans-unit id="tx_products_domain_model_product.form.message">
 				<source>Questions or comments</source>
 			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.form.pleaseleaveblank">
+				<source>Please leave this field blank</source>
+			</trans-unit>
 			<trans-unit id="tx_products_domain_model_product.form.discussorder">
 				<source>Disuss the order</source>
 			</trans-unit>
@@ -212,6 +215,9 @@
 			</trans-unit>
 			<trans-unit id="tx_products_domain_model_product.search">
 				<source>Search</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.searchresults">
+				<source>Search Results</source>
 			</trans-unit>
 			<trans-unit id="tx_products_domain_model_product.entersearch">
 				<source>Enter search term eingeben</source>

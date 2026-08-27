@@ -162,11 +162,19 @@ class InsightController extends ActionController
 
 
     /**
-     * Finds sys_file_reference rows on tx_products_domain_model_insight that correspond to
-     * fal_media references which were deleted/hidden on tx_news_domain_model_news in the old
-     * system, but got copied into the new system anyway. Matches files by trailing filename
-     * since storage paths changed between systems; uid_foreign is assumed preserved by
-     * updateNativeFields() forcing the migrated record's uid to the old CSV uid.
+     * For every tx_news_domain_model_news record (old system), builds the set of filenames
+     * that are still actively attached (fal_media, not deleted/hidden). For the matching
+     * tx_products_domain_model_insight record (new system — uid preserved by
+     * updateNativeFields() forcing the migrated record's uid to the old CSV uid), any fal_media
+     * reference whose filename is NOT in that old set is an import artifact and gets removed.
+     * A news record that exists in the old system but has no active old images means every
+     * new-side image for that insight is extra and gets removed too. Insight uids with no
+     * corresponding row in tx_news_domain_model_news at all are skipped entirely — no old
+     * record to diff against, so left untouched.
+     *
+     * Comparing full filename sets per record (rather than only the individually
+     * deleted/hidden old refs) also sidesteps the ambiguous cross-database file matching the
+     * previous version relied on (findImage()) — we only need filenames to match, not uids.
      *
      * Defaults to dry-run: nothing is deleted until called with $dryRun = false.
      */
@@ -180,76 +188,118 @@ class InsightController extends ActionController
             [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]
         );
 
-        // Load deleted/hidden fal_media references from the source database
+        // All still-active fal_media filenames per news uid in the OLD system
         $stmt = $sourcePdo->prepare(
-            'SELECT tx_news_domain_model_news.title,sys_file_reference.uid_local,sys_file_reference.uid_foreign,sys_file.identifier FROM sys_file_reference LEFT JOIN sys_file ON uid_local = sys_file.uid LEFT JOIN tx_news_domain_model_news ON uid_foreign = tx_news_domain_model_news.uid WHERE tablenames = "tx_news_domain_model_news" AND fieldname = "fal_media" AND (sys_file_reference.deleted = 1 OR sys_file_reference.hidden = 1)'
+            'SELECT sys_file_reference.uid_foreign AS news_uid, sys_file.identifier
+             FROM sys_file_reference
+             LEFT JOIN sys_file ON sys_file_reference.uid_local = sys_file.uid
+             WHERE sys_file_reference.tablenames = "tx_news_domain_model_news"
+               AND sys_file_reference.fieldname = "fal_media"
+               AND sys_file_reference.deleted = 0
+               AND sys_file_reference.hidden = 0'
         );
         $stmt->execute();
-        $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-        
 
-        $manual = [];
-        $toDelete = [];
-        $conn = GeneralUtility::makeInstance(ConnectionPool::class);
-
-        foreach ($rows as $row) {
-            $newFileUid = $this->findImage($row['identifier'], $manual);
-            if ($newFileUid === null) {
-                continue; // ambiguous/missing match, already logged to $manual
-            }
-
-            $qbRef = $conn->getQueryBuilderForTable('sys_file_reference');
-            $qbRef->getRestrictions()->removeAll();
-            $refs = $qbRef
-                ->select('uid')
-                ->from('sys_file_reference')
-                ->where(
-                    $qbRef->expr()->eq('tablenames', $qbRef->createNamedParameter('tx_products_domain_model_insight')),
-                    $qbRef->expr()->eq('fieldname', $qbRef->createNamedParameter('fal_media')),
-                    $qbRef->expr()->eq('uid_local', $qbRef->createNamedParameter($newFileUid)),
-                    $qbRef->expr()->eq('uid_foreign', $qbRef->createNamedParameter((int)$row['uid_foreign'])),
-                    $qbRef->expr()->eq('deleted', $qbRef->createNamedParameter(0))
-                )
-                ->executeQuery()
-                ->fetchAllAssociative();
-
-            if (count($refs) !== 1) {
-                $manual[] = ['source_row' => $row, 'new_file_uid' => $newFileUid, 'candidates' => $refs];
+        $oldImages = []; // news uid => [basename => true]
+        foreach ($stmt->fetchAll(\PDO::FETCH_ASSOC) as $row) {
+            if (!$row['identifier']) {
                 continue;
             }
-
-            $toDelete[] = (int)$refs[0]['uid'];
+            $parts = explode('/', $row['identifier']);
+            $basename = end($parts);
+            $oldImages[(int)$row['news_uid']][$basename] = true;
         }
 
+        // All news uids that exist in the old system at all (deleted or not) — an insight uid
+        // missing here has no correspondence in the old table, so it must be left alone entirely
+        // rather than treated as "no old images -> delete everything".
+        $existingNewsUids = array_column(
+            $sourcePdo->query('SELECT uid FROM tx_news_domain_model_news')->fetchAll(\PDO::FETCH_ASSOC),
+            'uid'
+        );
+        $existingNewsUids = array_flip(array_map('intval', $existingNewsUids));
+
+        $conn = GeneralUtility::makeInstance(ConnectionPool::class);
+
+        // All active fal_media refs per insight in the NEW system, joined so we only ever
+        // touch refs whose insight actually still exists
+        $qb = $conn->getQueryBuilderForTable('sys_file_reference');
+        $qb->getRestrictions()->removeAll();
+        $newRows = $qb
+            ->select('sys_file_reference.uid', 'sys_file_reference.uid_foreign', 'sys_file.identifier')
+            ->from('sys_file_reference')
+            ->join(
+                'sys_file_reference',
+                'sys_file',
+                'sys_file',
+                $qb->expr()->eq('sys_file.uid', 'sys_file_reference.uid_local')
+            )
+            ->join(
+                'sys_file_reference',
+                'tx_products_domain_model_insight',
+                'insight',
+                $qb->expr()->eq('insight.uid', 'sys_file_reference.uid_foreign')
+            )
+            ->where(
+                $qb->expr()->eq('sys_file_reference.tablenames', $qb->createNamedParameter('tx_products_domain_model_insight')),
+                $qb->expr()->eq('sys_file_reference.fieldname', $qb->createNamedParameter('fal_media')),
+                $qb->expr()->eq('sys_file_reference.deleted', $qb->createNamedParameter(0)),
+                $qb->expr()->eq('insight.deleted', $qb->createNamedParameter(0))
+            )
+            ->executeQuery()
+            ->fetchAllAssociative();
+
+        $toDelete = [];
+        $deleteCounts = []; // insight uid => number of fal_media refs being removed
+        $removedLog = [];
+
+        foreach ($newRows as $row) {
+            $insightUid = (int)$row['uid_foreign'];
+
+            if (!isset($existingNewsUids[$insightUid])) {
+                continue; // no corresponding news record at all — not our concern here, leave it
+            }
+
+            $parts = explode('/', $row['identifier']);
+            $basename = end($parts);
+
+            if (isset($oldImages[$insightUid][$basename])) {
+                continue; // still present on the old record, keep it
+            }
+
+            $toDelete[] = (int)$row['uid'];
+            $deleteCounts[$insightUid] = ($deleteCounts[$insightUid] ?? 0) + 1;
+            $removedLog[] = ['insight_uid' => $insightUid, 'ref_uid' => (int)$row['uid'], 'file' => $basename];
+        }
+
+        echo implode(",",$toDelete);exit;
         if (!$dryRun && $toDelete) {
-            $cmdmap = [];
             foreach ($toDelete as $refUid) {
                 $qbRef = $conn->getQueryBuilderForTable('sys_file_reference');
                 $qbRef->getRestrictions()->removeAll();
                 $qbRef
                     ->update('sys_file_reference')
-                    ->set('deleted',1)
+                    ->set('deleted', 1)
                     ->where(
                         $qbRef->expr()->eq('uid', $qbRef->createNamedParameter($refUid))
                     )
                     ->executeStatement();
             }
-            /*$dataHandler = GeneralUtility::makeInstance(DataHandler::class);
-            $dataHandler->start([], $cmdmap);
-            $dataHandler->process_cmdmap();*/
-            
 
+            // Keep the FAL count column on the insight in sync with the refs we just removed
+            foreach ($deleteCounts as $insightUidToUpdate => $count) {
+                $conn->getConnectionForTable('tx_products_domain_model_insight')->executeStatement(
+                    'UPDATE tx_products_domain_model_insight SET fal_media = GREATEST(fal_media - ?, 0) WHERE uid = ?',
+                    [$count, $insightUidToUpdate]
+                );
+            }
         }
-        echo "DELETED";
-        print_r($toDelete);
-        
-        exit;
 
         return [
             'dryRun'   => $dryRun,
             'toDelete' => $toDelete,
             'deleted'  => $dryRun ? 0 : count($toDelete),
-            'manual'   => $manual,
+            'removed'  => $removedLog,
         ];
     }
 
@@ -595,8 +645,9 @@ class InsightController extends ActionController
     public function importAction(): \Psr\Http\Message\ResponseInterface
     {
         //$this->rmImages();
+        
         //$this->relinkExternalLinks(false);
-        $this->stripUnresolvableLinks(false);
+        //$this->stripUnresolvableLinks(false);
         //$this->syncCategories();
      //  $this->relinkDocuments();
         //    print_r($st);exit;

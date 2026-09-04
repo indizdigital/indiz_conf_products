@@ -561,9 +561,10 @@ class InsightController extends ActionController
 
     public function indexAction(): \Psr\Http\Message\ResponseInterface
     {
+        
         $this->view->assign("insights",$this->insightRepository->findAll());
         $this->view->assign("tags",$this->insighttagRepository->findAll());
-        $this->view->assign("categories",$this->insightcategoryRepository->findAll());
+        $this->view->assign("categories",$this->insightcategoryRepository->findAllOrderedByDefaultLanguage());
 
         // Merge session filter as base; direct request arguments override
         $sessionFilter = $this->request->getAttribute('frontend.user')->getKey('ses', 'insightFilter') ?? [];

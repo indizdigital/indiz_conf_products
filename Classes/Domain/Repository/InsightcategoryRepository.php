@@ -24,5 +24,49 @@ class InsightcategoryRepository extends Repository
         $querySettings->setRespectStoragePage(false);
         $this->setDefaultQuerySettings($querySettings);
     }
-    
+
+    /**
+     * Translated records only get their `sorting` copied from the default
+     * language record once, at localization time - reordering the default
+     * language afterwards does not propagate to translations. This resolves
+     * every record's effective sorting via its default-language counterpart
+     * so translated categories stay in the same order as language 0.
+     *
+     * @return \Indiz\Products\Domain\Model\Insightcategory[]
+     */
+    public function findAllOrderedByDefaultLanguage(): array
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable($this->table);
+        $queryBuilder->getRestrictions()->removeAll();
+
+        $rows = $queryBuilder
+            ->select('uid', 'l10n_parent', 'sorting')
+            ->from($this->table)
+            ->executeQuery()
+            ->fetchAllAssociative();
+
+        $defaultSortingByUid = [];
+        foreach ($rows as $row) {
+            if ((int)$row['l10n_parent'] === 0) {
+                $defaultSortingByUid[(int)$row['uid']] = (int)$row['sorting'];
+            }
+        }
+
+        $effectiveSortingByUid = [];
+        foreach ($rows as $row) {
+            $uid = (int)$row['uid'];
+            $parent = (int)$row['l10n_parent'];
+            $effectiveSortingByUid[$uid] = $defaultSortingByUid[$parent] ?? (int)$row['sorting'];
+        }
+
+        $categories = $this->findAll()->toArray();
+        usort(
+            $categories,
+            fn($a, $b) => ($effectiveSortingByUid[$a->getUid()] ?? 0) <=> ($effectiveSortingByUid[$b->getUid()] ?? 0)
+        );
+
+        return $categories;
+    }
+
 }

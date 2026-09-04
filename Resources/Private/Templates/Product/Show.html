@@ -81,7 +81,10 @@
         </f:for>
     </f:if>
     <f:if condition="{product.packages} || {product.aiContent} || {product.packagetitle}">
-        <section class="-mx-5 my-5 md:-mx-10 md:my-10 lg:-mx-20 lg:my-20">
+        <section class="relative -mx-5 my-5 md:-mx-10 md:my-10 lg:-mx-20 lg:my-20">
+            <f:if condition="{product.packagetitle}">
+                <a id="{ndz:format.slug(value: product.packagetitle)}" class="absolute -top-[100px] left-0"></a>
+            </f:if>
             <div class="p-5 space-y-3 bg-lightblue md:p-10 lg:py-12 lg:px-20 lg:space-y-5 xl:space-y-12">
                 <f:if condition="{product.rendertype} == 'personalised'">
                     <f:then>
@@ -348,7 +351,8 @@
         </section>
     </f:if>
     <f:if condition="{product.faq}">
-        <section class="my-10 md:my-10 lg:my-20">
+        <section class="relative my-10 md:my-10 lg:my-20">
+            <a id="{ndz:format.slug(value: f:translate(key: 'tx_products_domain_model_product.faq'))}" class="absolute -top-[100px] left-0"></a>
             <div class="space-y-3 md:space-y-0 md:grid md:grid-cols-4 md:items-start md:gap-x-7">
                 <h2 class="ndz-headline-middle"><f:translate key="tx_products_domain_model_product.faq" /></h2>
                 <div class="js-accordion col-span-3 border-y border-gray-200 divide-y divide-gray-200">

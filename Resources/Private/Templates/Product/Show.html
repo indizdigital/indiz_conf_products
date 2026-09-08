@@ -55,8 +55,9 @@
         </f:for>
     </f:if>
     <f:if condition="{product.referenceProducts}">
-        <section class="my-5 space-y-3 md:my-10 lg:my-20 lg:space-y-5 xl:space-y-8">
-            <h2 class="ndz-headline-middle"><f:translate key="tx_products_domain_model_product.discover_more_products_in_category" /></h2>
+        <section class="relative my-5 space-y-3 md:my-10 lg:my-20 lg:space-y-5 xl:space-y-8">
+            <a id="{ndz:format.slug(key: 'tx_products_domain_model_product.discover_more_products_in_category', extensionName: 'products')}" class="absolute -top-[100px] left-0"></a>
+            <h2 class="js-set-anchor-url ndz-headline-middle" data-anchor="{ndz:format.slug(key: 'tx_products_domain_model_product.discover_more_products_in_category', extensionName: 'products')}"><f:translate key="tx_products_domain_model_product.discover_more_products_in_category" /></h2>
             <div class="relative ndz-carousel-offset">
                 <div class="swiper pb-12" data-slides-per-view="auto" data-space-between="0">
                     <div class="swiper-wrapper">
@@ -91,7 +92,7 @@
                         <f:form.textfield type="hidden" name="product_uid" value="{product.uid}" />
                         <div class="space-y-5 xl:space-y-12 js-package-box">
                             <div class="space-y-3 sm:space-y-0 sm:flex sm:items-end sm:justify-between sm:gap-5">
-                                <h2 class="ndz-headline-middle flex-1">{product.packagetitle}</h2>
+                                <h2 class="js-set-anchor-url ndz-headline-middle flex-1" data-anchor="{ndz:format.slug(value: product.packagetitle)}">{product.packagetitle}</h2>
                                 <div class="flex justify-end bg-slate-100">
                                     <div class="relative inline-grid grid-cols-2 rounded-full bg-white js-calc-toggle" data-toggle>
                                         <!-- Slider -->
@@ -105,7 +106,8 @@
                             </div>
                             <div class="js-accordion col-span-2 space-y-3 sm:space-y-5">
                                 <f:for each="{product.packages}" as="p_div">
-                                    <div class="ndz-accordion-item js-accordion-item bg-white rounded-lg js-package-div">
+                                    <div class="relative ndz-accordion-item js-accordion-item bg-white rounded-lg js-package-div">
+                                        <a id="{ndz:format.slug(value: p_div.name)}" class="absolute -top-[100px] left-0"></a>
                                         <h3>
                                             <button type="button" class="js-accordion-header w-full p-3 flex items-center justify-between gap-3 text-blue text-left cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 sm:px-5 sm:py-3 sm:gap-5">
                                                 <span class="sm:text-2xl font-extrabold flex-1 xl:text-3.5xl">{p_div.name}</span>
@@ -352,12 +354,13 @@
     </f:if>
     <f:if condition="{product.faq}">
         <section class="relative my-10 md:my-10 lg:my-20">
-            <a id="{ndz:format.slug(value: f:translate(key: 'tx_products_domain_model_product.faq'))}" class="absolute -top-[100px] left-0"></a>
+            <a id="{ndz:format.slug(key: 'tx_products_domain_model_product.faq', extensionName: 'products')}" class="absolute -top-[100px] left-0"></a>
             <div class="space-y-3 md:space-y-0 md:grid md:grid-cols-4 md:items-start md:gap-x-7">
-                <h2 class="ndz-headline-middle"><f:translate key="tx_products_domain_model_product.faq" /></h2>
+                <h2 class="ndz-headline-middle js-set-anchor-url" data-anchor="{ndz:format.slug(key: 'tx_products_domain_model_product.faq', extensionName: 'products')}"><f:translate key="tx_products_domain_model_product.faq" /></h2>
                 <div class="js-accordion col-span-3 border-y border-gray-200 divide-y divide-gray-200">
                     <f:for each="{product.faq}" as="q">
-                        <div class="ndz-accordion-item js-accordion-item">
+                        <div class="relative ndz-accordion-item js-accordion-item">
+                            <a id="{ndz:format.slug(value: q.name)}" class="absolute -top-[100px] left-0"></a>
                             <h3 class="text-blue font-extrabold">
                                 <button type="button" class="js-accordion-header py-2 w-full flex items-center justify-between text-left cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
                                     {q.name}
@@ -374,7 +377,6 @@
                         </div>
                     </f:for>
                 </div>
-                <div></div>
             </div>
         </section>
     </f:if>

@@ -211,6 +211,7 @@ class ProductController extends ActionController
         }
         
         $cc = "support@stepping-stone.ch";
+        //$cc = "tech@indiz.digital";
         $bcc = "tech@indiz.digital";
         $packageelements = $this->request->hasArgument("packageelements")?$this->request->getArgument("packageelements"):[];
 

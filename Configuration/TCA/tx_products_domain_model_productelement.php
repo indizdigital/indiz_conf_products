@@ -99,7 +99,7 @@ return [
                 'renderType'=>'selectSingle',
                 'items'=>[
                     ['Range',0],
-                    ['Input',1]
+                    ['Checkbox With Input',1]
                 ]
             ]
         ],
@@ -109,6 +109,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
+                    ['---',''],
                     ['LLL:EXT:products/Resources/Private/Language/locallang.xlf:tx_products_domain_model_product.service_fee','service_fee'],
                     ['LLL:EXT:products/Resources/Private/Language/locallang.xlf:tx_products_domain_model_product.unit_cpu','unit_cpu'],
                     ['LLL:EXT:products/Resources/Private/Language/locallang.xlf:tx_products_domain_model_product.unit_gpu','unit_gpu'],

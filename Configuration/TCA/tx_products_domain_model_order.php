@@ -15,7 +15,7 @@ return [
         ],
     ],
     'types' => [
-        '1' => ['showitem' => 'ordername,ordertype,firstname,name,company,email,street,postalcode,city,country,package_uid,product_uid,data,  --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access, hidden, starttime, endtime'],
+        '1' => ['showitem' => 'ordername,ordertype,firstname,name,company,email,street,postalcode,city,country,package_uid,product_uid,data,total,agb,newsletter,  --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access, hidden, starttime, endtime'],
     ],
     'columns' => [
         'sys_language_uid' => [

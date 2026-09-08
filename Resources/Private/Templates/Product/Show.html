@@ -136,7 +136,7 @@
                                                                 <f:then><f:variable name="p_max" value="{packageelement.max}" /></f:then>
                                                                 <f:else><f:variable name="p_max" value="{packageelement.productelement.max}" /></f:else>
                                                             </f:if>
-                                                            <f:render partial="Product/AttributeLine" arguments="{name: 'packageelements[{product.packages.0.uid}][{packageelement.productelement.uniqid}]',subname:'{packageelement.subname}',desc:'{packageelement.desc}', unit: '{packageelement.productelement.unit}', label: '{p_label}', min: p_min, max: p_max, price: packageelement.price,formula:packageelement.fixFormula, amount: packageelement.amount}" />
+                                                            <f:render partial="Product/AttributeLine" arguments="{name: 'packageelements[{product.packages.0.uid}][{packageelement.productelement.uniqid}]',subname:'{packageelement.subname}',desc:'{packageelement.desc}', unit: '{packageelement.productelement.unit}', label: '{p_label}', min: p_min, max: p_max, price: packageelement.price,formula:packageelement.fixFormula, amount: packageelement.amount, elementtype: packageelement.productelement.elementtype}" />
                                                         </f:for>
                                                     </f:then>
                                                     <f:else>
@@ -261,7 +261,7 @@
                                             <f:then><f:variable name="p_max" value="{packageelement.max}" /></f:then>
                                             <f:else><f:variable name="p_max" value="{packageelement.productelement.max}" /></f:else>
                                         </f:if>
-                                        <f:render partial="Product/AttributeLine" arguments="{name: 'packageelements[0][{packageelement.productelement.uniqid}]',subname:'{packageelement.subname}',desc:'{packageelement.desc}', unit: '{packageelement.productelement.unit}', label: '{p_label}', min: p_min, max: p_max, price: packageelement.price,formula:packageelement.fixFormula, amount: packageelement.amount}" />
+                                        <f:render partial="Product/AttributeLine" arguments="{name: 'packageelements[0][{packageelement.productelement.uniqid}]',subname:'{packageelement.subname}',desc:'{packageelement.desc}', unit: '{packageelement.productelement.unit}', label: '{p_label}', min: p_min, max: p_max, price: packageelement.price,formula:packageelement.fixFormula, amount: packageelement.amount, elementtype: packageelement.productelement.elementtype}" />
                                     </f:for>
                                 </div>
 
@@ -529,7 +529,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function setprice(priceDisplay, range) {
         const price = parseFloat(priceDisplay.dataset.price) || 0;
-        const value = parseFloat(range.value) || 0;
+        const value = range?parseFloat(range.value):0;
         const factor = getFactor();
         let total;
         const formula = priceDisplay.dataset.formula;
@@ -629,6 +629,32 @@ document.addEventListener('DOMContentLoaded', function () {
         //const div_container = priceDisplay.closest('.js-package-div');
         setsubtotal(priceDisplay);
         settotal();
+    });
+
+    document.querySelectorAll('.js-checkbox-switch').forEach(toggleInput => {
+        const container = toggleInput.parentElement;
+        if (!container) return;
+
+        const inputField = container.querySelector('.js-inputfield');
+        const amountField = container.querySelector('.js-checkbox-amount');
+
+        function toggle() {
+            const checked = toggleInput.checked;
+
+            if (inputField) {
+                inputField.hidden = !checked;
+                inputField.disabled = !checked;
+            }
+
+            if (amountField) {
+                amountField.value = checked ? 1 : 0;
+            }
+            calcPrices();
+        }
+
+        toggle();
+
+        toggleInput.addEventListener('change', toggle);
     });
 
 });

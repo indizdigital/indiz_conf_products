@@ -516,6 +516,9 @@
                                         <tr style="border-bottom:1px solid #FFFFFF;text-align:left;padding:15px 0;">
                                           <td style="padding: 10px 15px 10px 0;">
                                             <indiz:packageelement slug="{name}" productUid="{order.productUid}" packageUid="{order.packageUid}" />
+                                            <f:if condition="{data.name}">
+                                              {data.name}
+                                            </f:if>
                                           </td>
                                           <td style="padding: 10px 15px;text-align:right;">{data.amount}</td>
                                           <td style="padding: 10px 0 10px 15px;text-align:right;"><f:if condition="{data.total}">{data.total}</f:if></td>

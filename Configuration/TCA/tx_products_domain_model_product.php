@@ -23,12 +23,13 @@ return [
         ],
     ],
     'types' => [
-        '1' => ['showitem' => '--palette--;;titleline,--palette--;;subtit,--palette--;;render,shortdescription,description,--div--;LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_product.filter,categories,tags,--div--;LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_product.consultant,accordeon,feuser,contactlabel,contactlink,--div--;LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_product.carousel,altcontent,reference_products,screenshots,--div--;LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_product.packages,packagetitle,packages,--div--;LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_product.aicontent,ai_content,--div--;LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_product.faq,faq,  --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access, hidden, starttime, endtime'],
+        '1' => ['showitem' => '--palette--;;titleline,--palette--;;subtit,--palette--;;render,shortdescription,description,--div--;LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_product.filter,categories,tags,--div--;LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_product.consultant,accordeon,feuser,contactlabel,contactlink,--div--;LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_product.carousel,altcontent,reference_products,screenshots,--div--;LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_product.packages,--palette--;;packagetitleline,packages,--div--;LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_product.aicontent,ai_content,--div--;LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_product.faq,faq,  --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access, hidden, starttime, endtime'],
     ],
     'palettes' => [
         'render' => ['showitem' => 'rendertype,sys_language_uid,slug'],
         'titleline' => ['showitem' => 'name,image'],
         'subtit' => ['showitem' => 'subname, subimage'],
+        'packagetitleline' => ['showitem' => 'packagetitle, permonth'],
     ],
     'columns' => [
         'sys_language_uid' => [
@@ -239,6 +240,16 @@ return [
             'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_product.packagetitle',
             'config' => [
                 'type' => 'input',
+            ]
+        ],
+        'permonth' => [
+            'label' => 'LLL:EXT:products/Resources/Private/Language/locallang_db.xlf:tx_products_domain_model_product.permonth',
+            'displayCond' => "FIELD:rendertype:=:personalised",
+            'config' => [
+                'type' => 'check',
+                'behaviour' => [
+                    'allowLanguageSynchronization' => true,
+                ],
             ]
         ],
         'contactlabel' => [

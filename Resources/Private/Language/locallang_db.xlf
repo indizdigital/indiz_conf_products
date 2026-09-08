@@ -285,6 +285,9 @@
 			<trans-unit id="tx_products_domain_model_product.packagetitle">
 				<source>Package title</source>
 			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.permonth">
+				<source>Price per month</source>
+			</trans-unit>
 			<trans-unit id="tx_products_domain_model_product.contactlabel">
 				<source>Contact button label</source>
 			</trans-unit>

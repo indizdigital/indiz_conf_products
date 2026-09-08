@@ -43,6 +43,7 @@ class Product extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     protected $screenshots = null;
     protected string $packagetitle = "";
+    protected int $permonth = 0;
 
     /**
      * @var ObjectStorage<Package>
@@ -251,6 +252,15 @@ class Product extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function setPackagetitle($packagetitle): void
     {
         $this->packagetitle = $packagetitle;
+    }
+    public function getPermonth(): int
+    {
+        return $this->permonth;
+    }
+
+    public function setPermonth($permonth): void
+    {
+        $this->permonth = $permonth;
     }
 
     public function getPackages():  ?ObjectStorage

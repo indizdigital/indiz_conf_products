@@ -638,7 +638,10 @@ class InsightController extends ActionController
      */	
     public function teaseAction(): \Psr\Http\Message\ResponseInterface
     {
-        $insights = $this->insightRepository->findByAttributes([], [], "",0,6);
+        
+        $count = (isset($this->settings["flexform"]["count"]) && strlen($this->settings["flexform"]["count"]))?$this->settings["flexform"]["count"]:6;
+        $cats = (isset($this->settings["flexform"]["category"]) && strlen($this->settings["flexform"]["category"]))?explode(",",$this->settings["flexform"]["category"]):[];
+        $insights = $this->insightRepository->findByAttributes($cats, [], "",0,$count);
         $this->view->assign('insights',$insights);
         return $this->htmlResponse();
     }

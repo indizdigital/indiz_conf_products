@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<T3DataStructure>
+  <sheets>
+	<main>
+	  <ROOT>
+		<TCEforms>
+		  <sheetTitle>Verhalten</sheetTitle>
+		</TCEforms>
+		<type>array</type>
+		<el>
+		  <settings.flexform.count>
+			<label>Elements count</label>
+			<config>
+				<type>input</type>
+			</config>
+		  </settings.flexform.count>
+		  <settings.flexform.category>
+			<label>Filter Insight Categories</label>
+			<config>
+				<type>select</type>
+				<renderType>selectMultipleSideBySide</renderType>
+				<foreign_table>tx_products_domain_model_insightcategory</foreign_table>
+			</config>
+		  </settings.flexform.category>
+		</el>
+	  </ROOT>
+	</main>
+  </sheets>
+</T3DataStructure>

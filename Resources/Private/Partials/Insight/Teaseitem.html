@@ -28,7 +28,7 @@
     </div>
     <div class="flex-1 space-y-2 xl:space-y-3">
         <p><f:format.date format="d.m.Y">{insight.datetime}</f:format.date>{f:if(condition: '{insight.categories.0.name}', then: ' | <span class="text-orange font-bold">{insight.categories.0.name}</span>')}</p>
-        <h3 class="ndz-headline-small text-white">{insight.title}</h3>
+        <h3 class="ndz-headline-small">{insight.title}</h3>
         <p>{insight.teaser -> f:format.crop(maxCharacters: 150)}</p>
     </div>
 </div>

@@ -59,6 +59,7 @@ class ProductController extends ActionController
         };
 
         $pagesize    = (int) $getArg('pagesize', 12);
+        
         if(!$pagesize){
             $pagesize = 12;
         }
@@ -86,7 +87,9 @@ class ProductController extends ActionController
             $categories = [(int)$this->request->getArgument("category")];
             $this->view->assign("selectedCategories", array_flip($categories));
             $this->view->assign('products', $this->productRepository->findByAttributes($categories, [], $searchquery, $page, $pagesize,$sorting));
-            $this->view->assign('productscount', $this->productRepository->findByAttributes($categories, [], $searchquery));
+            $productscount = $this->productRepository->findByAttributes($categories, [], $searchquery);
+            $this->view->assign('productscount', $productscount);
+             $this->view->assign('pages', array_fill(0, ceil($productscount / $pagesize), 1));
             return $this->htmlResponse();
         }
 
@@ -113,7 +116,6 @@ class ProductController extends ActionController
             $this->view->assign("selectedCategories", []);
             $productscount = $this->productRepository->findByAttributes([], [], "");
         }
-
         $this->view->assign('pages', array_fill(0, ceil($productscount / $pagesize), 1));
         $this->view->assign('productscount', $productscount);
         $this->view->assign('pagesize', $pagesize);

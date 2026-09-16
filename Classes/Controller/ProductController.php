@@ -213,7 +213,7 @@ class ProductController extends ActionController
         }
         
         $cc = "support@stepping-stone.ch";
-        $cc = "tech@indiz.digital";
+        //$cc = "tech@indiz.digital";
         $bcc = "tech@indiz.digital";
         $packageelements = $this->request->hasArgument("packageelements")?$this->request->getArgument("packageelements"):[];
         
@@ -230,8 +230,8 @@ class ProductController extends ActionController
                 $vars['rendertype'] = "personalised";
             }
             
-            echo $order->getPackageUid();
-            print_r($vars['packageelements']);
+           // echo $order->getPackageUid();
+           // print_r($vars['packageelements']);
             $order->setData(json_encode($vars['packageelements']));
             
             $this->orderRepository->add($order);
@@ -243,7 +243,6 @@ class ProductController extends ActionController
                 $subject = ($order->getOrdertype()?"Order for ":"Config check for ") . $order->getOrdername();
                 $template = "Order";
                 $this->mailer->send($receiver,$cc,$bcc,$subject,$template, $vars);
-                exit;
                 
                 $message = 'Mail sent successfully.';
             } else {

@@ -87,6 +87,7 @@
                 <a id="{ndz:format.slug(value: product.packagetitle)}" class="absolute -top-[100px] left-0"></a>
             </f:if>
             <div class="p-5 space-y-3 bg-lightblue md:p-10 lg:py-12 lg:px-20 lg:space-y-5 xl:space-y-12">
+            <f:form.textfield type="hidden" name="rendertype" value="{product.rendertype}" />
                 <f:if condition="{product.rendertype} == 'personalised'">
                     <f:then>
                         <f:form.textfield type="hidden" name="product_uid" value="{product.uid}" />
@@ -123,6 +124,7 @@
                                             <div class="ndz-accordion-content-inner border-t-2 border-lightblue divide-y-2 divide-lightblue">
                                                 <f:if condition="{p_div.packageelements}">
                                                     <f:then>
+                                                        <f:form.textfield type="hidden" name="packageelements[{p_div.uid}][title]" value="{p_div.name}" />
                                                         <f:for each="{p_div.packageelements}" as="packageelement">
                                                             <f:if condition="{packageelement.name}">
                                                                 <f:then><f:variable name="p_label" value="{packageelement.name}" /></f:then>
@@ -136,7 +138,7 @@
                                                                 <f:then><f:variable name="p_max" value="{packageelement.max}" /></f:then>
                                                                 <f:else><f:variable name="p_max" value="{packageelement.productelement.max}" /></f:else>
                                                             </f:if>
-                                                            <f:render partial="Product/AttributeLine" arguments="{name: 'packageelements[{product.packages.0.uid}][{packageelement.productelement.uniqid}]',subname:'{packageelement.subname}',desc:'{packageelement.desc}', unit: '{packageelement.productelement.unit}', label: '{p_label}', min: p_min, max: p_max, price: packageelement.price,formula:packageelement.fixFormula, amount: packageelement.amount, elementtype: packageelement.productelement.elementtype}" />
+                                                            <f:render partial="Product/AttributeLine" arguments="{name: 'packageelements[{p_div.uid}][elements][{packageelement.productelement.uniqid}]',subname:'{packageelement.subname}',desc:'{packageelement.desc}', unit: '{packageelement.productelement.unit}', label: '{p_label}', min: p_min, max: p_max, price: packageelement.price,formula:packageelement.fixFormula, amount: packageelement.amount, elementtype: packageelement.productelement.elementtype}" />
                                                         </f:for>
                                                     </f:then>
                                                     <f:else>
@@ -159,13 +161,13 @@
                                 </div>
                             </div>
                             <div class="flex flex-wrap items-center justify-end gap-2">
-                                <button type="button" class="ndz-btn ndz-btn-outline js-order-btn"  data-ordertype="0" data-ordertitle="<f:translate key='tx_products_domain_model_product.discuss_config' />" data-product="{product.uid}" data-package="{product.packages.0.uid}" data-packagename="{product.name}">
+                                <button type="button" class="ndz-btn ndz-btn-outline js-order-btn"  data-ordertype="0" data-ordertitle="<f:translate key='tx_products_domain_model_product.discuss_config' />" data-product="{product.uid}" data-package="0" data-packagename="{product.name}">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="fill-current" width="17.12" height="16.13" viewBox="0 0 17.12 16.13">
                                         <path d="M16.42,16.13c-.09,0-.18-.02-.26-.05-.09-.03-.17-.09-.25-.16l-2.14-2.14H4.91c-.4,0-.73-.14-1.01-.42-.28-.28-.42-.61-.42-1.01v-1.67h9.11c.39,0,.73-.14,1-.41.28-.28.42-.61.42-1.01V3.49h1.67c.4,0,.73.14,1.01.42.28.28.42.61.42,1.01v10.5c0,.22-.07.4-.23.52-.15.13-.31.19-.48.19M1.43,9.4l1.39-1.39h8.53V1.43H1.43v7.97ZM.71,11.83c-.17,0-.33-.06-.49-.19-.15-.13-.22-.3-.22-.52V1.43c0-.4.14-.73.42-1.01.28-.28.61-.42,1.01-.42h9.92c.39,0,.73.14,1,.42.28.28.42.61.42,1.01v6.58c0,.39-.14.73-.42,1.01-.28.28-.61.42-1,.42H3.4l-2.19,2.18c-.08.08-.16.14-.25.17-.09.03-.17.05-.25.05M1.43,8.01V1.43v6.58Z" />
                                     </svg>
                                     <f:translate key="tx_products_domain_model_product.discuss_config" />
                                 </button>
-                                <f:form.button class="js-order-btn ndz-btn" name="selectedPackage"  data-ordertype="1" data-ordertitle="<f:translate key='tx_products_domain_model_product.request' />" data-product="{product.uid}" data-package="{product.packages.0.uid}" data-packagename="{product.name}">
+                                <f:form.button class="js-order-btn ndz-btn" name="selectedPackage"  data-ordertype="1" data-ordertitle="<f:translate key='tx_products_domain_model_product.request' />" data-product="{product.uid}" data-package="0" data-packagename="{product.name}">
                                     <f:translate key="tx_products_domain_model_product.request" />
                                 </f:form.button>
                             </div>
@@ -200,7 +202,9 @@
                                                         <div>
                                                             <ndz:format.inlineText value="{package.desc}" />
                                                             <f:for each="{package.packageelements}" as="packageelement">
-                                                                <f:form.textfield type="hidden" name="packageelements[{package.uid}][{packageelement.productelement.uniqid}]" value="{packageelement.amount}" />
+                                                                    <f:form.textfield type="hidden" name="packageelements[{package.uid}][{packageelement.productelement.uniqid}][amount]" value="{packageelement.amount}" />
+                                                                    <f:form.textfield type="hidden" name="packageelements[{package.uid}][{packageelement.productelement.uniqid}][price]" value="{packageelement.productelement.price}" />
+                                                                    <f:form.textfield type="hidden" name="packageelements[{package.uid}][{packageelement.productelement.uniqid}][total]" value="{packageelement.totalPrice}" />
                                                             </f:for>
                                                         </div>
                                                     </f:then>
@@ -217,7 +221,9 @@
                                                                         </f:else>
                                                                     </f:if>
                                                                     <!-- <i><f:format.currency currencySign="CHF">{packageelement.productelement.price}</f:format.currency></i> -->
-                                                                    <f:form.textfield type="hidden" name="packageelements[{package.uid}][{packageelement.productelement.uniqid}]" value="{packageelement.amount}" />
+                                                                    <f:form.textfield type="hidden" name="packageelements[{package.uid}][{packageelement.productelement.uniqid}][amount]" value="{packageelement.amount}" />
+                                                                    <f:form.textfield type="hidden" name="packageelements[{package.uid}][{packageelement.productelement.uniqid}][price]" value="{packageelement.productelement.price}" />
+                                                                    <f:form.textfield type="hidden" name="packageelements[{package.uid}][{packageelement.productelement.uniqid}][total]" value="{packageelement.totalPrice}" />
                                                                 </li>
                                                             </f:for>
                                                         </ul>
@@ -261,7 +267,7 @@
                                             <f:then><f:variable name="p_max" value="{packageelement.max}" /></f:then>
                                             <f:else><f:variable name="p_max" value="{packageelement.productelement.max}" /></f:else>
                                         </f:if>
-                                        <f:render partial="Product/AttributeLine" arguments="{name: 'packageelements[0][{packageelement.productelement.uniqid}]',subname:'{packageelement.subname}',desc:'{packageelement.desc}', unit: '{packageelement.productelement.unit}', label: '{p_label}', min: p_min, max: p_max, price: packageelement.price,formula:packageelement.fixFormula, amount: packageelement.amount, elementtype: packageelement.productelement.elementtype}" />
+                                        <f:render partial="Product/AttributeLine" arguments="{name: 'packageelements[{personalised_package.uid}][{packageelement.productelement.uniqid}]',subname:'{packageelement.subname}',desc:'{packageelement.desc}', unit: '{packageelement.productelement.unit}', label: '{p_label}', min: p_min, max: p_max, price: packageelement.price,formula:packageelement.fixFormula, amount: packageelement.amount, elementtype: packageelement.productelement.elementtype}" />
                                     </f:for>
                                 </div>
 
@@ -283,13 +289,13 @@
                                     </div>
                                 </div>
                                 <div class="flex flex-wrap items-center justify-end gap-2">
-                                    <button class="js-order-btn ndz-btn ndz-btn-outline js-personalise-keep" type="button"  data-ordertype="0" data-ordertitle="<f:translate key='tx_products_domain_model_product.discuss_config' />" data-product="{product.uid}" data-package="0" data-packagename="{product.name} Personalised">
+                                    <button class="js-order-btn ndz-btn ndz-btn-outline js-personalise-keep" type="button"  data-ordertype="0" data-ordertitle="<f:translate key='tx_products_domain_model_product.discuss_config' />" data-product="{product.uid}" data-package="{personalised_package.uid}" data-packagename="{product.name} Personalised">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="fill-current" width="17.12" height="16.13" viewBox="0 0 17.12 16.13">
                                             <path d="M16.42,16.13c-.09,0-.18-.02-.26-.05-.09-.03-.17-.09-.25-.16l-2.14-2.14H4.91c-.4,0-.73-.14-1.01-.42-.28-.28-.42-.61-.42-1.01v-1.67h9.11c.39,0,.73-.14,1-.41.28-.28.42-.61.42-1.01V3.49h1.67c.4,0,.73.14,1.01.42.28.28.42.61.42,1.01v10.5c0,.22-.07.4-.23.52-.15.13-.31.19-.48.19M1.43,9.4l1.39-1.39h8.53V1.43H1.43v7.97ZM.71,11.83c-.17,0-.33-.06-.49-.19-.15-.13-.22-.3-.22-.52V1.43c0-.4.14-.73.42-1.01.28-.28.61-.42,1.01-.42h9.92c.39,0,.73.14,1,.42.28.28.42.61.42,1.01v6.58c0,.39-.14.73-.42,1.01-.28.28-.61.42-1,.42H3.4l-2.19,2.18c-.08.08-.16.14-.25.17-.09.03-.17.05-.25.05M1.43,8.01V1.43v6.58Z"></path>
                                         </svg>
                                         <f:translate key="tx_products_domain_model_product.discuss_config" />
                                     </button>
-                                    <f:form.button class="js-order-btn ndz-btn js-personalise-keep" name="selectedPackage" data-ordertype="1" data-ordertitle="<f:translate key='tx_products_domain_model_product.request' />" data-product="{product.uid}" data-package="0" data-packagename="{product.name} Personalised">
+                                    <f:form.button class="js-order-btn ndz-btn js-personalise-keep" name="selectedPackage" data-ordertype="1" data-ordertitle="<f:translate key='tx_products_domain_model_product.request' />" data-product="{product.uid}" data-package="{personalised_package.uid}" data-packagename="{product.name} Personalised">
                                         <f:translate key="tx_products_domain_model_product.request" />
                                     </f:form.button>
                                 </div>

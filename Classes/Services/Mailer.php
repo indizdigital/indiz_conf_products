@@ -14,8 +14,12 @@ class Mailer{
             ->to($receiver)
             ->from($fromAdress)
             ->cc($cc)
-            ->bcc($bcc)
-            ->subject($subject)
+            ->replyTo($cc);
+        if(strlen($bcc)){
+            $email->bcc($bcc);
+        }
+            
+        $email->subject($subject)
             ->format('html') // or 'both'
             ->setTemplate($template) // Resources/Private/Templates/Email/MyTemplate.html
             

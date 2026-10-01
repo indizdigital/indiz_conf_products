@@ -282,6 +282,30 @@
 			<trans-unit id="tx_products_domain_model_product.order_confirmation.to_startpage">
 				<source>To Startpage</source>
 			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.mail.product_properties">
+				<source>Product declaration</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.mail.product">
+				<source>Product</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.mail.order">
+				<source>Order</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.mail.sender">
+				<source>Sender</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.mail.element">
+				<source>Element</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.mail.quantity">
+				<source>Quantity</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.mail.price">
+				<source>Price</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.mail.discuss_order">
+				<source>Discuss config</source>
+			</trans-unit>
         </body>
     </file>
 </xliff>

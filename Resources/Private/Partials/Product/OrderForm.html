@@ -12,20 +12,20 @@
             <f:form.textfield id="company" property="company" placeholder="<f:translate key='tx_products_domain_model_product.form.company.placeholder' />" />
         </div>
         <div class="ndz-input-field">
-            <label for="gender" class="text-blue block"><f:translate key="tx_products_domain_model_product.form.gender" />*</label>
+            <label for="gender" class="text-blue block"><f:translate key="tx_products_domain_model_product.form.gender" /></label>
             <f:form.select id="gender" property="gender" options="{1: '<f:translate key=\'tx_products_domain_model_product.form.gender.male\' />', 2: '<f:translate key=\'tx_products_domain_model_product.form.gender.female\' />', 3: '<f:translate key=\'tx_products_domain_model_product.form.gender.nonbinary\' />'}" />
         </div>
         <div class="ndz-input-field">
             <label for="firstname" class="text-blue block"><f:translate key="tx_products_domain_model_product.form.firstname" />*</label>
-            <f:form.textfield id="firstname" property="firstname" placeholder="<f:translate key='tx_products_domain_model_product.form.firstname.placeholder' />" />
+            <f:form.textfield id="firstname" property="firstname"  required="required" placeholder="<f:translate key='tx_products_domain_model_product.form.firstname.placeholder' />" />
         </div>
         <div class="ndz-input-field">
             <label for="name" class="text-blue block"><f:translate key="tx_products_domain_model_product.form.name" />*</label>
-            <f:form.textfield id="name" property="name" placeholder="<f:translate key='tx_products_domain_model_product.form.name.placeholder' />" />
+            <f:form.textfield id="name" property="name"  required="required" placeholder="<f:translate key='tx_products_domain_model_product.form.name.placeholder' />" />
         </div>
         <div class="ndz-input-field">
             <label for="addressline" class="text-blue block"><f:translate key="tx_products_domain_model_product.form.addressline" /> 1*</label>
-            <f:form.textfield id="addressline" property="addressline" placeholder="<f:translate key='tx_products_domain_model_product.form.addressline.placeholder' />" />
+            <f:form.textfield id="addressline" property="addressline" required="required" placeholder="<f:translate key='tx_products_domain_model_product.form.addressline.placeholder' />" />
         </div>
         <div class="ndz-input-field">
             <label for="addressline2" class="text-blue block"><f:translate key="tx_products_domain_model_product.form.addressline" /> 2</label>
@@ -34,16 +34,16 @@
         <div class="flex gap-5">
             <div class="ndz-input-field w-34">
                 <label for="postalcode" class="text-blue block"><f:translate key="tx_products_domain_model_product.form.postalcode" />*</label>
-                <f:form.textfield id="postalcode" property="postalcode" placeholder="<f:translate key='tx_products_domain_model_product.form.postalcode.placeholder' />" />
+                <f:form.textfield id="postalcode" property="postalcode" required="required" placeholder="<f:translate key='tx_products_domain_model_product.form.postalcode.placeholder' />" />
             </div>
             <div class="ndz-input-field flex-1">
                 <label for="city" class="text-blue block"><f:translate key="tx_products_domain_model_product.form.city" />*</label>
-                <f:form.textfield id="city" property="city" placeholder="<f:translate key='tx_products_domain_model_product.form.city.placeholder' />" />
+                <f:form.textfield id="city" property="city" required="required" placeholder="<f:translate key='tx_products_domain_model_product.form.city.placeholder' />" />
             </div>
         </div>
         <div class="ndz-input-field">
             <label for="country" class="text-blue block"><f:translate key="tx_products_domain_model_product.form.country" />*</label>
-            <f:form.textfield id="country" property="country" placeholder="<f:translate key='tx_products_domain_model_product.form.country.placeholder' />" />
+            <f:form.textfield id="country" property="country" required="required" placeholder="<f:translate key='tx_products_domain_model_product.form.country.placeholder' />" />
         </div>
         <div class="ndz-input-field">
             <label for="phone" class="text-blue block"><f:translate key="tx_products_domain_model_product.form.phone" /></label>

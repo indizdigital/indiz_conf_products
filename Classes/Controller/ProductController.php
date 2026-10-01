@@ -198,7 +198,7 @@ class ProductController extends ActionController
      */
     public function orderAction(Order $order): \Psr\Http\Message\ResponseInterface
     {
-        $receiver = $order->getEmail();
+        $cc = $order->getEmail();
         $order->setPid($this->settings["orderpid"]);
 
         $feUser = $this->request->getAttribute('frontend.user');
@@ -212,9 +212,13 @@ class ProductController extends ActionController
             }
         }
         
-        $cc = "support@stepping-stone.ch";
+        $receiver = "info@stepping-stone.ch";
+        if($_SERVER["HTTP_HOST"] == "wwwtest.stepping-stone.ch"){
+            //$receiver = "kontakt@indiz.digital";
+        }
+        
         //$cc = "tech@indiz.digital";
-        $bcc = "tech@indiz.digital";
+        $bcc = "";
         $packageelements = $this->request->hasArgument("packageelements")?$this->request->getArgument("packageelements"):[];
         
         if ($order->getProductUid()) {
@@ -240,10 +244,18 @@ class ProductController extends ActionController
             // Assuming you have a method to find package by uid, e.g., in ProductRepository or a PackageRepository
              if ($product) {
                 
-                $subject = ($order->getOrdertype()?"Order for ":"Config check for ") . $order->getOrdername();
-                $template = "Order";
-                $this->mailer->send($receiver,$cc,$bcc,$subject,$template, $vars);
+                if($order->getOrdertype()){
+                    $template = "Order";
+                    $subject = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tx_products_domain_model_product.order', 'products')." " . $order->getOrdername();
+                }else{
+                    
+                    $template = "DiscussOrder";
+                    $subject = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tx_products_domain_model_product.discuss_config', 'products')." " . $order->getOrdername();
+                }
                 
+                
+                $this->mailer->send($receiver,$cc,$bcc,$subject,$template, $vars);
+                exit;
                 $message = 'Mail sent successfully.';
             } else {
                 $message =  'Package not found.';

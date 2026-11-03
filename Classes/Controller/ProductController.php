@@ -246,7 +246,7 @@ class ProductController extends ActionController
                 
                 if($order->getOrdertype()){
                     $template = "Order";
-                    $subject = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tx_products_domain_model_product.order', 'products')." " . $order->getOrdername();
+                    $subject = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tx_products_domain_model_product.order_for', 'products')." " . $order->getOrdername();
                 }else{
                     
                     $template = "DiscussOrder";
@@ -255,7 +255,6 @@ class ProductController extends ActionController
                 
                 
                 $this->mailer->send($receiver,$cc,$bcc,$subject,$template, $vars);
-                exit;
                 $message = 'Mail sent successfully.';
             } else {
                 $message =  'Package not found.';

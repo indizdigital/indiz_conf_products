@@ -1,7 +1,15 @@
 <f:form action="order" id="orderForm" class="mt-5 md:mt-10 lg:mt-20">
     <div class="ndz-rte">
-        <h1 class="ndz-headline-large"><f:translate key="tx_products_domain_model_product.order_for" extensionName="products" /> {order.ordername}</h1>
-        <h2 class="ndz-headline-middle"><f:translate key="tx_products_domain_model_product.order_confirmation.thank_you" extensionName="products" /></h2>
+        <f:if condition="{order.ordertype}">
+            <f:then>
+                <h1 class="ndz-headline-large"><f:translate key="tx_products_domain_model_product.order_for" extensionName="products" /> {order.ordername}</h1>
+                <h2 class="ndz-headline-middle"><f:translate key="tx_products_domain_model_product.order_confirmation.thank_you" extensionName="products" /></h2>
+            </f:then>
+            <f:else>
+                <h1 class="ndz-headline-large"><f:translate key="tx_products_domain_model_product.order_confirmation.discuss_for" extensionName="products" /> {order.ordername}</h1>
+                <h2 class="ndz-headline-middle"><f:translate key="tx_products_domain_model_product.order_confirmation.discuss_thank_you" extensionName="products" /></h2>
+            </f:else>
+        </f:if>
         <f:format.raw><f:translate key="tx_products_domain_model_product.order_confirmation.message" extensionName="products"/></f:format.raw>
         <f:link.page pageUid="1" class="ndz-btn"><f:translate key="tx_products_domain_model_product.order_confirmation.to_startpage" extensionName="products"/></f:link.page>
     </div>

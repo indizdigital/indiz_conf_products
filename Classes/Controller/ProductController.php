@@ -213,11 +213,10 @@ class ProductController extends ActionController
         }
         
         $receiver = "info@stepping-stone.ch";
-        if($_SERVER["HTTP_HOST"] == "wwwtest.stepping-stone.ch"){
-            //$receiver = "kontakt@indiz.digital";
+        if($_SERVER["HTTP_HOST"] == "wwwtest.stepping-stone.ch" && $cc == "tech@indiz.digital"){
+            $receiver = "kontakt@indiz.digital";
         }
         
-        //$cc = "tech@indiz.digital";
         $bcc = "";
         $packageelements = $this->request->hasArgument("packageelements")?$this->request->getArgument("packageelements"):[];
         

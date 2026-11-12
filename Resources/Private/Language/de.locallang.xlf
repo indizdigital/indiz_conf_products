@@ -276,6 +276,12 @@
 			<trans-unit id="tx_products_domain_model_product.order_confirmation.thank_you">
 				<target>Vielen Dank für Ihre Bestellung!</target>
 			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.order_confirmation.discuss_for">
+				<target>Besprechungsanfrage für</target>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.order_confirmation.discuss_thank_you">
+				<target>Vielen Dank für Ihre Besprechungsanfrage!</target>
+			</trans-unit>
 			<trans-unit id="tx_products_domain_model_product.order_confirmation.message">
 				<target><![CDATA[<p>Wir haben Ihre Anfrage erfolgreich erhalten und werden diese so schnell wie möglich bearbeiten.</p><p>Unser Team meldet sich in der Regel innert 1–2 Arbeitstagen bei Ihnen. Sollten Sie in der Zwischenzeit weitere Fragen haben, können Sie uns jederzeit telefonisch oder per E-Mail kontaktieren.</p><p>Wir freuen uns auf den Austausch mit Ihnen.</p>]]></target>
 			</trans-unit>

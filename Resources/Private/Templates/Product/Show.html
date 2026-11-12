@@ -418,6 +418,15 @@ document.addEventListener('DOMContentLoaded', function () {
                     document.querySelector('.js-final-order-btn').value = button.dataset.ordertitle
                 }
                 document.querySelector(".js-order-type").value = button.dataset.ordertype;
+
+                // ordertype 0 (discuss): only gender, firstname, name, email, agb required
+                var fullRequired = button.dataset.ordertype !== '0';
+                document.querySelectorAll('.js-required-full').forEach(function (field) {
+                    field.required = fullRequired;
+                });
+                document.querySelectorAll('.js-required-full-mark').forEach(function (mark) {
+                    mark.classList.toggle('hidden', !fullRequired);
+                });
                 if(button.closest(".js-package-box")){
                     document.querySelector(".js-order-total").value = button.closest(".js-package-box").querySelector(".js-package-price").dataset.total;
                 }else{

@@ -276,6 +276,12 @@
 			<trans-unit id="tx_products_domain_model_product.order_confirmation.thank_you">
 				<source>Thank you very much for your order!</source>
 			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.order_confirmation.discuss_for">
+				<source>Enquiry for</source>
+			</trans-unit>
+			<trans-unit id="tx_products_domain_model_product.order_confirmation.discuss_thank_you">
+				<source>Thank you very much for your enquiry!</source>
+			</trans-unit>
 			<trans-unit id="tx_products_domain_model_product.order_confirmation.message">
 				<source><![CDATA[<p>We have successfully received your enquiry and will process it as soon as possible.</p><p>Our team will usually get back to you within 1–2 working days. If you have any further questions in the meantime, please feel free to contact us by telephone or email at any time.</p><p>We look forward to hearing from you.</p>]]></source>
 			</trans-unit>
